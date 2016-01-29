@@ -10,10 +10,12 @@ public class Character : MonoBehaviour {
     private bool isMale;
     private string charName;
 
+    private GameController gameController;
+
     // Use this for initialization
     void Start()
     {
-
+        gameController = FindObjectOfType<GameController>();
     }
 
     // Update is called once per frame
@@ -92,5 +94,10 @@ public class Character : MonoBehaviour {
         strength += strengthBonus;
         agility += agilityBonus;
         vision += visionBonus;
+    }
+
+    void OnMouseDown()
+    {
+        gameController.onCharacterClicked(this);
     }
 }
