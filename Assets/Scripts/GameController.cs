@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
-    ArrayList<Room> activeRooms;
+    List<Room> activeRooms = new List<Room>();
     Room selectedRoom;
-    ArrayList<Character> selectedCharacters;
+    List<Character> selectedCharacters = new List<Character>();
 
 	void removeEmptyRooms()
     {
@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour {
         {
             if (i.characters <= 0)
             {
-                
+                activeRooms.Remove(i);
             }
         }
     }
