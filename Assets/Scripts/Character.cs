@@ -7,6 +7,7 @@ public class Character : MonoBehaviour {
     private int agility;
     private int vision;
 
+    private bool isMale;
     private string charName;
 
     // Use this for initialization
@@ -71,5 +72,25 @@ public class Character : MonoBehaviour {
         {
             charName = value;
         }
+    }
+
+    public bool IsMale
+    {
+        get
+        {
+            return isMale;
+        }
+
+        set
+        {
+            isMale = value;
+        }
+    }
+
+    public void feast(int strengthBonus, int agilityBonus, int visionBonus)
+    {
+        strength += strengthBonus;
+        agility += agilityBonus;
+        vision += visionBonus;
     }
 }
