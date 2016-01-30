@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Reward : MonoBehaviour
+public class Reward : Spotable
 {
     enum Type
     {
