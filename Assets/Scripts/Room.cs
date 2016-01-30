@@ -338,7 +338,6 @@ public class Room : MonoBehaviour
         {
             gameController.onRoomSelected(this);
         }
-        
     }
 
     void OnMouseOver()
