@@ -41,11 +41,13 @@ public class GameController : MonoBehaviour
 
         List<string> playerNames = loadPlayerNames();
 
+        selectedRoom = GameObject.Find("Start (2,3)").GetComponent<Room>();
+
         for (int i = 0; i < 6; i++)
         {
             int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
             Character testCharacter = Instantiate(character_prefab);
-            testCharacter.Portrait = playerHeads[0];
+            testCharacter.Portrait = playerHeads[i];
             testCharacter.CharName = playerNames[randomInt];
             playerNames.RemoveAt(randomInt);
             selectedRoom.Characters.Add(testCharacter);
@@ -135,17 +137,23 @@ public class GameController : MonoBehaviour
         SelectedRoom.SelectedCharacters.Clear();
         SelectedRoom = clickedRoom;
         SelectedRoom.SelectBubble.SetActive(true);
-        sacrificeButton.SetActive(SelectedRoom.Rewards.Exists(ByType(Reward.Type.altar)));
+
+        Reward[] rewards = SelectedRoom.Reward;
+        bool altarExists = false;
+        foreach (Reward r in rewards)
+        {
+            Debug.Log(r.getType());
+            if (r.getType() == Reward.Type.altar)
+            {
+                altarExists = true;
+                break;
+            }
+        }
+        Debug.Log("selected room, bool = " + altarExists + "; rewards: " + rewards.Length);
+        
+        sacrificeButton.SetActive(altarExists);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
-    }
-
-    static Predicate<Reward> ByType(Reward.Type type)
-    {
-        return delegate (Reward reward)
-        {
-            return reward.getType() == type;
-        };
     }
 
     public void endTurn()
@@ -220,5 +228,10 @@ public class GameController : MonoBehaviour
 
         //journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
         destination.discoverNeighbors();
+    }
+
+    public void sacrifice()
+    {
+        selectedRoom.sacrifice();
     }
 }
