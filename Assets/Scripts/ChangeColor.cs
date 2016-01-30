@@ -12,11 +12,12 @@ public class ChangeColor : MonoBehaviour {
     int currentIndex;
     SpriteRenderer spriteRenderer;
     float lastChange = 0;
+    int numSprites;
 
     void Start()
     {
         interval = Random.Range(0.05f, 0.5f);
-
+        numSprites = sprites.Length;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 	
@@ -25,7 +26,7 @@ public class ChangeColor : MonoBehaviour {
 	    if (Time.time > lastChange + interval)
         {
             lastChange = Time.time;
-            spriteRenderer.sprite = sprites[(++currentIndex) % 3];
+            spriteRenderer.sprite = sprites[(++currentIndex) % numSprites];
         }
 	}
 }
