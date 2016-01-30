@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Reward : Spotable
+[System.Serializable]
+public class Reward
 {
     public enum Type
     {
         altar, human
     }
 
-    Type type;
+    public Type type;
+    public int visionRequired;
 
     public Type getType()
     {

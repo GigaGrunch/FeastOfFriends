@@ -41,7 +41,8 @@ public class GameController : MonoBehaviour
         currentDayNum = 1;
         nextDeathIn = 5;
         // TODO: replace with Constructor if Journal is no gameobject
-        journal = FindObjectOfType<Journal>();
+        //journal = FindObjectOfType<Journal>();
+        //journal.gameObject.SetActive(false);
 
         List<string> playerNames = loadPlayerNames();
         int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
@@ -159,7 +160,7 @@ public class GameController : MonoBehaviour
     public void onCharacterClicked(Character clickedCharacter)
     {
         Debug.Log("Setting bars...");
-        
+
         AgilityBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 0, 10);
         StrenghtBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 0, 10);
         VisionBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 0, 10);
@@ -175,7 +176,7 @@ public class GameController : MonoBehaviour
         SelectedRoom = clickedRoom;
         SelectedRoom.SelectBubble.SetActive(true);
         sacrificeButton.SetActive(SelectedRoom.Rewards.Exists(ByType(Reward.Type.altar)));
-        
+
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
 
@@ -208,10 +209,12 @@ public class GameController : MonoBehaviour
             killRandomCharacter();
             nextDeathIn = 5;
         }
-        foreach(Character c in characters)
+        foreach (Character c in characters)
         {
             c.IsCurrentlyMoving = false;
         }
+
+        FindObjectOfType<InterfaceController>().SetRoomMembers(SelectedRoom.Characters);
     }
 
     private void killRandomCharacter()
@@ -255,7 +258,7 @@ public class GameController : MonoBehaviour
         source.Characters.Remove(character);
         destination.Characters.Add(character);
 
-        //journal.addStory(new Story(currentDayNum, "Someone managed to enter an exciting new Room"));
+        //journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
         destination.discoverNeighbors();
     }
 }
