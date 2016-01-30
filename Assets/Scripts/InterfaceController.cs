@@ -32,15 +32,12 @@ public class InterfaceController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-    }
-
     public void SetRoomMembers(List<Character> roomMembers)
     {
         foreach (GameObject c in characterButtons)
         {
             c.GetComponent<Image>().sprite = null;
+            c.GetComponent<Button>().interactable = false;
         }
 
         cPreview.sprite = null;
@@ -52,6 +49,7 @@ public class InterfaceController : MonoBehaviour
             {
                 return;
             }
+            characterButtons[i].GetComponent<Button>().GetComponent<Button>().interactable = true;
             characterButtons[i].GetComponent<Image>().sprite = roomMembers[i].Portrait;
         }
     }
