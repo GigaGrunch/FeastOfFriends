@@ -160,6 +160,7 @@ public class GameController : MonoBehaviour
         {
             SelectedRoom.SelectBubble.SetActive(false);
         }
+        SelectedRoom.SelectedCharacters.Clear();
         SelectedRoom = clickedRoom;
         SelectedRoom.SelectBubble.SetActive(true);
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
