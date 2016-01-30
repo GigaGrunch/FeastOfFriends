@@ -593,6 +593,7 @@ public class Room : MonoBehaviour
             selectedCharacters.Remove(victim);
             characters.Remove(victim);
             gameController.killCharacter(victim);
+            drawPeople();
             int strengthBonus = victim.Strength / 4;
             int agilityBonus = victim.Agility / 4;
             int visionBonus = victim.Agility / 4;
