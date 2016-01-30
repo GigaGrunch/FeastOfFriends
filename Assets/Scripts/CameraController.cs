@@ -10,9 +10,24 @@ public class CameraController : MonoBehaviour
     Vector3 anker, camAnker;
     Vector3 difference, camDiff;
 
-    public static bool ClickBlockedByUI()
+    bool isJournalOpen;
+
+    public bool IsJournalOpen
     {
-        return (Input.mousePosition.y < 200);
+        get
+        {
+            return isJournalOpen;
+        }
+
+        set
+        {
+            isJournalOpen = value;
+        }
+    }
+
+    public bool ClickBlockedByUI()
+    {
+        return ((Input.mousePosition.y < 200) || IsJournalOpen);
     }
 
     void Update()
