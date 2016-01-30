@@ -3,21 +3,35 @@ using System.Collections;
 
 public class Requirement : Spotable
 {
-    enum Type
+    public enum Type
     {
-        strentgh, speed
+        strength, agility
     }
 
     Type type;
-    int value;
+    int requiredValue;
+    int visionRequired;
 
-    Type getType()
+    public Type getType()
     {
         return type;
     }
 
-    int getValue()
+    public int getRequiredValue()
     {
-        return value;
+        return requiredValue;
+    }
+
+    public int VisionRequired
+    {
+        get
+        {
+            return visionRequired;
+        }
+
+        set
+        {
+            visionRequired = value;
+        }
     }
 }

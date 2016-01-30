@@ -2,20 +2,33 @@
 using System.Collections.Generic;
 using System;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
+    [SerializeField]
+    Sprite face;
 
     int currentDayNum;
+    int nextDeathIn;
     Room selectedRoom;
     List<Room> activeRooms = new List<Room>();
-    List<Movement> pendingMovements = new List<Movement>();
     Journal journal;
+    List<Character> characters;
 
     void Start()
     {
         // initialize start characters here
         currentDayNum = 1;
+        nextDeathIn = 5;
         // TODO: replace with Constructor if Journal is no gameobject
         journal = FindObjectOfType<Journal>();
+
+        selectedRoom = new Room();
+        Character testCharacter1 = new Character();
+        testCharacter1.Portrait = face;
+
+        selectedRoom.Characters.Add(testCharacter1);
+
+        GameObject.Find("Main Camera").GetComponent<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
     }
 
     public Room SelectedRoom
@@ -33,7 +46,7 @@ public class GameController : MonoBehaviour {
 
     public void onCharacterClicked(Character clickedCharacter)
     {
-        if(SelectedRoom.SelectedCharacters.Contains(clickedCharacter))
+        if (SelectedRoom.SelectedCharacters.Contains(clickedCharacter))
         {
             SelectedRoom.SelectedCharacters.Remove(clickedCharacter);
         }
@@ -43,7 +56,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    public void onRoomClicked(Room clickedRoom)
+    public void onRoomSelected(Room clickedRoom)
     {
         SelectedRoom = clickedRoom;
     }
@@ -51,29 +64,38 @@ public class GameController : MonoBehaviour {
     void endTurn()
     {
         // do some stuff on turn end
-        resolvePendingMovements();
+        foreach (Room r in activeRooms)
+        {
+            r.resolvePendingMovements();
+        }
         removeEmptyRooms();
+
         currentDayNum++;
+        nextDeathIn--;
+        if (nextDeathIn <= 0)
+        {
+            killRandomCharacter();
+            nextDeathIn = 5;
+        }
     }
 
-    private void resolvePendingMovements()
+    private void killRandomCharacter()
     {
-        foreach(Movement pendingMovement in pendingMovements)
+        // kill random character without boni for the others
+        int index = UnityEngine.Random.Range(0, characters.Count);
+        Character victim = characters[index];
+        foreach (Room i in activeRooms)
         {
-            // test requirements here
-            bool success = true;
-            if(success)
-            {
-                Character character = pendingMovement.Character;
-                journal.addStory(new Story(currentDayNum, character + " managed to enter an exciting new Room"));
-                pendingMovement.Source.Characters.Remove(character);
-                pendingMovement.Destination.Characters.Add(character);
-                if (!activeRooms.Contains(pendingMovement.Destination))
-                {
-                    activeRooms.Add(pendingMovement.Destination);
-                }
-            }
+            i.SelectedCharacters.Remove(victim);
+            i.Characters.Remove(victim);
         }
+        killCharacter(victim);
+    }
+
+    public void killCharacter(Character victim)
+    {
+        characters.Remove(victim);
+        Destroy(victim.gameObject);
     }
 
     void removeEmptyRooms()
@@ -87,8 +109,32 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    public void addPendingMovement(Movement pendingMovement)
+    public void OnPlayerMovementSuccess(Room source, Room destination, Character character)
     {
-        pendingMovements.Add(pendingMovement);
+        source.Characters.Remove(character);
+        destination.Characters.Add(character);
+
+        journal.addStory(new Story(currentDayNum, character + " managed to enter an exciting new Room"));
+        activeRooms.Remove(source);
+        if (!activeRooms.Contains(destination))
+        {
+            activeRooms.Add(destination);
+            if (destination.NorthRoom != null)
+            {
+                destination.NorthRoom.enabled = true;
+            }
+            if (destination.SouthRoom != null)
+            {
+                destination.SouthRoom.enabled = true;
+            }
+            if (destination.WestRoom != null)
+            {
+                destination.WestRoom.enabled = true;
+            }
+            if (destination.EastRoom != null)
+            {
+                destination.EastRoom.enabled = true;
+            }
+        }
     }
 }
