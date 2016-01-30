@@ -23,6 +23,9 @@ public class GameController : MonoBehaviour
     Journal journal;
     List<Character> characters = new List<Character>();
 
+    [SerializeField]
+    GameObject sacrificeButton;
+
     void Start()
     {
         // initialize start characters here
