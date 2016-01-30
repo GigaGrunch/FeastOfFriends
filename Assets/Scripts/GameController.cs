@@ -75,12 +75,14 @@ public class GameController : MonoBehaviour
         testCharacter6.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
 
+        selectedRoom = GameObject.Find("Start (2,3)").GetComponent<Room>();
+
         foreach (Room i in FindObjectsOfType<Room>())
         {
             i.BlackSmog.SetActive(true);
             i.gameObject.SetActive(false);
         }
-
+        
         selectedRoom.SelectBubble.SetActive(true);
         selectedRoom.discoverNeighbors();
 
@@ -95,9 +97,9 @@ public class GameController : MonoBehaviour
         characters.Add(testCharacter4);
 
         activeRooms.Add(selectedRoom);
-        activeRooms.Add(GameObject.Find("Room (2)").GetComponent<Room>());
+        //activeRooms.Add(GameObject.Find("Room (2)").GetComponent<Room>());
 
-        GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
+        //GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
     }
