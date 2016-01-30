@@ -168,7 +168,10 @@ public class GameController : MonoBehaviour
         removeEmptyRooms();
         foreach (Room r in roomsToActivate)
         {
-            activeRooms.Add(r);
+            if (!activeRooms.Contains(r))
+            {
+                activeRooms.Add(r);
+            }
         }
 
         currentDayNum++;
@@ -226,6 +229,7 @@ public class GameController : MonoBehaviour
     {
         source.Characters.Remove(character);
         destination.Characters.Add(character);
+        roomsToActivate.Add(destination);
 
         journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
         destination.discoverNeighbors();
