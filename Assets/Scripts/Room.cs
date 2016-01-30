@@ -175,7 +175,6 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.25f, -.75f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
-
         if (eastRoom != null)
         {
             temp = Instantiate(DoorRight, transform.position, Quaternion.identity) as GameObject;
@@ -200,7 +199,6 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.75f, .25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
-
         if (westRoom != null)
         {
             temp = Instantiate(DoorLeft, transform.position, Quaternion.identity) as GameObject;
@@ -373,9 +371,13 @@ public class Room : MonoBehaviour
     // left mouse button
     void OnMouseDown()
     {
+        if (CameraController.ClickBlockedByUI())
+        {
+            return;
+        }
         //discoverNeighbors();
 
-        if(gameController.SelectedRoom != this)
+        if (gameController.SelectedRoom != this)
         {
 
             gameController.onRoomSelected(this);
@@ -384,6 +386,11 @@ public class Room : MonoBehaviour
 
     void OnMouseOver()
     {
+        if (CameraController.ClickBlockedByUI())
+        {
+            return;
+        }
+
         // right mouse button
         if (Input.GetMouseButtonDown(1))
         {
@@ -494,33 +501,47 @@ public class Room : MonoBehaviour
                     }
                 }
             }
-        }        
+        }
 
         if (success)
         {
             foreach (Movement pendingMovement in pendingMovements)
             {
                 gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
-            }                
+            }
         }
         pendingMovements.Clear();
     }
 
-    public void sacrifice()
+    public void sacrifice(int currentDayNum, Journal journal)
     {
-        Debug.Log(characters.Count);
-        if(selectedCharacters.Count > 0 && characters.Count >= 2)
+        Debug.Log("Count is: " + characters.Count);
+        if (selectedCharacters.Count > 0 && characters.Count >= 2)
         {
+            Debug.Log("sacrifice!");
             Character victim = selectedCharacters[selectedCharacters.Count - 1];
+            string storyText = victim.CharName + " gave his live for the greater Good!";
             selectedCharacters.Remove(victim);
             characters.Remove(victim);
             gameController.killCharacter(victim);
-            foreach(Character c in characters)
+            int strengthBonus = victim.Strength / 4;
+            int agilityBonus = victim.Agility / 4;
+            int visionBonus = victim.Agility / 4;
+            storyText += "\n";
+
+            foreach (Character c in characters)
             {
-                c.feast(victim.Strength / 4, victim.Agility / 4, victim.Vision / 4);
+                c.feast(strengthBonus, agilityBonus, visionBonus);
+                storyText += c.CharName;
+                if(characters.IndexOf(c) != characters.Count - 1)
+                {
+                    storyText += ", ";
+                }
             }
+            storyText += " gained " + visionBonus + " Vision, " + strengthBonus + " Strength and " + agilityBonus + " Agility from feasting on his flesh";
+            journal.addStory(new Story(currentDayNum, storyText));
         }
-        
+
     }
 
     public void discoverNeighbors()
