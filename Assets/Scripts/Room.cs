@@ -5,7 +5,7 @@ using System;
 
 public class Room : MonoBehaviour
 {
-    List<Character> characters;
+    List<Character> characters = new List<Character>();
     List<Requirement> requirements;
     List<Reward> rewards;
     private GameController gameController;
@@ -412,4 +412,6 @@ public class Room : MonoBehaviour
             c.feast(victim.Strength / 4, victim.Agility / 4, victim.Vision / 4);
         }
     }
+
+
 }
