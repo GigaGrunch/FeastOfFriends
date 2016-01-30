@@ -162,7 +162,17 @@ public class GameController : MonoBehaviour
         }
         SelectedRoom = clickedRoom;
         SelectedRoom.SelectBubble.SetActive(true);
+        sacrificeButton.SetActive(SelectedRoom.Rewards.Exists(ByType(Reward.Type.altar)));
+        
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
+    }
+
+    static Predicate<Reward> ByType(Reward.Type type)
+    {
+        return delegate (Reward reward)
+        {
+            return reward.getType() == type;
+        };
     }
 
     public void endTurn()

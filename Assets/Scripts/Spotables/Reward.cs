@@ -3,15 +3,20 @@ using System.Collections;
 
 public class Reward : Spotable
 {
-    enum Type
+    public enum Type
     {
         altar, human
     }
 
     Type type;
 
-    Type getType()
+    public Type getType()
     {
         return type;
+    }
+
+    public void setType(Type type)
+    {
+        this.type = type;
     }
 }
