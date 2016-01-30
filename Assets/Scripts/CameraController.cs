@@ -6,6 +6,11 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     float speed = 2.0f;
 
+    public static bool ClickBlockedByUI()
+    {
+        return (Input.mousePosition.y < 200);
+    }
+
     void Update()
     {
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
@@ -28,13 +33,12 @@ public class CameraController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             Camera.main.orthographicSize += 1;
-            
+
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Camera.main.orthographicSize -= 1;
-            
         }
 
         Camera.main.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 200;
@@ -47,6 +51,5 @@ public class CameraController : MonoBehaviour
         {
             Camera.main.orthographicSize = 1;
         }
-
     }
 }
