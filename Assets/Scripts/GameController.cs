@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Text;
+using System.IO;
 using System;
 
 public class GameController : MonoBehaviour
@@ -12,6 +14,9 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     Room selectedRoom;
+    [SerializeField]
+    Sprite[] playerHeads;
+
     List<Room> activeRooms = new List<Room>();
     Journal journal;
     List<Character> characters;
@@ -24,13 +29,65 @@ public class GameController : MonoBehaviour
         // TODO: replace with Constructor if Journal is no gameobject
         journal = FindObjectOfType<Journal>();
 
+        List<string> playerNames = loadPlayerNames();
+        int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
         Character testCharacter1 = new Character();
-        testCharacter1.Portrait = face;
-        testCharacter1.CharName = "Hummelbauer Sepp";
+        testCharacter1.Portrait = playerHeads[0];
+        testCharacter1.CharName = playerNames[randomInt];
+        playerNames.RemoveAt(randomInt);
+        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+        Character testCharacter2 = new Character();
+        testCharacter2.Portrait = playerHeads[1];
+        testCharacter2.CharName = playerNames[randomInt];
+        playerNames.RemoveAt(randomInt);
+        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+        Character testCharacter3 = new Character();
+        testCharacter3.Portrait = playerHeads[2];
+        testCharacter3.CharName = playerNames[randomInt];
+        playerNames.RemoveAt(randomInt);
+        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+        Character testCharacter4 = new Character();
+        testCharacter4.Portrait = playerHeads[3];
+        testCharacter4.CharName = playerNames[randomInt];
+        playerNames.RemoveAt(randomInt);
 
         selectedRoom.Characters.Add(testCharacter1);
+        selectedRoom.Characters.Add(testCharacter2);
+        selectedRoom.Characters.Add(testCharacter3);
+        selectedRoom.Characters.Add(testCharacter4);
 
         GameObject.Find("Main Camera").GetComponent<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
+    }
+
+    private List<string> loadPlayerNames()
+    {
+        List<string> result = new List<string>();
+        try
+        {
+            StreamReader reader = new StreamReader("Assets/names.txt", Encoding.Default);
+            string line;
+            using (reader)
+            {
+                do
+                {
+                    line = reader.ReadLine();
+
+                    if (line != null)
+                    {
+                        result.Add(line);
+                    }
+                }
+                while (line != null);
+                reader.Close();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("{0}\n", e.Message);
+            return result;
+
+        }
+        return result;
     }
 
     public Room SelectedRoom
