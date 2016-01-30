@@ -6,8 +6,8 @@ using System;
 public class Room : MonoBehaviour
 {
     List<Character> characters = new List<Character>();
-    List<Requirement> requirements;
-    List<Reward> rewards;
+    List<Requirement> requirements = new List<Requirement>();
+    List<Reward> rewards = new List<Reward>();
     private GameController gameController;
     List<Character> selectedCharacters = new List<Character>();
     List<Movement> pendingMovementsNorth = new List<Movement>();

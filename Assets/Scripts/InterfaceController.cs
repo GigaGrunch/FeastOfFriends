@@ -8,7 +8,7 @@ public class InterfaceController : MonoBehaviour
 {
     [SerializeField]
     GameObject[] characterButtons = new GameObject[6];
-    Button[] cButtons = new Button[6];
+    Image[] cButtons = new Image[6];
 
     [SerializeField]
     GameObject preview;
@@ -28,7 +28,7 @@ public class InterfaceController : MonoBehaviour
 
         for (int i = 0; i < 6; i++)
         {
-            cButtons[i] = characterButtons[i].GetComponent<Button>();
+            cButtons[i] = characterButtons[i].GetComponent<Image>();
         }
     }
 
@@ -36,11 +36,11 @@ public class InterfaceController : MonoBehaviour
     {
         foreach (GameObject c in characterButtons)
         {
-            c.GetComponent<Button>().interactable = false;
-            c.GetComponent<Image>().sprite = null;
+            c.GetComponent<CharacterUIHolder>().setClickable(false);
+            c.GetComponent<CharacterUIHolder>().setSprite(null);
         }
 
-        cPreview.sprite = null;
+        cPreview.enabled = false;
         cName.text = "";
 
         for (int i = 0; i < 6; i++)
@@ -49,8 +49,8 @@ public class InterfaceController : MonoBehaviour
             {
                 return;
             }
-            characterButtons[i].GetComponent<Button>().GetComponent<Button>().interactable = true;
-            characterButtons[i].GetComponent<Image>().sprite = roomMembers[i].Portrait;
+            characterButtons[i].GetComponent<CharacterUIHolder>().setClickable(true);
+            characterButtons[i].GetComponent<CharacterUIHolder>().setSprite(roomMembers[i].Portrait);
         }
     }
 
@@ -63,7 +63,38 @@ public class InterfaceController : MonoBehaviour
             return;
         }
 
-        cPreview.sprite = characters[position].Portrait;
-        cName.text = characters[position].CharName;
+        bool selected = characterButtons[position].GetComponent<CharacterUIHolder>().Toggle();
+
+        if (selected)
+        {
+            FindObjectOfType<GameController>().SelectedRoom.SelectedCharacters.Add(characters[position]);
+            cPreview.enabled = true;
+            cPreview.sprite = characters[position].Portrait;
+            cName.text = characters[position].CharName;
+        }
+        else
+        {
+            int i = 0;
+            List<Character> selectedCharacters = FindObjectOfType<GameController>().SelectedRoom.SelectedCharacters;
+            foreach (Character c in selectedCharacters)
+            {
+                if (characters[position].CharName == c.CharName)
+                {
+                    selectedCharacters.RemoveAt(i);
+                    break;
+                }
+                i++;
+            }
+            if (selectedCharacters.Count > 0)
+            {
+                cPreview.sprite = selectedCharacters[selectedCharacters.Count - 1].Portrait;
+                cName.text = selectedCharacters[selectedCharacters.Count - 1].CharName;
+            }
+            else
+            {
+                cPreview.enabled = false;
+                cName.text = "";
+            }
+        }
     }
 }
