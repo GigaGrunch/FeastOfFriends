@@ -53,6 +53,14 @@ public class GameController : MonoBehaviour
         testCharacter4.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
 
+        foreach (Room i in FindObjectsOfType<Room>())
+        {
+            i.BlackSmog.SetActive(true);
+            i.gameObject.SetActive(false);
+        }
+
+        selectedRoom.discoverNeighbors();
+
         selectedRoom.Characters.Add(testCharacter1);
         selectedRoom.Characters.Add(testCharacter3);
         selectedRoom.Characters.Add(testCharacter4);
