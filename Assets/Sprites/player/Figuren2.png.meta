@@ -1,15 +1,9 @@
 fileFormatVersion: 2
-guid: bdc51475c59d8e64db459ab4412fc948
-timeCreated: 1454156200
+guid: e1ec044f024dcc8478da1ae8a478bc38
+timeCreated: 1454156673
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Figuren2_0
-    21300002: Figuren2_1
-    21300004: Figuren2_2
-    21300006: Figuren2_3
-    21300008: Figuren2_4
-    21300010: Figuren2_5
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -36,148 +30,26 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: 16
+    aniso: -1
     mipBias: -1
-    wrapMode: 1
-  nPOTScale: 0
+    wrapMode: -1
+  nPOTScale: 1
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 2
+  spriteMode: 0
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaIsTransparency: 1
-  textureType: 8
+  alphaIsTransparency: 0
+  textureType: -1
   buildTargetSettings: []
   spriteSheet:
-    sprites:
-    - name: Figuren2_0
-      rect:
-        serializedVersion: 2
-        x: 87
-        y: 105
-        width: 170
-        height: 147
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -39, y: 73.5}
-        - {x: -49, y: 71.5}
-        - {x: -85, y: 15.5}
-        - {x: -85, y: -50.5}
-        - {x: -59, y: -73.5}
-        - {x: 48, y: -73.5}
-        - {x: 85, y: -60.5}
-        - {x: 85, y: 25.5}
-        - {x: 43, y: 73.5}
-    - name: Figuren2_1
-      rect:
-        serializedVersion: 2
-        x: 374
-        y: 105
-        width: 170
-        height: 147
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 34, y: 73.5}
-        - {x: -36, y: 73.5}
-        - {x: -43, y: 72.5}
-        - {x: -85, y: 14.5}
-        - {x: -85, y: -73.5}
-        - {x: 85, y: -73.5}
-        - {x: 85, y: 14.5}
-        - {x: 69, y: 57.5}
-    - name: Figuren2_2
-      rect:
-        serializedVersion: 2
-        x: 622
-        y: 94
-        width: 170
-        height: 165
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -23, y: 82.5}
-        - {x: -73, y: 54.5}
-        - {x: -85, y: 13.5}
-        - {x: -85, y: -76.5}
-        - {x: -75, y: -82.5}
-        - {x: 48, y: -82.5}
-        - {x: 85, y: -69.5}
-        - {x: 85, y: 14.5}
-        - {x: 27, y: 82.5}
-    - name: Figuren2_3
-      rect:
-        serializedVersion: 2
-        x: 891
-        y: 105
-        width: 170
-        height: 147
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 34, y: 73.5}
-        - {x: -36, y: 73.5}
-        - {x: -43, y: 72.5}
-        - {x: -85, y: 14.5}
-        - {x: -85, y: -73.5}
-        - {x: 85, y: -73.5}
-        - {x: 85, y: 14.5}
-        - {x: 69, y: 57.5}
-    - name: Figuren2_4
-      rect:
-        serializedVersion: 2
-        x: 1176
-        y: 105
-        width: 170
-        height: 196
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 13, y: 98}
-        - {x: -20, y: 98}
-        - {x: -75, y: 57}
-        - {x: -85, y: 6}
-        - {x: -85, y: -83}
-        - {x: -51, y: -98}
-        - {x: 51, y: -98}
-        - {x: 85, y: -70}
-        - {x: 85, y: -1}
-        - {x: 70, y: 41}
-    - name: Figuren2_5
-      rect:
-        serializedVersion: 2
-        x: 1443
-        y: 105
-        width: 194
-        height: 158
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 87, y: 77}
-        - {x: 55, y: 79}
-        - {x: -51, y: 79}
-        - {x: -90, y: 74}
-        - {x: -97, y: 12}
-        - {x: -97, y: -47}
-        - {x: -75, y: -71}
-        - {x: -49, y: -79}
-        - {x: 60, y: -79}
-        - {x: 97, y: -55}
-        - {x: 97, y: -9}
-        - {x: 93, y: 6}
+    sprites: []
     outline: []
   spritePackingTag: 
   userData: 

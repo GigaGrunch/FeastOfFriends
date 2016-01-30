@@ -69,6 +69,7 @@ public class GameController : MonoBehaviour
             i.gameObject.SetActive(false);
         }
 
+        selectedRoom.SelectBubble.SetActive(true);
         selectedRoom.discoverNeighbors();
 
         selectedRoom.Characters.Add(testCharacter1);
@@ -152,7 +153,12 @@ public class GameController : MonoBehaviour
 
     public void onRoomSelected(Room clickedRoom)
     {
+        if (SelectedRoom != null)
+        {
+            SelectedRoom.SelectBubble.SetActive(false);
+        }
         SelectedRoom = clickedRoom;
+        SelectedRoom.SelectBubble.SetActive(true);
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
 
