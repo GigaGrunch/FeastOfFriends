@@ -14,7 +14,7 @@ public class Room : MonoBehaviour
     float spawnRangeFactor = 1;
 
     public Reward[] reward;
-    public Requirement[] requirement;
+    private Requirement[] requirement;
 
     List<GameObject> arrows = new List<GameObject>();
     List<GameObject> sprites = new List<GameObject>();
@@ -401,6 +401,19 @@ public class Room : MonoBehaviour
         }
     }
 
+    public Requirement[] Requirement
+    {
+        get
+        {
+            return requirement;
+        }
+
+        set
+        {
+            requirement = value;
+        }
+    }
+
     // left mouse button
     void OnMouseDown()
     {
@@ -546,14 +559,14 @@ public class Room : MonoBehaviour
             Character character = pendingMovement.Character;
             foreach (Requirement r in destinationRequirements)
             {
-                if (r.getType() == Requirement.Type.agility)
+                if (r.getType() == global::Requirement.Type.agility)
                 {
                     if (character.Agility >= r.getRequiredValue())
                     {
                         destinationRequirements.Remove(r);
                     }
                 }
-                else if (r.getType() == Requirement.Type.strength)
+                else if (r.getType() == global::Requirement.Type.strength)
                 {
                     if (character.Strength >= r.getRequiredValue())
                     {
