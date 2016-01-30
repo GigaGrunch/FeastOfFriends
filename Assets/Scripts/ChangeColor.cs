@@ -9,6 +9,9 @@ public class ChangeColor : MonoBehaviour {
     [SerializeField]
     float interval = 0.2f;
 
+    [SerializeField]
+    bool randomFlash;
+
     int currentIndex;
     SpriteRenderer spriteRenderer;
     float lastChange = 0;
@@ -16,7 +19,8 @@ public class ChangeColor : MonoBehaviour {
 
     void Start()
     {
-        interval = Random.Range(0.05f, 0.5f);
+        if (randomFlash)
+            interval = Random.Range(0.05f, 0.5f);
         numSprites = sprites.Length;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
