@@ -254,25 +254,6 @@ public class GameController : MonoBehaviour
         destination.Characters.Add(character);
 
         //journal.addStory(new Story(currentDayNum, "Someone managed to enter an exciting new Room"));
-        if (!activeRooms.Contains(destination))
-        {
-            roomsToActivate.Add(destination);
-            if (destination.NorthRoom != null)
-            {
-                destination.NorthRoom.enabled = true;
-            }
-            if (destination.SouthRoom != null)
-            {
-                destination.SouthRoom.enabled = true;
-            }
-            if (destination.WestRoom != null)
-            {
-                destination.WestRoom.enabled = true;
-            }
-            if (destination.EastRoom != null)
-            {
-                destination.EastRoom.enabled = true;
-            }
-        }
+        destination.discoverNeighbors();
     }
 }
