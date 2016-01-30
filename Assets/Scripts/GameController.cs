@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
     Room selectedRoom;
     List<Room> activeRooms = new List<Room>();
     Journal journal;
+    List<Character> characters;
 
     void Start()
     {
@@ -44,7 +45,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    public void onRoomClicked(Room clickedRoom)
+    public void onRoomSelected(Room clickedRoom)
     {
         SelectedRoom = clickedRoom;
     }
@@ -69,6 +70,20 @@ public class GameController : MonoBehaviour {
     private void killRandomCharacter()
     {
         // kill random character without boni for the others
+        int index = UnityEngine.Random.Range(0, characters.Count);
+        Character victim = characters[index];
+        foreach (Room i in activeRooms)
+        {
+            i.SelectedCharacters.Remove(victim);
+            i.Characters.Remove(victim);
+        }
+        killCharacter(victim);
+    }
+
+    public void killCharacter(Character victim)
+    {
+        characters.Remove(victim);
+        Destroy(victim.gameObject);
     }
 
     void removeEmptyRooms()
@@ -84,6 +99,9 @@ public class GameController : MonoBehaviour {
 
     public void OnPlayerMovementSuccess(Room source, Room destination, Character character)
     {
+        source.Characters.Remove(character);
+        destination.Characters.Add(character);
+
         journal.addStory(new Story(currentDayNum, character + " managed to enter an exciting new Room"));
         activeRooms.Remove(source);
         if (!activeRooms.Contains(destination))
