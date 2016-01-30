@@ -67,6 +67,7 @@ public class InterfaceController : MonoBehaviour
 
         if (selected)
         {
+            FindObjectOfType<GameController>().onCharacterClicked(characters[position]);
             FindObjectOfType<GameController>().SelectedRoom.SelectedCharacters.Add(characters[position]);
             cPreview.enabled = true;
             cPreview.sprite = characters[position].Portrait;
@@ -89,11 +90,13 @@ public class InterfaceController : MonoBehaviour
             {
                 cPreview.sprite = selectedCharacters[selectedCharacters.Count - 1].Portrait;
                 cName.text = selectedCharacters[selectedCharacters.Count - 1].CharName;
+                FindObjectOfType<GameController>().onCharacterClicked(selectedCharacters[selectedCharacters.Count - 1]);
             }
             else
             {
                 cPreview.enabled = false;
                 cName.text = "";
+                FindObjectOfType<GameController>().onCharacterClicked(null);
             }
         }
     }
