@@ -1,20 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Story : MonoBehaviour {
+public class Story {
 
     private int dayNum;
     private string storyText;
 
-    // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public Story(int dayNum, string storyText)
+    {
+        this.dayNum = dayNum;
+        this.storyText = storyText;
+    }
 
     public int DayNum
     {
