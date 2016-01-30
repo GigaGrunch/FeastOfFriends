@@ -36,8 +36,8 @@ public class GameController : MonoBehaviour
         currentDayNum = 1;
         nextDeathIn = 5;
         // TODO: replace with Constructor if Journal is no gameobject
-        journal = FindObjectOfType<Journal>();
-        journal.gameObject.SetActive(false);
+        //journal = FindObjectOfType<Journal>();
+        //journal.gameObject.SetActive(false);
 
         List<string> playerNames = loadPlayerNames();
 
@@ -218,7 +218,7 @@ public class GameController : MonoBehaviour
         source.Characters.Remove(character);
         destination.Characters.Add(character);
 
-        journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
+        //journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
         destination.discoverNeighbors();
     }
 }
