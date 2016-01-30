@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
         selectedRoom = new Room();
         Character testCharacter1 = new Character();
         testCharacter1.Portrait = face;
+        testCharacter1.CharName = "Hummelbauer Sepp";
 
         selectedRoom.Characters.Add(testCharacter1);
 
