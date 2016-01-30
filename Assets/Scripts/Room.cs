@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Room : MonoBehaviour
 {
-    List<Character> characters;
+    List<Character> characters = new List<Character>();
     List<Requirement> requirements;
     List<Reward> rewards;
     private GameController gameController;
     List<Character> selectedCharacters = new List<Character>();
-    List<Movement> pendingMovements = new List<Movement>();
+    List<Movement> pendingMovementsNorth = new List<Movement>();
+    List<Movement> pendingMovementsEast = new List<Movement>();
+    List<Movement> pendingMovementsSouth = new List<Movement>();
+    List<Movement> pendingMovementsWest = new List<Movement>();
 
     [SerializeField]
     GameObject WallTop, WallBottom, WallLeft, WallRight;
@@ -18,7 +22,9 @@ public class Room : MonoBehaviour
     [SerializeField]
     GameObject DoorLeft, DoorRight, DoorTop, DoorBottom;
     [SerializeField]
-    GameObject Tile, Corridor;
+    GameObject Tile;
+    [SerializeField]
+    GameObject TunnelHor, TunnelVer;
 
     [SerializeField]
     Room northRoom;
@@ -28,10 +34,15 @@ public class Room : MonoBehaviour
     Room westRoom;
     [SerializeField]
     Room southRoom;
+    [SerializeField]
+    int BonusFactor = 4;
 
     void Start()
     {
         GetComponent<SpriteRenderer>().enabled = false;
+
+        transform.Translate((((int)transform.position.y / 4) % 4) * -0.5f, (((int)transform.position.x / 4) % 4) * 0.5f, 0);
+
         GameObject temp;
 
         gameController = FindObjectOfType<GameController>();
@@ -94,15 +105,13 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, .75f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, 1.25f, 0);
-            temp.transform.Rotate(0, 0, 90);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, 1.75f, 0);
-            temp.transform.Rotate(0, 0, 90);
         }
         else
         {
@@ -117,15 +126,13 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -.75f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -1.25f, 0);
-            temp.transform.Rotate(0, 0, 90);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -1.75f, 0);
-            temp.transform.Rotate(0, 0, 90);
         }
         else
         {
@@ -140,11 +147,11 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(.75f, .25f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(1.25f, .25f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(1.75f, .25f, 0);
         }
@@ -161,11 +168,11 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(-.75f, -.25f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-1.25f, -.25f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-1.75f, -.25f, 0);
         }
@@ -289,7 +296,11 @@ public class Room : MonoBehaviour
     // left mouse button
     void OnMouseDown()
     {
-        gameController.onRoomClicked(this);
+        if(gameController.SelectedRoom != this)
+        {
+            gameController.onRoomSelected(this);
+        }
+        
     }
 
     void OnMouseOver()
@@ -299,11 +310,32 @@ public class Room : MonoBehaviour
         {
             Room selectedRoom = gameController.SelectedRoom;
             // can only move to neighbouring rooms
-            if (selectedRoom.NorthRoom == this || selectedRoom.EastRoom == this || selectedRoom.WestRoom == this || selectedRoom.SouthRoom == this)
+            if (selectedRoom.NorthRoom == this)
             {
-                foreach(Character movingChar in selectedRoom.SelectedCharacters)
+                foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovements.Add(new Movement(selectedRoom, this, movingChar));
+                    pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
+                }
+            }
+            else if (selectedRoom.EastRoom == this)
+            {
+                foreach (Character movingChar in selectedRoom.SelectedCharacters)
+                {
+                    pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
+                }
+            }
+            else if (selectedRoom.WestRoom == this)
+            {
+                foreach (Character movingChar in selectedRoom.SelectedCharacters)
+                {
+                    pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
+                }
+            }
+            else if (selectedRoom.SouthRoom == this)
+            {
+                foreach (Character movingChar in selectedRoom.SelectedCharacters)
+                {
+                    pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
                 }
             }
         }
@@ -311,16 +343,78 @@ public class Room : MonoBehaviour
 
     public void resolvePendingMovements()
     {
+        if (pendingMovementsEast.Count > 0)
+        {
+            tryToExecuteMovement(pendingMovementsEast);
+        }
+        if (pendingMovementsSouth.Count > 0)
+        {
+            tryToExecuteMovement(pendingMovementsSouth);
+        }
+        if (pendingMovementsWest.Count > 0)
+        {
+            tryToExecuteMovement(pendingMovementsWest);
+        }
+        if (pendingMovementsNorth.Count > 0)
+        {
+            tryToExecuteMovement(pendingMovementsNorth);
+        }
+
+    }
+
+    private void tryToExecuteMovement(List<Movement> pendingMovements)
+    {
+        // test requirements here
+        List<Requirement> destinationRequirements = pendingMovements[0].Destination.Requirements;
+        bool success = false;
         foreach (Movement pendingMovement in pendingMovements)
         {
-            // test requirements here
-            bool success = true;
-            if (success)
+            if (destinationRequirements.Count == 0)
             {
-                Character character = pendingMovement.Character;
-                pendingMovement.Source.Characters.Remove(character);
-                pendingMovement.Destination.Characters.Add(character);
+                success = true;
+                break;
             }
+            Character character = pendingMovement.Character;
+            foreach (Requirement r in destinationRequirements)
+            {
+                if (r.getType() == Requirement.Type.agility)
+                {
+                    if (character.Agility >= r.getRequiredValue())
+                    {
+                        destinationRequirements.Remove(r);
+                    }
+                }
+                else if (r.getType() == Requirement.Type.strength)
+                {
+                    if (character.Strength >= r.getRequiredValue())
+                    {
+                        destinationRequirements.Remove(r);
+                    }
+                }
+            }
+        }        
+
+        if (success)
+        {
+            foreach (Movement pendingMovement in pendingMovements)
+            {
+                gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
+            }                
+        }
+        pendingMovements.Clear();
+    }
+
+    public void sacrifice()
+    {
+        Character victim = selectedCharacters[selectedCharacters.Count - 1];
+        selectedCharacters.Remove(victim);
+        characters.Remove(victim);
+        gameController.killCharacter(victim);
+        foreach(Character c in characters)
+        {
+            c.feast(victim.Strength / 4, victim.Agility / 4, victim.Vision / 4);
         }
     }
+
+
 }

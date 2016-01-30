@@ -10,6 +10,8 @@ public class Character : MonoBehaviour {
     private bool isMale;
     private string charName;
 
+    private Sprite portrait;
+
     private GameController gameController;
 
     // Use this for initialization
@@ -86,6 +88,19 @@ public class Character : MonoBehaviour {
         set
         {
             isMale = value;
+        }
+    }
+
+    public Sprite Portrait
+    {
+        get
+        {
+            return portrait;
+        }
+
+        set
+        {
+            portrait = value;
         }
     }
 
