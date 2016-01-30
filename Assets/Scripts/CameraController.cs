@@ -24,5 +24,29 @@ public class CameraController : MonoBehaviour
         {
             transform.position += Vector3.down * speed * Time.deltaTime;
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Camera.main.orthographicSize += 1;
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Camera.main.orthographicSize -= 1;
+            
+        }
+
+        Camera.main.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 200;
+
+        if (Camera.main.orthographicSize >= 20)
+        {
+            Camera.main.orthographicSize = 20;
+        }
+        else if (Camera.main.orthographicSize <= 1)
+        {
+            Camera.main.orthographicSize = 1;
+        }
+
     }
 }
