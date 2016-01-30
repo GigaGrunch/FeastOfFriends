@@ -4,7 +4,7 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
     [SerializeField]
-    float speed = 0.2f;
+    float speed = 2.0f;
 
 	// Use this for initialization
 	void Start () {
