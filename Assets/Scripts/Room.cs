@@ -388,6 +388,7 @@ public class Room : MonoBehaviour
             // can only move to neighbouring rooms
             if (selectedRoom.NorthRoom == this)
             {
+                Debug.Log("MOVE NORTH: " +selectedRoom.SelectedCharacters.Count);
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
                     if (!movingChar.IsCurrentlyMoving)
@@ -399,6 +400,7 @@ public class Room : MonoBehaviour
             }
             else if (selectedRoom.EastRoom == this)
             {
+                Debug.Log("MOVE EAST: " + selectedRoom.selectedCharacters.Count);
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
                     if (!movingChar.IsCurrentlyMoving)
@@ -410,6 +412,19 @@ public class Room : MonoBehaviour
             }
             else if (selectedRoom.WestRoom == this)
             {
+                Debug.Log("MOVE WEST: " + selectedRoom.selectedCharacters.Count );
+                foreach (Character movingChar in selectedRoom.selectedCharacters)
+                {
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
+                }
+            }
+            else if (selectedRoom.SouthRoom == this)
+            {
+                Debug.Log("MOVE SOUTH: " + selectedRoom.selectedCharacters.Count);
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
                     if (!movingChar.IsCurrentlyMoving)
@@ -419,17 +434,7 @@ public class Room : MonoBehaviour
                     }
                 }
             }
-            else if (selectedRoom.SouthRoom == this)
-            {
-                foreach (Character movingChar in selectedRoom.SelectedCharacters)
-                {
-                    if (!movingChar.IsCurrentlyMoving)
-                    {
-                        selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
-                        movingChar.IsCurrentlyMoving = true;
-                    }
-                }
-            }
+            Debug.Log(selectedRoom.pendingMovementsEast.Count + ", " + selectedRoom.pendingMovementsWest.Count + ", " + selectedRoom.pendingMovementsSouth.Count + ", " + selectedRoom.pendingMovementsNorth.Count);
         }
     }
 
@@ -468,22 +473,29 @@ public class Room : MonoBehaviour
                 break;
             }
             Character character = pendingMovement.Character;
+            List<Requirement> toRemove = new List<Requirement>();
             foreach (Requirement r in destinationRequirements)
             {
                 if (r.getType() == Requirement.Type.agility)
                 {
                     if (character.Agility >= r.getRequiredValue())
                     {
-                        destinationRequirements.Remove(r);
+                        //destinationRequirements.Remove(r);
+                        toRemove.Add(r);
                     }
                 }
                 else if (r.getType() == Requirement.Type.strength)
                 {
                     if (character.Strength >= r.getRequiredValue())
                     {
-                        destinationRequirements.Remove(r);
+                        //destinationRequirements.Remove(r);
+                        toRemove.Add(r);
                     }
                 }
+            }
+            foreach (Requirement r in toRemove)
+            {
+                destinationRequirements.Remove(r);
             }
         }        
 
