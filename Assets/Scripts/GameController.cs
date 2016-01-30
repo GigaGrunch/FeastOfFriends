@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
 
     int currentDayNum;
     int nextDeathIn;
+
+    [SerializeField]
     Room selectedRoom;
     List<Room> activeRooms = new List<Room>();
     Journal journal;
@@ -22,7 +24,6 @@ public class GameController : MonoBehaviour
         // TODO: replace with Constructor if Journal is no gameobject
         journal = FindObjectOfType<Journal>();
 
-        selectedRoom = new Room();
         Character testCharacter1 = new Character();
         testCharacter1.Portrait = face;
 

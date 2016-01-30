@@ -40,6 +40,9 @@ public class Room : MonoBehaviour
     void Start()
     {
         GetComponent<SpriteRenderer>().enabled = false;
+
+        transform.Translate((((int)transform.position.y / 4) % 4) * -0.5f, (((int)transform.position.x / 4) % 4) * 0.5f, 0);
+
         GameObject temp;
 
         gameController = FindObjectOfType<GameController>();
