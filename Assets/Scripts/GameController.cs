@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
 
     List<Room> activeRooms = new List<Room>();
     Journal journal;
-    List<Character> characters;
+    List<Character> characters = new List<Character>();
 
     void Start()
     {
@@ -64,10 +64,22 @@ public class GameController : MonoBehaviour
         selectedRoom.Characters.Add(testCharacter1);
         selectedRoom.Characters.Add(testCharacter3);
         selectedRoom.Characters.Add(testCharacter4);
+        characters.Add(testCharacter1);
+        characters.Add(testCharacter2);
+        characters.Add(testCharacter3);
+        characters.Add(testCharacter4);
 
         GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            endTurn();
+        }
     }
 
     private List<string> loadPlayerNames()
@@ -134,6 +146,7 @@ public class GameController : MonoBehaviour
 
     void endTurn()
     {
+        Debug.Log("END TURN " + currentDayNum);
         // do some stuff on turn end
         foreach (Room r in activeRooms)
         {
@@ -147,6 +160,10 @@ public class GameController : MonoBehaviour
         {
             killRandomCharacter();
             nextDeathIn = 5;
+        }
+        foreach(Character c in characters)
+        {
+            c.IsCurrentlyMoving = false;
         }
     }
 
@@ -182,6 +199,7 @@ public class GameController : MonoBehaviour
 
     public void OnPlayerMovementSuccess(Room source, Room destination, Character character)
     {
+        Debug.Log(character.name + " successfully moved to " + destination.name);
         source.Characters.Remove(character);
         destination.Characters.Add(character);
 

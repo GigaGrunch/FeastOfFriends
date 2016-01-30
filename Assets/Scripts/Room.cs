@@ -346,33 +346,50 @@ public class Room : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             Room selectedRoom = gameController.SelectedRoom;
+
             // can only move to neighbouring rooms
             if (selectedRoom.NorthRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
                 }
             }
             else if (selectedRoom.EastRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
                 }
             }
             else if (selectedRoom.WestRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
                 }
             }
             else if (selectedRoom.SouthRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
                 }
             }
         }
@@ -406,6 +423,7 @@ public class Room : MonoBehaviour
         bool success = false;
         foreach (Movement pendingMovement in pendingMovements)
         {
+            Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination);
             if (destinationRequirements.Count == 0)
             {
                 success = true;
