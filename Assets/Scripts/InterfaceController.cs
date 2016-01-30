@@ -74,14 +74,21 @@ public class InterfaceController : MonoBehaviour
         }
         else
         {
+            int i = 0;
             List<Character> selectedCharacters = FindObjectOfType<GameController>().SelectedRoom.SelectedCharacters;
-            Debug.Log(selectedCharacters.Count);
-            selectedCharacters.Remove(characters[position]);
-            Debug.Log(selectedCharacters.Count);
+            foreach (Character c in selectedCharacters)
+            {
+                if (characters[position].CharName == c.CharName)
+                {
+                    selectedCharacters.RemoveAt(i);
+                    break;
+                }
+                i++;
+            }
             if (selectedCharacters.Count > 0)
             {
-                cPreview.sprite = selectedCharacters[(selectedCharacters.Count) - 1].Portrait;
-                cName.text = selectedCharacters[(selectedCharacters.Count) - 1].CharName;
+                cPreview.sprite = selectedCharacters[selectedCharacters.Count - 1].Portrait;
+                cName.text = selectedCharacters[selectedCharacters.Count - 1].CharName;
             }
             else
             {
