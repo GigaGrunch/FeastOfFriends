@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
 {
     [SerializeField]
     Sprite face;
+    [SerializeField]
+    Sprite face2;
 
     int currentDayNum;
     int nextDeathIn;
@@ -52,11 +54,12 @@ public class GameController : MonoBehaviour
         playerNames.RemoveAt(randomInt);
 
         selectedRoom.Characters.Add(testCharacter1);
-        selectedRoom.Characters.Add(testCharacter2);
         selectedRoom.Characters.Add(testCharacter3);
         selectedRoom.Characters.Add(testCharacter4);
 
-        GameObject.Find("Main Camera").GetComponent<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
+        GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
+
+        FindObjectOfType<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
     }
 
     private List<string> loadPlayerNames()
@@ -118,6 +121,7 @@ public class GameController : MonoBehaviour
     public void onRoomSelected(Room clickedRoom)
     {
         SelectedRoom = clickedRoom;
+        FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
 
     void endTurn()
