@@ -9,6 +9,7 @@ public class Room : MonoBehaviour
     List<Reward> rewards;
     private GameController gameController;
     List<Character> selectedCharacters = new List<Character>();
+    List<Movement> pendingMovements = new List<Movement>();
 
     [SerializeField]
     Room northRoom;
@@ -150,8 +151,23 @@ public class Room : MonoBehaviour
             {
                 foreach(Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    gameController.addPendingMovement(new Movement(selectedRoom, this, movingChar));
+                    pendingMovements.Add(new Movement(selectedRoom, this, movingChar));
                 }
+            }
+        }
+    }
+
+    public void resolvePendingMovements()
+    {
+        foreach (Movement pendingMovement in pendingMovements)
+        {
+            // test requirements here
+            bool success = true;
+            if (success)
+            {
+                Character character = pendingMovement.Character;
+                pendingMovement.Source.Characters.Remove(character);
+                pendingMovement.Destination.Characters.Add(character);
             }
         }
     }
