@@ -36,8 +36,8 @@ public class InterfaceController : MonoBehaviour
     {
         foreach (GameObject c in characterButtons)
         {
-            c.GetComponent<Image>().sprite = null;
             c.GetComponent<Button>().interactable = false;
+            c.GetComponent<Image>().sprite = null;
         }
 
         cPreview.sprite = null;
