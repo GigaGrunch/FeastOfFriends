@@ -31,6 +31,8 @@ public class Room : MonoBehaviour
     GameObject TunnelHor, TunnelVer;
     [SerializeField]
     GameObject Fade;
+    [SerializeField]
+    GameObject TunnelRand1, TunnelRand2;
 
     [SerializeField]
     Room northRoom;
@@ -173,7 +175,6 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.25f, -.75f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
-
         if (eastRoom != null)
         {
             temp = Instantiate(DoorRight, transform.position, Quaternion.identity) as GameObject;
@@ -198,7 +199,6 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.75f, .25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
-
         if (westRoom != null)
         {
             temp = Instantiate(DoorLeft, transform.position, Quaternion.identity) as GameObject;
@@ -371,9 +371,13 @@ public class Room : MonoBehaviour
     // left mouse button
     void OnMouseDown()
     {
+        if (CameraController.ClickBlockedByUI())
+        {
+            return;
+        }
         //discoverNeighbors();
 
-        if(gameController.SelectedRoom != this)
+        if (gameController.SelectedRoom != this)
         {
 
             gameController.onRoomSelected(this);
@@ -382,6 +386,11 @@ public class Room : MonoBehaviour
 
     void OnMouseOver()
     {
+        if (CameraController.ClickBlockedByUI())
+        {
+            return;
+        }
+
         // right mouse button
         if (Input.GetMouseButtonDown(1))
         {
@@ -492,14 +501,14 @@ public class Room : MonoBehaviour
                     }
                 }
             }
-        }        
+        }
 
         if (success)
         {
             foreach (Movement pendingMovement in pendingMovements)
             {
                 gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
-            }                
+            }
         }
         pendingMovements.Clear();
     }
@@ -507,7 +516,7 @@ public class Room : MonoBehaviour
     public void sacrifice(int currentDayNum, Journal journal)
     {
         Debug.Log("Count is: " + characters.Count);
-        if(selectedCharacters.Count > 0 && characters.Count >= 2)
+        if (selectedCharacters.Count > 0 && characters.Count >= 2)
         {
             Debug.Log("sacrifice!");
             Character victim = selectedCharacters[selectedCharacters.Count - 1];
@@ -519,6 +528,7 @@ public class Room : MonoBehaviour
             int agilityBonus = victim.Agility / 4;
             int visionBonus = victim.Agility / 4;
             storyText += "\n";
+
             foreach (Character c in characters)
             {
                 c.feast(strengthBonus, agilityBonus, visionBonus);
@@ -531,7 +541,7 @@ public class Room : MonoBehaviour
             storyText += " gained " + visionBonus + " Vision, " + strengthBonus + " Strength and " + agilityBonus + " Agility from feasting on his flesh";
             journal.addStory(new Story(currentDayNum, storyText));
         }
-        
+
     }
 
     public void discoverNeighbors()
@@ -548,6 +558,12 @@ public class Room : MonoBehaviour
 
         if (NorthRoom != null)
         {
+            temp = Instantiate(TunnelRand2, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, 2, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+            temp.transform.Rotate(0, 0, 90);
+
             temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, 1.25f, 0);
@@ -580,6 +596,12 @@ public class Room : MonoBehaviour
         }
         if (SouthRoom != null)
         {
+            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -2, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+            temp.transform.Rotate(0, 0, 90);
+
             temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -1.25f, 0);
@@ -612,6 +634,11 @@ public class Room : MonoBehaviour
         }
         if (WestRoom != null)
         {
+            temp = Instantiate(TunnelRand2, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-2, -.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+
             temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-1.25f, -.25f, 0);
@@ -644,6 +671,11 @@ public class Room : MonoBehaviour
         }
         if (EastRoom != null)
         {
+            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(2, .25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+
             temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(1.25f, .25f, 0);
