@@ -39,9 +39,9 @@ public class CameraController : MonoBehaviour
 
         Camera.main.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 200;
 
-        if (Camera.main.orthographicSize >= 20)
+        if (Camera.main.orthographicSize >= 13)
         {
-            Camera.main.orthographicSize = 20;
+            Camera.main.orthographicSize = 13;
         }
         else if (Camera.main.orthographicSize <= 1)
         {
