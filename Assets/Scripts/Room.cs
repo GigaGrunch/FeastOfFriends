@@ -332,7 +332,7 @@ public class Room : MonoBehaviour
     // left mouse button
     void OnMouseDown()
     {
-        //discoverNeighbors();
+        discoverNeighbors();
 
         if(gameController.SelectedRoom != this)
         {
@@ -473,6 +473,8 @@ public class Room : MonoBehaviour
 
     public void discoverNeighbors()
     {
+        gameObject.SetActive(true);
+
         GameObject temp;
         BlackSmog.SetActive(false);
         foreach (GameObject i in fades)
