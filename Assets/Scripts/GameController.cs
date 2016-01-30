@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
         {
             int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
             Character testCharacter = Instantiate(character_prefab);
-            testCharacter.Portrait = playerHeads[0];
+            testCharacter.Portrait = playerHeads[i];
             testCharacter.CharName = playerNames[randomInt];
             playerNames.RemoveAt(randomInt);
             selectedRoom.Characters.Add(testCharacter);
