@@ -394,6 +394,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
+                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: "+selectedRoom);
                     if (!movingChar.IsCurrentlyMoving)
                     {
                         selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
@@ -405,6 +406,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
+                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
                     if (!movingChar.IsCurrentlyMoving)
                     {
                         selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
@@ -416,6 +418,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
+                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
                     if (!movingChar.IsCurrentlyMoving)
                     {
                         selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
@@ -427,6 +430,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
+                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
                     if (!movingChar.IsCurrentlyMoving)
                     {
                         selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
@@ -439,6 +443,7 @@ public class Room : MonoBehaviour
 
     public void resolvePendingMovements()
     {
+        Debug.Log(this.name+": " + pendingMovementsEast.Count + ", " + pendingMovementsNorth.Count + ", " + pendingMovementsSouth.Count + ", " + pendingMovementsWest.Count);
         if (pendingMovementsEast.Count > 0)
         {
             tryToExecuteMovement(pendingMovementsEast);
