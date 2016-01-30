@@ -156,7 +156,7 @@ public class GameController : MonoBehaviour
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
 
-    void endTurn()
+    public void endTurn()
     {
         Debug.Log("END TURN " + currentDayNum);
         // do some stuff on turn end
