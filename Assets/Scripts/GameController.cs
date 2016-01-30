@@ -6,6 +6,8 @@ public class GameController : MonoBehaviour
 {
     [SerializeField]
     Sprite face;
+    [SerializeField]
+    Sprite face2;
 
     int currentDayNum;
     int nextDeathIn;
@@ -28,9 +30,16 @@ public class GameController : MonoBehaviour
         testCharacter1.Portrait = face;
         testCharacter1.CharName = "Hummelbauer Sepp";
 
-        selectedRoom.Characters.Add(testCharacter1);
+        Character testCharacter2 = new Character();
+        testCharacter2.Portrait = face2;
+        testCharacter2.CharName = "Hans";
 
-        GameObject.Find("Main Camera").GetComponent<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
+        selectedRoom.Characters.Add(testCharacter1);
+        selectedRoom.Characters.Add(testCharacter2);
+
+        GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
+
+        FindObjectOfType<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
     }
 
     public Room SelectedRoom
@@ -61,6 +70,7 @@ public class GameController : MonoBehaviour
     public void onRoomSelected(Room clickedRoom)
     {
         SelectedRoom = clickedRoom;
+        FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
 
     void endTurn()

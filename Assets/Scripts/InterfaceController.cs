@@ -38,6 +38,14 @@ public class InterfaceController : MonoBehaviour
 
     public void SetRoomMembers(List<Character> roomMembers)
     {
+        foreach (GameObject c in characterButtons)
+        {
+            c.GetComponent<Image>().sprite = null;
+        }
+
+        cPreview.sprite = null;
+        cName.text = "";
+
         for (int i = 0; i < 6; i++)
         {
             if (roomMembers.Count <= i)
