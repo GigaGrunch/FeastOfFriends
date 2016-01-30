@@ -52,6 +52,16 @@ public class GameController : MonoBehaviour
         testCharacter4.Portrait = playerHeads[3];
         testCharacter4.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
+        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+        Character testCharacter5 = new Character();
+        testCharacter5.Portrait = playerHeads[4];
+        testCharacter5.CharName = playerNames[randomInt];
+        playerNames.RemoveAt(randomInt);
+        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+        Character testCharacter6 = new Character();
+        testCharacter6.Portrait = playerHeads[5];
+        testCharacter6.CharName = playerNames[randomInt];
+        playerNames.RemoveAt(randomInt);
 
         foreach (Room i in FindObjectsOfType<Room>())
         {
@@ -65,6 +75,8 @@ public class GameController : MonoBehaviour
         selectedRoom.Characters.Add(testCharacter1);
         selectedRoom.Characters.Add(testCharacter3);
         selectedRoom.Characters.Add(testCharacter4);
+        selectedRoom.Characters.Add(testCharacter5);
+        selectedRoom.Characters.Add(testCharacter6);
         characters.Add(testCharacter1);
         characters.Add(testCharacter2);
         characters.Add(testCharacter3);
