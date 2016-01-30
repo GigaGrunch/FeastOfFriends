@@ -21,9 +21,9 @@ public class Character : MonoBehaviour {
     {
         gameController = FindObjectOfType<GameController>();
 
-        agility = 5;
-        strength = 5;
-        vision = 5;
+        agility = Random.Range(3, 12);
+        strength = Random.Range(3, 12);
+        vision = 25 - agility - strength;
     }
 
     // Update is called once per frame

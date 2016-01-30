@@ -49,16 +49,16 @@ public class Room : MonoBehaviour
     [SerializeField]
     GameObject selectBubble;
 
-    void Start()
+    public void Initialize()
     {
         GetComponent<SpriteRenderer>().enabled = false;
 
-        transform.Translate((((int)transform.position.y / 4) % 4) * -0.5f, (((int)transform.position.x / 4) % 4) * 0.5f, 0);
+        transform.Translate(transform.position.y / 4 * -.5f, transform.position.x / 4 * .5f, 0);
 
         GameObject temp;
 
         gameController = FindObjectOfType<GameController>();
-        
+
         temp = Instantiate(CornerBottomLeft, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(-.75f, -.75f, 0);
