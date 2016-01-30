@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class Room : MonoBehaviour
 {
     [SerializeField]
-    Vector2[] spawnField = new Vector2[6];
+    Vector2[] spawnField = { new Vector2(-.5f, .5f), new Vector2(-.5f, 0), new Vector2(-.5f, -.5f),
+        new Vector2(.5f, .5f), new Vector2(-.5f, 0), new Vector2(-.5f, -.5f)};
 
     [SerializeField]
     GameObject charSprite, arrow;
@@ -185,6 +186,7 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.25f, -.75f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
+
         if (eastRoom != null)
         {
             temp = Instantiate(DoorRight, transform.position, Quaternion.identity) as GameObject;
@@ -209,6 +211,7 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.75f, .25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
+
         if (westRoom != null)
         {
             temp = Instantiate(DoorLeft, transform.position, Quaternion.identity) as GameObject;
@@ -404,13 +407,9 @@ public class Room : MonoBehaviour
     // left mouse button
     void OnMouseDown()
     {
-        if (CameraController.ClickBlockedByUI())
-        {
-            return;
-        }
         //discoverNeighbors();
 
-        if (gameController.SelectedRoom != this)
+        if(gameController.SelectedRoom != this)
         {
 
             gameController.onRoomSelected(this);
@@ -419,11 +418,6 @@ public class Room : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (CameraController.ClickBlockedByUI())
-        {
-            return;
-        }
-
         // right mouse button
         if (Input.GetMouseButtonDown(1))
         {
@@ -561,14 +555,14 @@ public class Room : MonoBehaviour
                     }
                 }
             }
-        }
+        }        
 
         if (success)
         {
             foreach (Movement pendingMovement in pendingMovements)
             {
                 gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
-            }
+            }                
         }
         pendingMovements.Clear();
     }
@@ -593,7 +587,7 @@ public class Room : MonoBehaviour
             {
                 c.feast(strengthBonus, agilityBonus, visionBonus);
                 storyText += c.CharName;
-                if(characters.IndexOf(c) != characters.Count - 1)
+                if (characters.IndexOf(c) != characters.Count - 1)
                 {
                     storyText += ", ";
                 }
