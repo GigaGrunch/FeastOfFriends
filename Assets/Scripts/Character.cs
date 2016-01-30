@@ -14,6 +14,8 @@ public class Character : MonoBehaviour {
 
     private GameController gameController;
 
+    bool isCurrentlyMoving;
+
     // Use this for initialization
     void Start()
     {
@@ -104,6 +106,19 @@ public class Character : MonoBehaviour {
         }
     }
 
+    public bool IsCurrentlyMoving
+    {
+        get
+        {
+            return isCurrentlyMoving;
+        }
+
+        set
+        {
+            isCurrentlyMoving = value;
+        }
+    }
+
     public void feast(int strengthBonus, int agilityBonus, int visionBonus)
     {
         strength += strengthBonus;
@@ -111,7 +126,7 @@ public class Character : MonoBehaviour {
         vision += visionBonus;
     }
 
-    void OnMouseDown()
+    void OnCharacterClicked()
     {
         gameController.onCharacterClicked(this);
     }

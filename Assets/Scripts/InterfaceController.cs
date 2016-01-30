@@ -32,18 +32,24 @@ public class InterfaceController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-    }
-
     public void SetRoomMembers(List<Character> roomMembers)
     {
+        foreach (GameObject c in characterButtons)
+        {
+            c.GetComponent<Button>().interactable = false;
+            c.GetComponent<Image>().sprite = null;
+        }
+
+        cPreview.sprite = null;
+        cName.text = "";
+
         for (int i = 0; i < 6; i++)
         {
             if (roomMembers.Count <= i)
             {
                 return;
             }
+            characterButtons[i].GetComponent<Button>().GetComponent<Button>().interactable = true;
             characterButtons[i].GetComponent<Image>().sprite = roomMembers[i].Portrait;
         }
     }
