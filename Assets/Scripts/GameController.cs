@@ -41,6 +41,8 @@ public class GameController : MonoBehaviour
 
         List<string> playerNames = loadPlayerNames();
 
+        selectedRoom = GameObject.Find("Start (2,3)").GetComponent<Room>();
+
         for (int i = 0; i < 6; i++)
         {
             int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
