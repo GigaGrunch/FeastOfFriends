@@ -31,6 +31,8 @@ public class Room : MonoBehaviour
     GameObject TunnelHor, TunnelVer;
     [SerializeField]
     GameObject Fade;
+    [SerializeField]
+    GameObject TunnelRand1, TunnelRand2;
 
     [SerializeField]
     Room northRoom;
@@ -392,6 +394,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
+                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: "+selectedRoom);
                     if (!movingChar.IsCurrentlyMoving)
                     {
                         selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
@@ -403,6 +406,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
+                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
                     if (!movingChar.IsCurrentlyMoving)
                     {
                         selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
@@ -414,6 +418,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
+                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
                     if (!movingChar.IsCurrentlyMoving)
                     {
                         selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
@@ -425,6 +430,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
+                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
                     if (!movingChar.IsCurrentlyMoving)
                     {
                         selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
@@ -437,6 +443,7 @@ public class Room : MonoBehaviour
 
     public void resolvePendingMovements()
     {
+        Debug.Log(this.name+": " + pendingMovementsEast.Count + ", " + pendingMovementsNorth.Count + ", " + pendingMovementsSouth.Count + ", " + pendingMovementsWest.Count);
         if (pendingMovementsEast.Count > 0)
         {
             tryToExecuteMovement(pendingMovementsEast);
@@ -530,6 +537,12 @@ public class Room : MonoBehaviour
 
         if (NorthRoom != null)
         {
+            temp = Instantiate(TunnelRand2, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, 2, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+            temp.transform.Rotate(0, 0, 90);
+
             temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, 1.25f, 0);
@@ -562,6 +575,12 @@ public class Room : MonoBehaviour
         }
         if (SouthRoom != null)
         {
+            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -2, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+            temp.transform.Rotate(0, 0, 90);
+
             temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -1.25f, 0);
@@ -594,6 +613,11 @@ public class Room : MonoBehaviour
         }
         if (WestRoom != null)
         {
+            temp = Instantiate(TunnelRand2, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-2, -.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+
             temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-1.25f, -.25f, 0);
@@ -626,6 +650,11 @@ public class Room : MonoBehaviour
         }
         if (EastRoom != null)
         {
+            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(2, .25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+
             temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(1.25f, .25f, 0);
