@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     GameObject sacrificeButton;
 
+    List<Room> roomsToActivate = new List<Room>();
+
     [SerializeField]
     Character character_prefab;
 
@@ -91,6 +93,9 @@ public class GameController : MonoBehaviour
         characters.Add(testCharacter2);
         characters.Add(testCharacter3);
         characters.Add(testCharacter4);
+
+        activeRooms.Add(selectedRoom);
+        activeRooms.Add(GameObject.Find("Room (2)").GetComponent<Room>());
 
         GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
 
@@ -189,6 +194,10 @@ public class GameController : MonoBehaviour
             r.resolvePendingMovements();
         }
         removeEmptyRooms();
+        foreach (Room r in roomsToActivate)
+        {
+            activeRooms.Add(r);
+        }
 
         currentDayNum++;
         nextDeathIn--;
@@ -224,42 +233,27 @@ public class GameController : MonoBehaviour
 
     void removeEmptyRooms()
     {
+        List<Room> toRemove = new List<Room>();
         foreach (Room i in activeRooms)
         {
             if (i.Characters.Count <= 0)
             {
-                activeRooms.Remove(i);
+                //activeRooms.Remove(i);
+                toRemove.Add(i);
             }
+        }
+        foreach (Room r in toRemove)
+        {
+            activeRooms.Remove(r);
         }
     }
 
     public void OnPlayerMovementSuccess(Room source, Room destination, Character character)
     {
-        Debug.Log(character.name + " successfully moved to " + destination.name);
         source.Characters.Remove(character);
         destination.Characters.Add(character);
 
-        journal.addStory(new Story(currentDayNum, character + " managed to enter an exciting new Room"));
-        activeRooms.Remove(source);
-        if (!activeRooms.Contains(destination))
-        {
-            activeRooms.Add(destination);
-            if (destination.NorthRoom != null)
-            {
-                destination.NorthRoom.enabled = true;
-            }
-            if (destination.SouthRoom != null)
-            {
-                destination.SouthRoom.enabled = true;
-            }
-            if (destination.WestRoom != null)
-            {
-                destination.WestRoom.enabled = true;
-            }
-            if (destination.EastRoom != null)
-            {
-                destination.EastRoom.enabled = true;
-            }
-        }
+        //journal.addStory(new Story(currentDayNum, "Someone managed to enter an exciting new Room"));
+        destination.discoverNeighbors();
     }
 }
