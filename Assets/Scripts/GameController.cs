@@ -54,6 +54,8 @@ public class GameController : MonoBehaviour
             characters.Add(testCharacter);
         }
 
+        selectedRoom.drawPeople();
+
         foreach (Room i in FindObjectsOfType<Room>())
         {
             i.BlackSmog.SetActive(true);
@@ -172,6 +174,11 @@ public class GameController : MonoBehaviour
             {
                 activeRooms.Add(r);
             }
+        }
+
+        foreach (Room i in activeRooms)
+        {
+            i.drawPeople();
         }
 
         currentDayNum++;
