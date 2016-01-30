@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
         // TODO: replace with Constructor if Journal is no gameobject
         journal = FindObjectOfType<Journal>();
 
+        selectedRoom.discoverNeighbors();
+
         Character testCharacter1 = new Character();
         testCharacter1.Portrait = face;
         testCharacter1.CharName = "Hummelbauer Sepp";
@@ -32,6 +34,7 @@ public class GameController : MonoBehaviour
 
         GameObject.Find("Main Camera").GetComponent<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
     }
+    
 
     public Room SelectedRoom
     {
@@ -121,22 +124,7 @@ public class GameController : MonoBehaviour
         if (!activeRooms.Contains(destination))
         {
             activeRooms.Add(destination);
-            if (destination.NorthRoom != null)
-            {
-                destination.NorthRoom.enabled = true;
-            }
-            if (destination.SouthRoom != null)
-            {
-                destination.SouthRoom.enabled = true;
-            }
-            if (destination.WestRoom != null)
-            {
-                destination.WestRoom.enabled = true;
-            }
-            if (destination.EastRoom != null)
-            {
-                destination.EastRoom.enabled = true;
-            }
+            destination.discoverNeighbors();
         }
     }
 }
