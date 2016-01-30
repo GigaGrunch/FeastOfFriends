@@ -1,7 +1,7 @@
 Horst
 Angela
-Peter 
-Patrick 
+Peter
+Patrick
 Nico
 Xaver
 Reiner
@@ -31,4 +31,4 @@ Lukas
 Schmukas
 Möter
 Phloh
-Sphephen
+Phtephen

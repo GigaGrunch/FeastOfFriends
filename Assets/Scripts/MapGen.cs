@@ -14,7 +14,16 @@ public class MapGen : MonoBehaviour {
 
         rooms.Add(addRoom(normalRoom, 0, 0, false, true, false, false));
         rooms.Add(addRoom(normalRoom, 0, 1, false, true, false, false));
-        rooms.Add(addRoom(Kitchen, 0, 2, true, false, false, false));
+
+        Room kitchen = addRoom(Kitchen, 0, 2, true, false, false, false);
+        kitchen.Reward = new Reward[1];
+        kitchen.Reward[0] = new Reward
+        {
+            type = Reward.Type.altar,
+            visionRequired = 0
+        };
+        rooms.Add(kitchen);
+
         rooms.Add(addRoom(normalRoom, 0, 3, true, true, true, false));
         rooms.Add(addRoom(normalRoom, 0, 4, true, false, true, false));
         rooms.Add(addRoom(normalRoom, 0, 5, false, true, true, false));
@@ -31,7 +40,15 @@ public class MapGen : MonoBehaviour {
         rooms.Add(addRoom(normalRoom, 2, 2, true, false, true, true));
         rooms.Add(start = addRoom(normalRoom, 2, 3, true, true, true, true));
         rooms.Add(addRoom(normalRoom, 2, 4, true, true, true, true));
-        rooms.Add(addRoom(Kitchen, 2, 5, false, true, true, false));
+
+        kitchen = addRoom(Kitchen, 2, 5, false, true, true, false);
+        kitchen.Reward = new Reward[1];
+        kitchen.Reward[0] = new Reward
+        {
+            type = Reward.Type.altar,
+            visionRequired = 0
+        };
+        rooms.Add(kitchen);
 
         rooms.Add(addRoom(normalRoom, 3, 0, false, false, false, true));
         rooms.Add(addRoom(normalRoom, 3, 1, false, true, false, true));
@@ -50,7 +67,16 @@ public class MapGen : MonoBehaviour {
         rooms.Add(addRoom(normalRoom, 5, 1, true, false, true, false));
         rooms.Add(addRoom(normalRoom, 5, 2, true, false, true, false));
         rooms.Add(addRoom(normalRoom, 5, 3, true, false, true, true));
-        rooms.Add(addRoom(Kitchen, 5, 4, true, false, true, true));
+
+        kitchen = addRoom(Kitchen, 5, 4, true, false, true, true);
+        kitchen.Reward = new Reward[1];
+        kitchen.Reward[0] = new Reward
+        {
+            type = Reward.Type.altar,
+            visionRequired = 0
+        };
+        rooms.Add(kitchen);
+
         rooms.Add(addRoom(normalRoom, 5, 5, false, false, true, true));
 
         foreach (Room i in rooms)
