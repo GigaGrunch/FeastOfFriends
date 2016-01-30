@@ -18,7 +18,9 @@ public class Room : MonoBehaviour
     [SerializeField]
     GameObject DoorLeft, DoorRight, DoorTop, DoorBottom;
     [SerializeField]
-    GameObject Tile, Corridor;
+    GameObject Tile;
+    [SerializeField]
+    GameObject TunnelHor, TunnelVer;
 
     [SerializeField]
     Room northRoom;
@@ -94,15 +96,13 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, .75f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, 1.25f, 0);
-            temp.transform.Rotate(0, 0, 90);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, 1.75f, 0);
-            temp.transform.Rotate(0, 0, 90);
         }
         else
         {
@@ -117,15 +117,13 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -.75f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -1.25f, 0);
-            temp.transform.Rotate(0, 0, 90);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -1.75f, 0);
-            temp.transform.Rotate(0, 0, 90);
         }
         else
         {
@@ -140,11 +138,11 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(.75f, .25f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(1.25f, .25f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(1.75f, .25f, 0);
         }
@@ -161,11 +159,11 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(-.75f, -.25f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-1.25f, -.25f, 0);
 
-            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-1.75f, -.25f, 0);
         }
