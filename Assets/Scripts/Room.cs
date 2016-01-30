@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 public class Room : MonoBehaviour
 {
@@ -499,35 +498,35 @@ public class Room : MonoBehaviour
 
     private void clearMovement(Character movingChar, Room currentRoom)
     {
-        foreach (Movement m in currentRoom.pendingMovementsEast)
+        for (int i = 0; i < currentRoom.pendingMovementsEast.Count; i++)
         {
-            if (m.Character.Equals(movingChar))
+            if (currentRoom.pendingMovementsEast[i].Character == movingChar)
             {
-                currentRoom.pendingMovementsEast.Remove(m);
+                currentRoom.pendingMovementsEast.Remove(currentRoom.pendingMovementsEast[i]);
             }
         }
 
-        foreach (Movement m in currentRoom.pendingMovementsWest)
+        for (int i = 0; i < currentRoom.pendingMovementsWest.Count; i++)
         {
-            if (m.Character.Equals(movingChar))
+            if (currentRoom.pendingMovementsWest[i].Character == movingChar)
             {
-                currentRoom.pendingMovementsWest.Remove(m);
+                currentRoom.pendingMovementsWest.Remove(currentRoom.pendingMovementsWest[i]);
             }
         }
 
-        foreach (Movement m in currentRoom.pendingMovementsNorth)
+        for (int i = 0; i < currentRoom.pendingMovementsNorth.Count; i++)
         {
-            if (m.Character.Equals(movingChar))
+            if (currentRoom.pendingMovementsNorth[i].Character == movingChar)
             {
-                currentRoom.pendingMovementsNorth.Remove(m);
+                currentRoom.pendingMovementsNorth.Remove(currentRoom.pendingMovementsNorth[i]);
             }
         }
 
-        foreach (Movement m in currentRoom.pendingMovementsSouth)
+        for (int i = 0; i < currentRoom.pendingMovementsSouth.Count; i++)
         {
-            if (m.Character.Equals(movingChar))
+            if (currentRoom.pendingMovementsSouth[i].Character == movingChar)
             {
-                currentRoom.pendingMovementsSouth.Remove(m);
+                currentRoom.pendingMovementsSouth.Remove(currentRoom.pendingMovementsSouth[i]);
             }
         }
     }
