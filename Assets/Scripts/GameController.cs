@@ -137,17 +137,23 @@ public class GameController : MonoBehaviour
         SelectedRoom.SelectedCharacters.Clear();
         SelectedRoom = clickedRoom;
         SelectedRoom.SelectBubble.SetActive(true);
-        sacrificeButton.SetActive(SelectedRoom.Rewards.Exists(ByType(Reward.Type.altar)));
+
+        Reward[] rewards = SelectedRoom.Reward;
+        bool altarExists = false;
+        foreach (Reward r in rewards)
+        {
+            Debug.Log(r.getType());
+            if (r.getType() == Reward.Type.altar)
+            {
+                altarExists = true;
+                break;
+            }
+        }
+        Debug.Log("selected room, bool = " + altarExists + "; rewards: " + rewards.Length);
+        
+        sacrificeButton.SetActive(altarExists);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
-    }
-
-    static Predicate<Reward> ByType(Reward.Type type)
-    {
-        return delegate (Reward reward)
-        {
-            return reward.getType() == type;
-        };
     }
 
     public void endTurn()
@@ -222,5 +228,10 @@ public class GameController : MonoBehaviour
 
         //journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
         destination.discoverNeighbors();
+    }
+
+    public void sacrifice()
+    {
+        selectedRoom.sacrifice();
     }
 }

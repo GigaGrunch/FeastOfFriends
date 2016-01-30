@@ -10,7 +10,6 @@ public class Room : MonoBehaviour
 
     List<Character> characters = new List<Character>();
     List<Requirement> requirements = new List<Requirement>();
-    List<Reward> rewards = new List<Reward>();
     private GameController gameController;
     List<Character> selectedCharacters = new List<Character>();
     List<Movement> pendingMovementsNorth = new List<Movement>();
@@ -252,16 +251,16 @@ public class Room : MonoBehaviour
         }
     }
 
-    public List<Reward> Rewards
+    public Reward[] Reward
     {
         get
         {
-            return rewards;
+            return reward;
         }
 
         set
         {
-            rewards = value;
+            reward = value;
         }
     }
 
@@ -502,14 +501,19 @@ public class Room : MonoBehaviour
 
     public void sacrifice()
     {
-        Character victim = selectedCharacters[selectedCharacters.Count - 1];
-        selectedCharacters.Remove(victim);
-        characters.Remove(victim);
-        gameController.killCharacter(victim);
-        foreach(Character c in characters)
+        Debug.Log(characters.Count);
+        if(selectedCharacters.Count > 0 && characters.Count >= 2)
         {
-            c.feast(victim.Strength / 4, victim.Agility / 4, victim.Vision / 4);
+            Character victim = selectedCharacters[selectedCharacters.Count - 1];
+            selectedCharacters.Remove(victim);
+            characters.Remove(victim);
+            gameController.killCharacter(victim);
+            foreach(Character c in characters)
+            {
+                c.feast(victim.Strength / 4, victim.Agility / 4, victim.Vision / 4);
+            }
         }
+        
     }
 
     public void discoverNeighbors()
