@@ -15,6 +15,8 @@ public class Room : MonoBehaviour
     List<Movement> pendingMovementsSouth = new List<Movement>();
     List<Movement> pendingMovementsWest = new List<Movement>();
 
+    List<GameObject> fades = new List<GameObject>();
+
     [SerializeField]
     GameObject WallTop, WallBottom, WallLeft, WallRight;
     [SerializeField]
@@ -25,6 +27,8 @@ public class Room : MonoBehaviour
     GameObject Tile;
     [SerializeField]
     GameObject TunnelHor, TunnelVer;
+    [SerializeField]
+    GameObject Fade;
 
     [SerializeField]
     Room northRoom;
@@ -37,6 +41,12 @@ public class Room : MonoBehaviour
     [SerializeField]
     int BonusFactor = 4;
 
+    [SerializeField]
+    GameObject blackSmog;
+
+    [SerializeField]
+    GameObject selectBubble;
+
     void Start()
     {
         GetComponent<SpriteRenderer>().enabled = false;
@@ -46,78 +56,95 @@ public class Room : MonoBehaviour
         GameObject temp;
 
         gameController = FindObjectOfType<GameController>();
-
+        
         temp = Instantiate(CornerBottomLeft, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(-.75f, -.75f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(CornerBottomRight, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(.75f, -.75f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(CornerTopLeft, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(-.75f, .75f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(CornerTopRight, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(.75f, .75f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(CornerTopLeft, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(-.75f, .75f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(Tile, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(-.25f, -.25f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(Tile, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(.25f, -.25f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(Tile, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(.25f, .25f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(Tile, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(-.25f, .25f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(WallBottom, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(-.25f, -.75f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(WallLeft, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(-.75f, .25f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(WallTop, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(.25f, .75f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         temp = Instantiate(WallRight, transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         temp.transform.Translate(.75f, -.25f, 0);
+        temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         if (northRoom != null)
         {
             temp = Instantiate(DoorTop, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, .75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
-            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(-.25f, 1.25f, 0);
+            //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(-.25f, 1.25f, 0);
+            //tunnels.Add(temp);
 
-            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(-.25f, 1.75f, 0);
+            //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(-.25f, 1.75f, 0);
+            //tunnels.Add(temp);
         }
         else
         {
             temp = Instantiate(WallTop, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, .75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
 
         if (southRoom != null)
@@ -125,20 +152,24 @@ public class Room : MonoBehaviour
             temp = Instantiate(DoorBottom, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -.75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
-            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(.25f, -1.25f, 0);
+            //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(.25f, -1.25f, 0);
+            //tunnels.Add(temp);
 
-            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(.25f, -1.75f, 0);
+            //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(.25f, -1.75f, 0);
+            //tunnels.Add(temp);
         }
         else
         {
             temp = Instantiate(WallBottom, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -.75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
 
         if (eastRoom != null)
@@ -146,20 +177,24 @@ public class Room : MonoBehaviour
             temp = Instantiate(DoorRight, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.75f, .25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
-            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(1.25f, .25f, 0);
+            //temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(1.25f, .25f, 0);
+            //tunnels.Add(temp);
 
-            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(1.75f, .25f, 0);
+            //temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(1.75f, .25f, 0);
+            //tunnels.Add(temp);
         }
         else
         {
             temp = Instantiate(WallRight, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.75f, .25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
 
         if (westRoom != null)
@@ -167,26 +202,25 @@ public class Room : MonoBehaviour
             temp = Instantiate(DoorLeft, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.75f, -.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
-            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(-1.25f, -.25f, 0);
+            //temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(-1.25f, -.25f, 0);
+            //tunnels.Add(temp);
 
-            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(-1.75f, -.25f, 0);
+            //temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(-1.75f, -.25f, 0);
+            //tunnels.Add(temp);
         }
         else
         {
             temp = Instantiate(WallLeft, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.75f, -.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
-    }
-
-    void Update()
-    {
-
     }
 
     public List<Character> Characters
@@ -293,14 +327,55 @@ public class Room : MonoBehaviour
         }
     }
 
+    public List<GameObject> Fades
+    {
+        get
+        {
+            return fades;
+        }
+
+        set
+        {
+            fades = value;
+        }
+    }
+
+    public GameObject BlackSmog
+    {
+        get
+        {
+            return blackSmog;
+        }
+
+        set
+        {
+            blackSmog = value;
+        }
+    }
+
+    public GameObject SelectBubble
+    {
+        get
+        {
+            return selectBubble;
+        }
+
+        set
+        {
+            selectBubble = value;
+        }
+    }
+
     // left mouse button
     void OnMouseDown()
     {
+        //discoverNeighbors();
+
         if(gameController.SelectedRoom != this)
         {
+
             gameController.onRoomSelected(this);
         }
-        
     }
 
     void OnMouseOver()
@@ -309,33 +384,50 @@ public class Room : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             Room selectedRoom = gameController.SelectedRoom;
+
             // can only move to neighbouring rooms
             if (selectedRoom.NorthRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
                 }
             }
             else if (selectedRoom.EastRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
                 }
             }
             else if (selectedRoom.WestRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
                 }
             }
             else if (selectedRoom.SouthRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
+                    if (!movingChar.IsCurrentlyMoving)
+                    {
+                        selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
+                        movingChar.IsCurrentlyMoving = true;
+                    }
                 }
             }
         }
@@ -369,6 +461,7 @@ public class Room : MonoBehaviour
         bool success = false;
         foreach (Movement pendingMovement in pendingMovements)
         {
+            Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination);
             if (destinationRequirements.Count == 0)
             {
                 success = true;
@@ -416,5 +509,146 @@ public class Room : MonoBehaviour
         }
     }
 
+    public void discoverNeighbors()
+    {
+        gameObject.SetActive(true);
+
+        GameObject temp;
+        BlackSmog.SetActive(false);
+        foreach (GameObject i in fades)
+        {
+            Destroy(i);
+        }
+        fades.Clear();
+
+        if (NorthRoom != null)
+        {
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, 1.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, 1.75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, 2.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, 2.75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            if (northRoom.BlackSmog.activeSelf)
+            {
+                temp = Instantiate(Fade, transform.position, Quaternion.identity) as GameObject;
+                temp.transform.Translate(-.25f, 3f, 0);
+                temp.transform.Rotate(0, 0, 180);
+                NorthRoom.Fades.Add(temp);
+            }
+
+            NorthRoom.gameObject.SetActive(true);
+        }
+        if (SouthRoom != null)
+        {
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -1.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -1.75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -2.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -2.75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            if (southRoom.BlackSmog.activeSelf)
+            {
+                temp = Instantiate(Fade, transform.position, Quaternion.identity) as GameObject;
+                temp.transform.Translate(.25f, -3f, 0);
+                temp.transform.Rotate(0, 0, 0);
+                SouthRoom.Fades.Add(temp);
+            }
+
+            SouthRoom.gameObject.SetActive(true);
+        }
+        if (WestRoom != null)
+        {
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-1.25f, -.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-1.75f, -.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-2.25f, -.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-2.75f, -.25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            if (WestRoom.BlackSmog.activeSelf)
+            {
+                temp = Instantiate(Fade, transform.position, Quaternion.identity) as GameObject;
+                temp.transform.Translate(-3f, -.25f, 0);
+                temp.transform.Rotate(0, 0, 270);
+                WestRoom.Fades.Add(temp);
+            }
+
+            WestRoom.gameObject.SetActive(true);
+        }
+        if (EastRoom != null)
+        {
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(1.25f, .25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(1.75f, .25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(2.25f, .25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(2.75f, .25f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            if (EastRoom.BlackSmog.activeSelf)
+            {
+                temp = Instantiate(Fade, transform.position, Quaternion.identity) as GameObject;
+                temp.transform.Translate(3f, .25f, 0);
+                temp.transform.Rotate(0, 0, 90);
+                EastRoom.Fades.Add(temp);
+            }
+
+            EastRoom.gameObject.SetActive(true);
+        }
+    }
 
 }
