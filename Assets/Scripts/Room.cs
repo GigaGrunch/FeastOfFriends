@@ -1,13 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 public class Room : MonoBehaviour
 {
+    [SerializeField]
+    Vector2[] spawnField = new Vector2[6];
+
+    [SerializeField]
+    GameObject charSprite, arrow;
+
+    [SerializeField]
+    float spawnRangeFactor = 1;
+
     public Reward[] reward;
     public Requirement[] requirement;
 
+    List<GameObject> arrows = new List<GameObject>();
+    List<GameObject> sprites = new List<GameObject>();
     List<Character> characters = new List<Character>();
     List<Requirement> requirements = new List<Requirement>();
     private GameController gameController;
@@ -240,6 +250,29 @@ public class Room : MonoBehaviour
         }
     }
 
+    public void drawPeople()
+    {
+        foreach (GameObject i in sprites)
+        {
+            Destroy(i);
+        }
+
+        sprites.Clear();
+
+        GameObject temp;
+
+        for (int i = 0; i < characters.Count; ++i)
+        {
+            temp = Instantiate(charSprite);
+            temp.transform.position = transform.position;
+            temp.transform.Translate(spawnField[i]);
+            temp.transform.Translate(Random.insideUnitCircle * spawnRangeFactor);
+            temp.GetComponent<SpriteRenderer>().sprite = characters[i].Portrait;
+
+            sprites.Add(temp);
+        }
+    }
+
     public List<Requirement> Requirements
     {
         get
@@ -399,6 +432,12 @@ public class Room : MonoBehaviour
                     {
                         selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
                         movingChar.IsCurrentlyMoving = true;
+
+                        GameObject temp = Instantiate(arrow);
+                        temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                        temp.transform.Translate(0, 0.25f, 0);
+
+                        arrows.Add(temp);
                     }
                 }
             }
@@ -411,6 +450,13 @@ public class Room : MonoBehaviour
                     {
                         selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
                         movingChar.IsCurrentlyMoving = true;
+
+                        GameObject temp = Instantiate(arrow);
+                        temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                        temp.transform.Translate(0.25f, 0, 0);
+                        temp.transform.Rotate(0, 0, 270);
+
+                        arrows.Add(temp);
                     }
                 }
             }
@@ -423,6 +469,13 @@ public class Room : MonoBehaviour
                     {
                         selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
                         movingChar.IsCurrentlyMoving = true;
+
+                        GameObject temp = Instantiate(arrow);
+                        temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                        temp.transform.Translate(-.25f, 0, 0);
+                        temp.transform.Rotate(0, 0, 90);
+
+                        arrows.Add(temp);
                     }
                 }
             }
@@ -435,6 +488,13 @@ public class Room : MonoBehaviour
                     {
                         selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
                         movingChar.IsCurrentlyMoving = true;
+
+                        GameObject temp = Instantiate(arrow);
+                        temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                        temp.transform.Translate(0, -0.25f, 0);
+                        temp.transform.Rotate(0, 0, 180);
+
+                        arrows.Add(temp);
                     }
                 }
             }
