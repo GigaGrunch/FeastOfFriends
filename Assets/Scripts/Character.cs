@@ -20,6 +20,10 @@ public class Character : MonoBehaviour {
     void Start()
     {
         gameController = FindObjectOfType<GameController>();
+
+        agility = 5;
+        strength = 5;
+        vision = 5;
     }
 
     // Update is called once per frame

@@ -26,6 +26,9 @@ public class GameController : MonoBehaviour
     [SerializeField]
     GameObject sacrificeButton;
 
+    [SerializeField]
+    RectTransform AgilityBar, StrenghtBar, VisionBar;
+
     void Start()
     {
         // initialize start characters here
@@ -144,14 +147,9 @@ public class GameController : MonoBehaviour
 
     public void onCharacterClicked(Character clickedCharacter)
     {
-        if (SelectedRoom.SelectedCharacters.Contains(clickedCharacter))
-        {
-            SelectedRoom.SelectedCharacters.Remove(clickedCharacter);
-        }
-        else
-        {
-            SelectedRoom.SelectedCharacters.Add(clickedCharacter);
-        }
+        AgilityBar.rect.Set(AgilityBar.rect.x, AgilityBar.rect.y, clickedCharacter.Agility * 3.667f, AgilityBar.rect.height);
+        StrenghtBar.rect.Set(StrenghtBar.rect.x, StrenghtBar.rect.y, clickedCharacter.Strength * 3.667f, StrenghtBar.rect.height);
+        VisionBar.rect.Set(VisionBar.rect.x, VisionBar.rect.y, clickedCharacter.Vision * 3.667f, VisionBar.rect.height);
     }
 
     public void onRoomSelected(Room clickedRoom)
