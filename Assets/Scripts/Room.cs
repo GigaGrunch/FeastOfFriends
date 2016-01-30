@@ -31,6 +31,8 @@ public class Room : MonoBehaviour
     GameObject TunnelHor, TunnelVer;
     [SerializeField]
     GameObject Fade;
+    [SerializeField]
+    GameObject TunnelRand1, TunnelRand2;
 
     [SerializeField]
     Room northRoom;
@@ -626,6 +628,11 @@ public class Room : MonoBehaviour
         }
         if (EastRoom != null)
         {
+            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(2, 0, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
+
             temp = Instantiate(TunnelHor, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(1.25f, .25f, 0);
