@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -28,6 +29,12 @@ public class GameController : MonoBehaviour
 
     List<Room> roomsToActivate = new List<Room>();
 
+    [SerializeField]
+    Character character_prefab;
+
+    [SerializeField]
+    RectTransform AgilityBar, StrenghtBar, VisionBar;
+
     void Start()
     {
         // initialize start characters here
@@ -38,32 +45,32 @@ public class GameController : MonoBehaviour
 
         List<string> playerNames = loadPlayerNames();
         int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter1 = new Character();
+        Character testCharacter1 = Instantiate(character_prefab);
         testCharacter1.Portrait = playerHeads[0];
         testCharacter1.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
         randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter2 = new Character();
+        Character testCharacter2 = Instantiate(character_prefab);
         testCharacter2.Portrait = playerHeads[1];
         testCharacter2.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
         randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter3 = new Character();
+        Character testCharacter3 = Instantiate(character_prefab);
         testCharacter3.Portrait = playerHeads[2];
         testCharacter3.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
         randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter4 = new Character();
+        Character testCharacter4 = Instantiate(character_prefab);
         testCharacter4.Portrait = playerHeads[3];
         testCharacter4.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
         randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter5 = new Character();
+        Character testCharacter5 = Instantiate(character_prefab);
         testCharacter5.Portrait = playerHeads[4];
         testCharacter5.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
         randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter6 = new Character();
+        Character testCharacter6 = Instantiate(character_prefab);
         testCharacter6.Portrait = playerHeads[5];
         testCharacter6.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
@@ -149,14 +156,11 @@ public class GameController : MonoBehaviour
 
     public void onCharacterClicked(Character clickedCharacter)
     {
-        if (SelectedRoom.SelectedCharacters.Contains(clickedCharacter))
-        {
-            SelectedRoom.SelectedCharacters.Remove(clickedCharacter);
-        }
-        else
-        {
-            SelectedRoom.SelectedCharacters.Add(clickedCharacter);
-        }
+        Debug.Log("Setting bars...");
+        
+        AgilityBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 0, 10);
+        StrenghtBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 0, 10);
+        VisionBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 0, 10);
     }
 
     public void onRoomSelected(Room clickedRoom)
