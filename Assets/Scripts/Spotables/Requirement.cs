@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class Requirement : Spotable
+[System.Serializable]
+public class Requirement
 {
     public enum Type
     {
         strength, agility
     }
 
-    Type type;
-    int requiredValue;
-    int visionRequired;
+    public Type type;
+    public int requiredValue;
+    public int visionRequired;
 
     public Type getType()
     {

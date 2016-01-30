@@ -157,7 +157,7 @@ public class GameController : MonoBehaviour
     public void onCharacterClicked(Character clickedCharacter)
     {
         Debug.Log("Setting bars...");
-        
+
         AgilityBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 0, 10);
         StrenghtBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 0, 10);
         VisionBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 0, 10);
@@ -173,7 +173,7 @@ public class GameController : MonoBehaviour
         SelectedRoom = clickedRoom;
         SelectedRoom.SelectBubble.SetActive(true);
         sacrificeButton.SetActive(SelectedRoom.Rewards.Exists(ByType(Reward.Type.altar)));
-        
+
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
 
@@ -206,10 +206,12 @@ public class GameController : MonoBehaviour
             killRandomCharacter();
             nextDeathIn = 5;
         }
-        foreach(Character c in characters)
+        foreach (Character c in characters)
         {
             c.IsCurrentlyMoving = false;
         }
+
+        FindObjectOfType<InterfaceController>().SetRoomMembers(SelectedRoom.Characters);
     }
 
     private void killRandomCharacter()
