@@ -42,6 +42,7 @@ public class GameController : MonoBehaviour
         nextDeathIn = 5;
         // TODO: replace with Constructor if Journal is no gameobject
         journal = FindObjectOfType<Journal>();
+        journal.gameObject.SetActive(false);
 
         List<string> playerNames = loadPlayerNames();
         int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
@@ -255,7 +256,7 @@ public class GameController : MonoBehaviour
         source.Characters.Remove(character);
         destination.Characters.Add(character);
 
-        //journal.addStory(new Story(currentDayNum, "Someone managed to enter an exciting new Room"));
+        journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
         destination.discoverNeighbors();
     }
 }
