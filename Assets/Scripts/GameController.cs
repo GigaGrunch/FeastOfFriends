@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField]
-    Sprite face;
-    [SerializeField]
-    Sprite face2;
-
     int currentDayNum;
     int nextDeathIn;
 
@@ -26,6 +22,11 @@ public class GameController : MonoBehaviour
     [SerializeField]
     GameObject sacrificeButton;
 
+    List<Room> roomsToActivate = new List<Room>();
+
+    [SerializeField]
+    Character character_prefab;
+
     [SerializeField]
     RectTransform AgilityBar, StrenghtBar, VisionBar;
 
@@ -35,39 +36,20 @@ public class GameController : MonoBehaviour
         currentDayNum = 1;
         nextDeathIn = 5;
         // TODO: replace with Constructor if Journal is no gameobject
-        journal = FindObjectOfType<Journal>();
+        //journal = FindObjectOfType<Journal>();
+        //journal.gameObject.SetActive(false);
 
         List<string> playerNames = loadPlayerNames();
-        int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter1 = new Character();
-        testCharacter1.Portrait = playerHeads[0];
-        testCharacter1.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter2 = new Character();
-        testCharacter2.Portrait = playerHeads[1];
-        testCharacter2.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter3 = new Character();
-        testCharacter3.Portrait = playerHeads[2];
-        testCharacter3.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter4 = new Character();
-        testCharacter4.Portrait = playerHeads[3];
-        testCharacter4.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter5 = new Character();
-        testCharacter5.Portrait = playerHeads[4];
-        testCharacter5.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter6 = new Character();
-        testCharacter6.Portrait = playerHeads[5];
-        testCharacter6.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
+
+        for (int i = 0; i < 6; i++)
+        {
+            int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+            Character testCharacter = Instantiate(character_prefab);
+            testCharacter.Portrait = playerHeads[0];
+            testCharacter.CharName = playerNames[randomInt];
+            playerNames.RemoveAt(randomInt);
+            selectedRoom.Characters.Add(testCharacter);
+        }
 
         foreach (Room i in FindObjectsOfType<Room>())
         {
@@ -78,17 +60,7 @@ public class GameController : MonoBehaviour
         selectedRoom.SelectBubble.SetActive(true);
         selectedRoom.discoverNeighbors();
 
-        selectedRoom.Characters.Add(testCharacter1);
-        selectedRoom.Characters.Add(testCharacter3);
-        selectedRoom.Characters.Add(testCharacter4);
-        selectedRoom.Characters.Add(testCharacter5);
-        selectedRoom.Characters.Add(testCharacter6);
-        characters.Add(testCharacter1);
-        characters.Add(testCharacter2);
-        characters.Add(testCharacter3);
-        characters.Add(testCharacter4);
-
-        GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
+        activeRooms.Add(selectedRoom);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
     }
@@ -149,10 +121,9 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Setting bars...");
 
-        AgilityBar.localScale.Set(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 50, 1, 1);
-        StrenghtBar.localScale.Set(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 50, 1, 1);
-        VisionBar.localScale.Set(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 50, 1, 1);
-        VisionBar.localScale.Set(100, 1, 1);
+        AgilityBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 0, 10);
+        StrenghtBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 0, 10);
+        VisionBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 0, 10);
     }
 
     public void onRoomSelected(Room clickedRoom)
@@ -165,7 +136,7 @@ public class GameController : MonoBehaviour
         SelectedRoom = clickedRoom;
         SelectedRoom.SelectBubble.SetActive(true);
         sacrificeButton.SetActive(SelectedRoom.Rewards.Exists(ByType(Reward.Type.altar)));
-        
+
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
 
@@ -186,6 +157,10 @@ public class GameController : MonoBehaviour
             r.resolvePendingMovements();
         }
         removeEmptyRooms();
+        foreach (Room r in roomsToActivate)
+        {
+            activeRooms.Add(r);
+        }
 
         currentDayNum++;
         nextDeathIn--;
@@ -194,10 +169,12 @@ public class GameController : MonoBehaviour
             killRandomCharacter();
             nextDeathIn = 5;
         }
-        foreach(Character c in characters)
+        foreach (Character c in characters)
         {
             c.IsCurrentlyMoving = false;
         }
+
+        FindObjectOfType<InterfaceController>().SetRoomMembers(SelectedRoom.Characters);
     }
 
     private void killRandomCharacter()
@@ -221,42 +198,27 @@ public class GameController : MonoBehaviour
 
     void removeEmptyRooms()
     {
+        List<Room> toRemove = new List<Room>();
         foreach (Room i in activeRooms)
         {
             if (i.Characters.Count <= 0)
             {
-                activeRooms.Remove(i);
+                //activeRooms.Remove(i);
+                toRemove.Add(i);
             }
+        }
+        foreach (Room r in toRemove)
+        {
+            activeRooms.Remove(r);
         }
     }
 
     public void OnPlayerMovementSuccess(Room source, Room destination, Character character)
     {
-        Debug.Log(character.name + " successfully moved to " + destination.name);
         source.Characters.Remove(character);
         destination.Characters.Add(character);
 
-        journal.addStory(new Story(currentDayNum, character + " managed to enter an exciting new Room"));
-        activeRooms.Remove(source);
-        if (!activeRooms.Contains(destination))
-        {
-            activeRooms.Add(destination);
-            if (destination.NorthRoom != null)
-            {
-                destination.NorthRoom.enabled = true;
-            }
-            if (destination.SouthRoom != null)
-            {
-                destination.SouthRoom.enabled = true;
-            }
-            if (destination.WestRoom != null)
-            {
-                destination.WestRoom.enabled = true;
-            }
-            if (destination.EastRoom != null)
-            {
-                destination.EastRoom.enabled = true;
-            }
-        }
+        //journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
+        destination.discoverNeighbors();
     }
 }

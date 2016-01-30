@@ -5,6 +5,9 @@ using System;
 
 public class Room : MonoBehaviour
 {
+    public Reward[] reward;
+    public Requirement[] requirement;
+
     List<Character> characters = new List<Character>();
     List<Requirement> requirements = new List<Requirement>();
     List<Reward> rewards = new List<Reward>();
