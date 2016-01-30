@@ -7,11 +7,6 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField]
-    Sprite face;
-    [SerializeField]
-    Sprite face2;
-
     int currentDayNum;
     int nextDeathIn;
 
@@ -45,62 +40,27 @@ public class GameController : MonoBehaviour
         //journal.gameObject.SetActive(false);
 
         List<string> playerNames = loadPlayerNames();
-        int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter1 = Instantiate(character_prefab);
-        testCharacter1.Portrait = playerHeads[0];
-        testCharacter1.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter2 = Instantiate(character_prefab);
-        testCharacter2.Portrait = playerHeads[1];
-        testCharacter2.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter3 = Instantiate(character_prefab);
-        testCharacter3.Portrait = playerHeads[2];
-        testCharacter3.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter4 = Instantiate(character_prefab);
-        testCharacter4.Portrait = playerHeads[3];
-        testCharacter4.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter5 = Instantiate(character_prefab);
-        testCharacter5.Portrait = playerHeads[4];
-        testCharacter5.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
-        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
-        Character testCharacter6 = Instantiate(character_prefab);
-        testCharacter6.Portrait = playerHeads[5];
-        testCharacter6.CharName = playerNames[randomInt];
-        playerNames.RemoveAt(randomInt);
 
-        selectedRoom = GameObject.Find("Start (2,3)").GetComponent<Room>();
+        for (int i = 0; i < 6; i++)
+        {
+            int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+            Character testCharacter = Instantiate(character_prefab);
+            testCharacter.Portrait = playerHeads[0];
+            testCharacter.CharName = playerNames[randomInt];
+            playerNames.RemoveAt(randomInt);
+            selectedRoom.Characters.Add(testCharacter);
+        }
 
         foreach (Room i in FindObjectsOfType<Room>())
         {
             i.BlackSmog.SetActive(true);
             i.gameObject.SetActive(false);
         }
-        
+
         selectedRoom.SelectBubble.SetActive(true);
         selectedRoom.discoverNeighbors();
 
-        selectedRoom.Characters.Add(testCharacter1);
-        selectedRoom.Characters.Add(testCharacter3);
-        selectedRoom.Characters.Add(testCharacter4);
-        selectedRoom.Characters.Add(testCharacter5);
-        selectedRoom.Characters.Add(testCharacter6);
-        characters.Add(testCharacter1);
-        characters.Add(testCharacter2);
-        characters.Add(testCharacter3);
-        characters.Add(testCharacter4);
-
         activeRooms.Add(selectedRoom);
-        //activeRooms.Add(GameObject.Find("Room (2)").GetComponent<Room>());
-
-        //GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
     }
