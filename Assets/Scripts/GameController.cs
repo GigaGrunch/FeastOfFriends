@@ -165,6 +165,14 @@ public class GameController : MonoBehaviour
         {
             r.resolvePendingMovements();
         }
+
+        foreach (Room i in activeRooms)
+        {
+            i.drawPeople();
+
+            i.SelectedCharacters.Clear();
+        }
+
         removeEmptyRooms();
         foreach (Room r in roomsToActivate)
         {
@@ -177,6 +185,8 @@ public class GameController : MonoBehaviour
         foreach (Room i in activeRooms)
         {
             i.drawPeople();
+
+            i.SelectedCharacters.Clear();
         }
 
         currentDayNum++;

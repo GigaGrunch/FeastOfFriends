@@ -11,7 +11,7 @@ public class Room : MonoBehaviour
     GameObject charSprite, arrow;
 
     [SerializeField]
-    float spawnRangeFactor = 1;
+    float spawnRangeFactor = 0.1f;
 
     public Reward[] reward;
     public Requirement[] requirement;
@@ -255,6 +255,12 @@ public class Room : MonoBehaviour
             Destroy(i);
         }
 
+        foreach (GameObject i in arrows)
+        {
+            Destroy(i);
+        }
+
+        arrows.Clear();
         sprites.Clear();
 
         GameObject temp;
@@ -437,9 +443,11 @@ public class Room : MonoBehaviour
                     clearMovement(movingChar, selectedRoom);
 
                     selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
-
                     GameObject temp = Instantiate(arrow);
+
                     temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    //temp.transform.position = selectedRoom.transform.position;
+                    //transform.Translate(spawnField[selectedRoom.characters.IndexOf(movingChar)]);
                     temp.transform.Translate(0, 0.25f, 0);
 
                     arrows.Add(temp);
