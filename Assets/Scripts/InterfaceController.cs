@@ -35,4 +35,14 @@ public class InterfaceController : MonoBehaviour
             characterButtons[i].GetComponent<Image>().sprite = roomMembers[i].Portrait;
         }
     }
+
+    public void SelectCharacter(int position)
+    {
+        List<Character> characters = FindObjectOfType<GameController>().SelectedRoom.Characters;
+
+        if (characters.Count <= position)
+        {
+            return;
+        }
+    }
 }
