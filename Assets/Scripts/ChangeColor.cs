@@ -15,6 +15,8 @@ public class ChangeColor : MonoBehaviour {
 
     void Start()
     {
+        interval = Random.Range(0.05f, 0.5f);
+
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 	

@@ -12,6 +12,15 @@ public class Room : MonoBehaviour
     List<Movement> pendingMovements = new List<Movement>();
 
     [SerializeField]
+    GameObject WallTop, WallBottom, WallLeft, WallRight;
+    [SerializeField]
+    GameObject CornerTopLeft, CornerTopRight, CornerBottomLeft, CornerBottomRight;
+    [SerializeField]
+    GameObject DoorLeft, DoorRight, DoorTop, DoorBottom;
+    [SerializeField]
+    GameObject Tile, Corridor;
+
+    [SerializeField]
     Room northRoom;
     [SerializeField]
     Room eastRoom;
@@ -22,7 +31,150 @@ public class Room : MonoBehaviour
 
     void Start()
     {
+        GetComponent<SpriteRenderer>().enabled = false;
+        GameObject temp;
+
         gameController = FindObjectOfType<GameController>();
+
+        temp = Instantiate(CornerBottomLeft, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(-.75f, -.75f, 0);
+
+        temp = Instantiate(CornerBottomRight, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(.75f, -.75f, 0);
+
+        temp = Instantiate(CornerTopLeft, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(-.75f, .75f, 0);
+
+        temp = Instantiate(CornerTopRight, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(.75f, .75f, 0);
+
+        temp = Instantiate(CornerTopLeft, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(-.75f, .75f, 0);
+
+        temp = Instantiate(Tile, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(-.25f, -.25f, 0);
+
+        temp = Instantiate(Tile, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(.25f, -.25f, 0);
+
+        temp = Instantiate(Tile, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(.25f, .25f, 0);
+
+        temp = Instantiate(Tile, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(-.25f, .25f, 0);
+
+        temp = Instantiate(WallBottom, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(-.25f, -.75f, 0);
+
+        temp = Instantiate(WallLeft, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(-.75f, .25f, 0);
+
+        temp = Instantiate(WallTop, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(.25f, .75f, 0);
+
+        temp = Instantiate(WallRight, transform.position, Quaternion.identity) as GameObject;
+        temp.transform.parent = transform;
+        temp.transform.Translate(.75f, -.25f, 0);
+
+        if (northRoom != null)
+        {
+            temp = Instantiate(DoorTop, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, .75f, 0);
+
+            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, 1.25f, 0);
+            temp.transform.Rotate(0, 0, 90);
+
+            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, 1.75f, 0);
+            temp.transform.Rotate(0, 0, 90);
+        }
+        else
+        {
+            temp = Instantiate(WallTop, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.25f, .75f, 0);
+        }
+
+        if (southRoom != null)
+        {
+            temp = Instantiate(DoorBottom, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -.75f, 0);
+
+            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -1.25f, 0);
+            temp.transform.Rotate(0, 0, 90);
+
+            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -1.75f, 0);
+            temp.transform.Rotate(0, 0, 90);
+        }
+        else
+        {
+            temp = Instantiate(WallBottom, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -.75f, 0);
+        }
+
+        if (eastRoom != null)
+        {
+            temp = Instantiate(DoorRight, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.75f, .25f, 0);
+
+            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(1.25f, .25f, 0);
+
+            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(1.75f, .25f, 0);
+        }
+        else
+        {
+            temp = Instantiate(WallRight, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.75f, .25f, 0);
+        }
+
+        if (westRoom != null)
+        {
+            temp = Instantiate(DoorLeft, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.75f, -.25f, 0);
+
+            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-1.25f, -.25f, 0);
+
+            temp = Instantiate(Corridor, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-1.75f, -.25f, 0);
+        }
+        else
+        {
+            temp = Instantiate(WallLeft, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(-.75f, -.25f, 0);
+        }
     }
 
     void Update()
