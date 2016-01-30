@@ -69,6 +69,7 @@ public class GameController : MonoBehaviour
             r.resolvePendingMovements();
         }
         removeEmptyRooms();
+
         currentDayNum++;
         nextDeathIn--;
         if (nextDeathIn <= 0)
@@ -118,6 +119,22 @@ public class GameController : MonoBehaviour
         if (!activeRooms.Contains(destination))
         {
             activeRooms.Add(destination);
+            if (destination.NorthRoom != null)
+            {
+                destination.NorthRoom.enabled = true;
+            }
+            if (destination.SouthRoom != null)
+            {
+                destination.SouthRoom.enabled = true;
+            }
+            if (destination.WestRoom != null)
+            {
+                destination.WestRoom.enabled = true;
+            }
+            if (destination.EastRoom != null)
+            {
+                destination.EastRoom.enabled = true;
+            }
         }
     }
 }
