@@ -147,9 +147,12 @@ public class GameController : MonoBehaviour
 
     public void onCharacterClicked(Character clickedCharacter)
     {
-        AgilityBar.rect.Set(AgilityBar.rect.x, AgilityBar.rect.y, clickedCharacter.Agility * 3.667f, AgilityBar.rect.height);
-        StrenghtBar.rect.Set(StrenghtBar.rect.x, StrenghtBar.rect.y, clickedCharacter.Strength * 3.667f, StrenghtBar.rect.height);
-        VisionBar.rect.Set(VisionBar.rect.x, VisionBar.rect.y, clickedCharacter.Vision * 3.667f, VisionBar.rect.height);
+        Debug.Log("Setting bars...");
+
+        AgilityBar.localScale.Set(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 50, 1, 1);
+        StrenghtBar.localScale.Set(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 50, 1, 1);
+        VisionBar.localScale.Set(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 50, 1, 1);
+        VisionBar.localScale.Set(100, 1, 1);
     }
 
     public void onRoomSelected(Room clickedRoom)
