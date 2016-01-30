@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
 
     List<Room> activeRooms = new List<Room>();
     Journal journal;
-    List<Character> characters;
+    List<Character> characters = new List<Character>();
 
     void Start()
     {
@@ -52,14 +52,47 @@ public class GameController : MonoBehaviour
         testCharacter4.Portrait = playerHeads[3];
         testCharacter4.CharName = playerNames[randomInt];
         playerNames.RemoveAt(randomInt);
+        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+        Character testCharacter5 = new Character();
+        testCharacter5.Portrait = playerHeads[4];
+        testCharacter5.CharName = playerNames[randomInt];
+        playerNames.RemoveAt(randomInt);
+        randomInt = UnityEngine.Random.Range(0, playerNames.Count);
+        Character testCharacter6 = new Character();
+        testCharacter6.Portrait = playerHeads[5];
+        testCharacter6.CharName = playerNames[randomInt];
+        playerNames.RemoveAt(randomInt);
+
+        foreach (Room i in FindObjectsOfType<Room>())
+        {
+            i.BlackSmog.SetActive(true);
+            i.gameObject.SetActive(false);
+        }
+
+        selectedRoom.SelectBubble.SetActive(true);
+        selectedRoom.discoverNeighbors();
 
         selectedRoom.Characters.Add(testCharacter1);
         selectedRoom.Characters.Add(testCharacter3);
         selectedRoom.Characters.Add(testCharacter4);
+        selectedRoom.Characters.Add(testCharacter5);
+        selectedRoom.Characters.Add(testCharacter6);
+        characters.Add(testCharacter1);
+        characters.Add(testCharacter2);
+        characters.Add(testCharacter3);
+        characters.Add(testCharacter4);
 
         GameObject.Find("Room (2)").GetComponent<Room>().Characters.Add(testCharacter2);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            endTurn();
+        }
     }
 
     private List<string> loadPlayerNames()
@@ -120,12 +153,18 @@ public class GameController : MonoBehaviour
 
     public void onRoomSelected(Room clickedRoom)
     {
+        if (SelectedRoom != null)
+        {
+            SelectedRoom.SelectBubble.SetActive(false);
+        }
         SelectedRoom = clickedRoom;
+        SelectedRoom.SelectBubble.SetActive(true);
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
 
     void endTurn()
     {
+        Debug.Log("END TURN " + currentDayNum);
         // do some stuff on turn end
         foreach (Room r in activeRooms)
         {
@@ -139,6 +178,10 @@ public class GameController : MonoBehaviour
         {
             killRandomCharacter();
             nextDeathIn = 5;
+        }
+        foreach(Character c in characters)
+        {
+            c.IsCurrentlyMoving = false;
         }
     }
 
@@ -174,6 +217,7 @@ public class GameController : MonoBehaviour
 
     public void OnPlayerMovementSuccess(Room source, Room destination, Character character)
     {
+        Debug.Log(character.name + " successfully moved to " + destination.name);
         source.Characters.Remove(character);
         destination.Characters.Add(character);
 

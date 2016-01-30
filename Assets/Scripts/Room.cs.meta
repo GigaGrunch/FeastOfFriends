@@ -1,10 +1,31 @@
 fileFormatVersion: 2
 guid: d6292c01f571ab34791ffa4c133acae2
-timeCreated: 1454105350
+timeCreated: 1454152711
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - WallTop: {instanceID: 0}
+  - WallBottom: {instanceID: 0}
+  - WallLeft: {instanceID: 0}
+  - WallRight: {instanceID: 0}
+  - CornerTopLeft: {instanceID: 0}
+  - CornerTopRight: {instanceID: 0}
+  - CornerBottomLeft: {instanceID: 0}
+  - CornerBottomRight: {instanceID: 0}
+  - DoorLeft: {instanceID: 0}
+  - DoorRight: {instanceID: 0}
+  - DoorTop: {instanceID: 0}
+  - DoorBottom: {instanceID: 0}
+  - Tile: {instanceID: 0}
+  - TunnelHor: {instanceID: 0}
+  - TunnelVer: {instanceID: 0}
+  - Black: {instanceID: 0}
+  - Fade: {instanceID: 0}
+  - northRoom: {instanceID: 0}
+  - eastRoom: {instanceID: 0}
+  - westRoom: {instanceID: 0}
+  - southRoom: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
