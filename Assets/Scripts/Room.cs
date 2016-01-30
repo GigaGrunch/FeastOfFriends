@@ -371,7 +371,7 @@ public class Room : MonoBehaviour
     // left mouse button
     void OnMouseDown()
     {
-        if (CameraController.ClickBlockedByUI())
+        if (GameObject.FindObjectOfType<CameraController>().ClickBlockedByUI())
         {
             return;
         }
@@ -386,7 +386,7 @@ public class Room : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (CameraController.ClickBlockedByUI())
+        if (GameObject.FindObjectOfType<CameraController>().ClickBlockedByUI())
         {
             return;
         }
