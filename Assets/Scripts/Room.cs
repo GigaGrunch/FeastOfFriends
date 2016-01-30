@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Room : MonoBehaviour
 {
-    List<Character> characters;
+    List<Character> characters = new List<Character>();
     List<Requirement> requirements;
     List<Reward> rewards;
     private GameController gameController;
@@ -301,7 +301,7 @@ public class Room : MonoBehaviour
             // can only move to neighbouring rooms
             if (selectedRoom.NorthRoom == this || selectedRoom.EastRoom == this || selectedRoom.WestRoom == this || selectedRoom.SouthRoom == this)
             {
-                foreach(Character movingChar in selectedRoom.SelectedCharacters)
+                foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
                     pendingMovements.Add(new Movement(selectedRoom, this, movingChar));
                 }
@@ -323,4 +323,6 @@ public class Room : MonoBehaviour
             }
         }
     }
+
+
 }

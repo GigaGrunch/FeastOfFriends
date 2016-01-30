@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
+    [SerializeField]
+    Sprite face;
 
     int currentDayNum;
     int nextDeathIn;
@@ -17,6 +20,14 @@ public class GameController : MonoBehaviour {
         nextDeathIn = 5;
         // TODO: replace with Constructor if Journal is no gameobject
         journal = FindObjectOfType<Journal>();
+
+        selectedRoom = new Room();
+        Character testCharacter1 = new Character();
+        testCharacter1.Portrait = face;
+
+        selectedRoom.Characters.Add(testCharacter1);
+
+        GameObject.Find("Main Camera").GetComponent<InterfaceController>().SetRoomMembers(selectedRoom.Characters);
     }
 
     public Room SelectedRoom
@@ -34,7 +45,7 @@ public class GameController : MonoBehaviour {
 
     public void onCharacterClicked(Character clickedCharacter)
     {
-        if(SelectedRoom.SelectedCharacters.Contains(clickedCharacter))
+        if (SelectedRoom.SelectedCharacters.Contains(clickedCharacter))
         {
             SelectedRoom.SelectedCharacters.Remove(clickedCharacter);
         }
@@ -52,14 +63,14 @@ public class GameController : MonoBehaviour {
     void endTurn()
     {
         // do some stuff on turn end
-        foreach(Room r in activeRooms)
+        foreach (Room r in activeRooms)
         {
             r.resolvePendingMovements();
         }
         removeEmptyRooms();
         currentDayNum++;
         nextDeathIn--;
-        if(nextDeathIn <= 0)
+        if (nextDeathIn <= 0)
         {
             killRandomCharacter();
             nextDeathIn = 5;
