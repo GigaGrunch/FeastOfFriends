@@ -231,12 +231,13 @@ public class GameController : MonoBehaviour
         destination.Characters.Add(character);
         roomsToActivate.Add(destination);
 
-        journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
+        // journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
         destination.discoverNeighbors();
     }
 
     public void sacrifice()
     {
-        selectedRoom.sacrifice();
+        Debug.Log("sacrifice?");
+        selectedRoom.sacrifice(currentDayNum, journal);
     }
 }
