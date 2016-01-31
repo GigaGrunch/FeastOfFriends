@@ -638,10 +638,8 @@ public class Room : MonoBehaviour
 
     public void sacrifice(int currentDayNum, Journal journal)
     {
-        Debug.Log("Count is: " + characters.Count);
         if (selectedCharacters.Count > 0 && characters.Count >= 2)
         {
-            Debug.Log("sacrifice!");
             Character victim = selectedCharacters[selectedCharacters.Count - 1];
             string storyText = victim.CharName + " gave his live for the greater Good!";
             selectedCharacters.Remove(victim);
@@ -664,6 +662,8 @@ public class Room : MonoBehaviour
             }
             storyText += " gained " + visionBonus + " Vision, " + strengthBonus + " Strength and " + agilityBonus + " Agility from feasting on his flesh";
             journal.addStory(new Story(currentDayNum, storyText));
+
+            FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
         }
 
     }
