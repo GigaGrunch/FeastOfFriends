@@ -96,7 +96,7 @@ public class InterfaceController : MonoBehaviour
             FindObjectOfType<GameController>().onCharacterClicked(characters[position]);
             FindObjectOfType<GameController>().SelectedRoom.SelectedCharacters.Add(characters[position]);
             cPreview.enabled = true;
-            cPreview.sprite = characters[position].Portrait;
+            cPreview.sprite = characters[position].Face;
             cName.text = characters[position].CharName;
         }
         else
@@ -114,7 +114,7 @@ public class InterfaceController : MonoBehaviour
             }
             if (selectedCharacters.Count > 0)
             {
-                cPreview.sprite = selectedCharacters[selectedCharacters.Count - 1].Portrait;
+                cPreview.sprite = selectedCharacters[selectedCharacters.Count - 1].Face;
                 cName.text = selectedCharacters[selectedCharacters.Count - 1].CharName;
                 FindObjectOfType<GameController>().onCharacterClicked(selectedCharacters[selectedCharacters.Count - 1]);
             }

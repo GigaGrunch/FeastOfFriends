@@ -16,7 +16,6 @@ public class Room : MonoBehaviour
     public Reward[] reward;
     private Requirement[] requirement;
 
-
     //List<GameObject> arrows = new List<GameObject>();
     //GameObject[] arrows = new GameObject[6];
     GameObject arrow0, arrow1, arrow2, arrow3, arrow4, arrow5;
@@ -667,82 +666,15 @@ public class Room : MonoBehaviour
                             int bonus = r.requiredValue / (BonusFactor * 2);
                             character.Agility += bonus;
                             if (bonus <= 0) bonus = 1;
-
-							int caseSwitchAgilityPos = Random.Range (0, 5);     // creates a number between 0 and 5;
-							switch (caseSwitchAgilityPos)
-							{
-							case 0:
-								gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his Agility! As a result his Agility even increased by " + bonus);
-								return true;
-							
-								break;
-							case 1:
-								gameController.writeRequirementStory(character.CharName + " made it! This Time! As a result his Agility even increased by " + bonus);
-								return true;
-							
-								break;
-							case 2:
-								gameController.writeRequirementStory(character.CharName + " is on fire! As a result his Agility even increased by " + bonus);
-								return true;
-							
-								break;
-							case 3:
-								gameController.writeRequirementStory(character.CharName + " did his homework! As a result his Agility even increased by " + bonus);
-								return true;
-							
-								break;
-							case 4:
-								gameController.writeRequirementStory(character.CharName + " has still got it! As a result his Agility even increased by " + bonus);
-								return true;
-							
-								break;
-							case 5:
-								gameController.writeRequirementStory(character.CharName + " is not as fat as he looks! As a result his Agility even increased by " + bonus);
-								return true;
-							}
-								break;
-							}
-
-                            
+                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Agility! As a result his Agility even increased by " + bonus);
+                            gameController.audio.playObstAgi();
+                            return true;
+                        }
                         else
                         {
-                            
-							int caseSwitchAgilityNegative = Random.Range (0, 5);     // creates a number between 0 and 5;
-							switch (caseSwitchAgilityNegative)
-							{
-							case 0:
-								gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");								
-								return true;
-
-								break;
-							case 1:
-								gameController.writeRequirementStory(character.CharName + " is to chubby to get thru! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");									
-								return true;
-
-								break;
-							case 2:
-								gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");								
-								return true;
-
-								break;
-							case 3:
-								gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");								
-								return true;
-
-								break;
-							case 4:
-								gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");								
-								return true;
-
-								break;
-							case 5:
-								gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");								
-								return true;
-							}
-							break;
-						}
-
-
+                            gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");
+                            gameController.audio.playObstFail();
+                        }
                     }
                     else if (r.getType() == global::Requirement.Type.strength)
                     {
@@ -753,11 +685,13 @@ public class Room : MonoBehaviour
                             character.Strength += bonus;
                             if (bonus <= 0) bonus = 1;
                             gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Strength. As a result his Strength even increased by " + bonus);
+                            gameController.audio.playObstStr();
                             return true;
                         }
                         else
                         {
                             gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Strength! He would have needed " + (r.requiredValue - character.Strength) + " more Agility to master it.");
+                            gameController.audio.playObstFail();
                         }
                     }
                     r.IsActive = true;

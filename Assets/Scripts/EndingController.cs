@@ -10,16 +10,20 @@ public class EndingController : MonoBehaviour
     [SerializeField]
     Sprite loseSprite;
 
+    new AudioScript audio;
+
     // Use this for initialization
     void Start () {
         GameObject endScreen = GameObject.Find("ende");
         if (playerWon)
         {
             endScreen.GetComponent<SpriteRenderer>().sprite = winSprite;
+            audio.playWin();
         }
         else
         {
             endScreen.GetComponent<SpriteRenderer>().sprite = loseSprite;
+            audio.playGameOver();
         }
 	}
 	

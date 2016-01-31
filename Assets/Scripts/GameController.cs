@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
     Room selectedRoom;
     [SerializeField]
     Sprite[] playerHeads;
+    [SerializeField]
+    Sprite[] playerFaces;
 
     List<Room> activeRooms = new List<Room>();
     Journal journal;
@@ -35,8 +37,13 @@ public class GameController : MonoBehaviour
     [SerializeField]
     Text AgilityValue, StrengthValue, VisionValue;
 
+    public new AudioScript audio;
+
     void Start()
     {
+        audio = GetComponent<AudioScript>();
+        audio.playIntro();
+
         // initialize start characters here
         currentDayNum = 1;
         nextDeathIn = 5;
@@ -63,6 +70,7 @@ public class GameController : MonoBehaviour
 
             usedIndizes.Add(randomInt);
             testCharacter.Portrait = playerHeads[randomInt];
+            testCharacter.Face = playerFaces[randomInt];
             characters.Add(testCharacter);
         }
 
@@ -166,16 +174,22 @@ public class GameController : MonoBehaviour
 
         Reward[] rewards = SelectedRoom.Reward;
         bool altarExists = false;
+        bool disableSacrifice = false;
         foreach (Reward r in rewards)
         {
-            if (r.getType() == Reward.Type.altar)
+            if (r.getType() == Reward.Type.altar && activeRooms.Contains(selectedRoom))
             {
                 altarExists = true;
+                if(!r.IsActive || selectedRoom.Characters.Count <= 1)
+                {
+                    disableSacrifice = true;
+                }
                 break;
             }
         }
 
         sacrificeButton.SetActive(altarExists);
+        sacrificeButton.GetComponent<Button>().interactable = !disableSacrifice;
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
@@ -216,6 +230,7 @@ public class GameController : MonoBehaviour
         if (nextDeathIn <= 0)
         {
             killRandomCharacter();
+            audio.playRandomSac();
             nextDeathIn = 5;
         }
         foreach (Character c in characters)
@@ -286,8 +301,10 @@ public class GameController : MonoBehaviour
 
     public void sacrifice()
     {
+        audio.playFeast();
         selectedRoom.sacrifice(currentDayNum, journal);
         nextDeathIn = 5;
+        onRoomSelected(selectedRoom);
     }
 
     public void print(string name)
@@ -315,6 +332,7 @@ public class GameController : MonoBehaviour
                 List<string> playerNames = loadPlayerNames();
                 string playerName;
                 Sprite playerHead;
+                Sprite playerFace;
                 do
                 {
                     playerName = playerNames[UnityEngine.Random.Range(0, playerNames.Count)];
@@ -322,16 +340,21 @@ public class GameController : MonoBehaviour
                 } while (!playerWithNameDoesNotExist(playerName));
                 do
                 {
-                    playerHead = playerHeads[UnityEngine.Random.Range(0, playerHeads.Length)];
+                    int randomInt = UnityEngine.Random.Range(0, playerHeads.Length);
+                    playerHead = playerHeads[randomInt];
+                    playerFace = playerFaces[randomInt];
 
                 } while (!playerWithHeadDoesNotExist(playerHead));
                 Character newCharacter = Instantiate(character_prefab);
+                audio.playNewGuy();
                 newCharacter.CharName = playerName;
                 newCharacter.Portrait = playerHead;
+                newCharacter.Face = playerFace;
                 characters.Add(newCharacter);
                 destination.Characters.Add(newCharacter);
                 destination.drawPeople();
                 reward.IsActive = false;
+                journal.addStory(new Story(currentDayNum, "In the corner of the room you find a lost soul. " + playerName + " joins your party of gourmets. He looks quite tasty."));
             }
         }
     }
