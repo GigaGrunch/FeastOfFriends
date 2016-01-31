@@ -359,4 +359,9 @@ public class GameController : MonoBehaviour
         }
         return true;
     }
+
+    public void writeRequirementStory(String storyText)
+    {
+        journal.addStory(new Story(currentDayNum, storyText));
+    }
 }
