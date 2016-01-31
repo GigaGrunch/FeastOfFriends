@@ -13,6 +13,9 @@ public class Room : MonoBehaviour
     [SerializeField]
     float spawnRangeFactor = 0.1f;
 
+    [SerializeField]
+    public GameObject AgiObst, StrObst;
+
     public Reward[] reward;
     private Requirement[] requirement;
     private bool revealed;
@@ -679,6 +682,22 @@ public class Room : MonoBehaviour
                             if (bonus <= 0) bonus = 1;
                             gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Agility! As a result his Agility even increased by " + bonus);
                             gameController.audio.playObstAgi();
+
+                            switch (movement.Direction)
+                            {
+                                case 1:
+                                    movement.Destination.AgiObst.transform.Rotate(0, 0, 90);
+                                    break;
+                                case 2:
+                                    movement.Destination.AgiObst.transform.Rotate(0, 0, 180);
+                                    break;
+                                case 3:
+                                    movement.Destination.AgiObst.transform.Rotate(0, 0, 270);
+                                    break;
+                            }
+
+                            movement.Destination.AgiObst.SetActive(true);
+
                             return true;
                         }
                         else
@@ -696,6 +715,22 @@ public class Room : MonoBehaviour
                             if (bonus <= 0) bonus = 1;
                             gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Strength. As a result his Strength even increased by " + bonus);
                             gameController.audio.playObstStr();
+
+                            switch (movement.Direction)
+                            {
+                                case 1:
+                                    movement.Destination.StrObst.transform.Rotate(0, 0, 90);
+                                    break;
+                                case 2:
+                                    movement.Destination.StrObst.transform.Rotate(0, 0, 180);
+                                    break;
+                                case 3:
+                                    movement.Destination.StrObst.transform.Rotate(0, 0, 270);
+                                    break;
+                            }
+
+                            movement.Destination.StrObst.SetActive(true);
+
                             return true;
                         }
                         else
