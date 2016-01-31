@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
     Room selectedRoom;
     [SerializeField]
     Sprite[] playerHeads;
+    [SerializeField]
+    Sprite[] playerFaces;
 
     List<Room> activeRooms = new List<Room>();
     Journal journal;
@@ -63,6 +65,7 @@ public class GameController : MonoBehaviour
 
             usedIndizes.Add(randomInt);
             testCharacter.Portrait = playerHeads[randomInt];
+            testCharacter.Face = playerFaces[randomInt];
             characters.Add(testCharacter);
         }
 
@@ -322,6 +325,7 @@ public class GameController : MonoBehaviour
                 List<string> playerNames = loadPlayerNames();
                 string playerName;
                 Sprite playerHead;
+                Sprite playerFace;
                 do
                 {
                     playerName = playerNames[UnityEngine.Random.Range(0, playerNames.Count)];
@@ -329,12 +333,15 @@ public class GameController : MonoBehaviour
                 } while (!playerWithNameDoesNotExist(playerName));
                 do
                 {
-                    playerHead = playerHeads[UnityEngine.Random.Range(0, playerHeads.Length)];
+                    int randomInt = UnityEngine.Random.Range(0, playerHeads.Length);
+                    playerHead = playerHeads[randomInt];
+                    playerFace = playerFaces[randomInt];
 
                 } while (!playerWithHeadDoesNotExist(playerHead));
                 Character newCharacter = Instantiate(character_prefab);
                 newCharacter.CharName = playerName;
                 newCharacter.Portrait = playerHead;
+                newCharacter.Face = playerFace;
                 characters.Add(newCharacter);
                 destination.Characters.Add(newCharacter);
                 destination.drawPeople();

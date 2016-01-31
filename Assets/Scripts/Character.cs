@@ -16,6 +16,7 @@ public class Character : MonoBehaviour {
     GameObject arrowPrefab;
 
     private Sprite portrait;
+    private Sprite face;
 
     private GameController gameController;
 
@@ -127,6 +128,19 @@ public class Character : MonoBehaviour {
         set
         {
             isCurrentlyMoving = value;
+        }
+    }
+
+    public Sprite Face
+    {
+        get
+        {
+            return face;
+        }
+
+        set
+        {
+            face = value;
         }
     }
 
