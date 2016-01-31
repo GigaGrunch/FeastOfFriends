@@ -39,8 +39,9 @@ public class InterfaceController : MonoBehaviour
     {
         foreach (GameObject c in characterButtons)
         {
-            c.GetComponent<CharacterUIHolder>().setClickable(false);
-            c.GetComponent<CharacterUIHolder>().setSprite(null);
+            c.GetComponent<CharacterUIHolder>().SetClickable(false);
+            c.GetComponent<CharacterUIHolder>().SetSprite(null);
+            c.GetComponent<CharacterUIHolder>().SetArrow(-1);
         }
 
         FindObjectOfType<GameController>().onCharacterClicked(null);
@@ -54,8 +55,28 @@ public class InterfaceController : MonoBehaviour
             {
                 return;
             }
-            characterButtons[i].GetComponent<CharacterUIHolder>().setClickable(true);
-            characterButtons[i].GetComponent<CharacterUIHolder>().setSprite(roomMembers[i].Portrait);
+            characterButtons[i].GetComponent<CharacterUIHolder>().SetClickable(true);
+            characterButtons[i].GetComponent<CharacterUIHolder>().SetSprite(roomMembers[i].Portrait);
+
+            if (roomMembers[i].arrow != null && roomMembers[i].arrow.activeSelf)
+            {
+                switch ((int)roomMembers[i].arrow.transform.eulerAngles.z)
+                {
+                    case 0:
+                        characterButtons[i].GetComponent<CharacterUIHolder>().SetArrow(0);
+                        break;
+                    case 90:
+                        characterButtons[i].GetComponent<CharacterUIHolder>().SetArrow(1);
+                        break;
+                    case 180:
+                        characterButtons[i].GetComponent<CharacterUIHolder>().SetArrow(2);
+                        break;
+                    case 270:
+                        characterButtons[i].GetComponent<CharacterUIHolder>().SetArrow(3);
+                        break;
+                }
+            }
+
         }
     }
 
