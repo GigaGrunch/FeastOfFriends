@@ -99,8 +99,8 @@ public class InterfaceController : MonoBehaviour
 
         if (selected)
         {
-            FindObjectOfType<GameController>().onCharacterClicked(characters[position]);
             FindObjectOfType<GameController>().SelectedRoom.SelectedCharacters.Add(characters[position]);
+            FindObjectOfType<GameController>().onCharacterClicked(characters[position]);
             cPreview.enabled = true;
             cPreview.sprite = characters[position].Face;
             cName.text = characters[position].CharName;
