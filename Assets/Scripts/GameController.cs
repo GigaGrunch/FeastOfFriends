@@ -32,6 +32,9 @@ public class GameController : MonoBehaviour
     [SerializeField]
     RectTransform AgilityBar, StrenghtBar, VisionBar;
 
+    [SerializeField]
+    Text AgilityValue, StrengthValue, VisionValue;
+
     void Start()
     {
         // initialize start characters here
@@ -145,6 +148,10 @@ public class GameController : MonoBehaviour
         AgilityBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 0, 10);
         StrenghtBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 0, 10);
         VisionBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 0, 10);
+
+        AgilityValue.text = "" + (clickedCharacter != null ? clickedCharacter.Agility : 0);
+        StrengthValue.text = "" + (clickedCharacter != null ? clickedCharacter.Strength : 0);
+        VisionValue.text = "" + (clickedCharacter != null ? clickedCharacter.Vision : 0);
     }
 
     public void onRoomSelected(Room clickedRoom)
