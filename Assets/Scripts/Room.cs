@@ -480,8 +480,8 @@ public class Room : MonoBehaviour
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
                     movingChar.arrow.transform.Translate(0.25f, 0, 0);
                     movingChar.arrow.transform.Rotate(0, 0, 270);
+                    movingChar.arrow.SetActive(true);
 
-                    
 
                     //arrows.Add(temp);
                 }
@@ -502,6 +502,7 @@ public class Room : MonoBehaviour
                     movingChar.arrow.transform.Translate(-.25f, 0, 0);
                     movingChar.arrow.transform.Rotate(0, 0, 90);
                     //arrows.Add(temp);
+                    movingChar.arrow.SetActive(true);
                 }
             }
             else if (selectedRoom.SouthRoom == this)
@@ -519,7 +520,7 @@ public class Room : MonoBehaviour
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
                     movingChar.arrow.transform.Translate(0, -0.25f, 0);
                     movingChar.arrow.transform.Rotate(0, 0, 180);
-
+                    movingChar.arrow.SetActive(true);
                     //arrows.Add(temp);
                 }
             }
