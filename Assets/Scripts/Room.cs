@@ -663,7 +663,10 @@ public class Room : MonoBehaviour
                         Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
                         if (character.Agility >= r.getRequiredValue())
                         {
-                            character.Agility += r.requiredValue / (BonusFactor * 2);
+                            int bonus = r.requiredValue / (BonusFactor * 2);
+                            character.Agility += bonus;
+                            if (bonus <= 0) bonus = 1;
+                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Agility. As a result his Agility even increased by " + bonus);
                             return true;
                         }
                     }
@@ -672,7 +675,10 @@ public class Room : MonoBehaviour
                         Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
                         if (character.Strength >= r.getRequiredValue())
                         {
-                            character.Strength += r.requiredValue / (BonusFactor * 2);
+                            int bonus = r.requiredValue / (BonusFactor * 2);
+                            character.Strength += bonus;
+                            if (bonus <= 0) bonus = 1;
+                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Strength. As a result his Strength even increased by " + bonus);
                             return true;
                         }
                     }
@@ -699,9 +705,9 @@ public class Room : MonoBehaviour
             characters.Remove(victim);
             gameController.killCharacter(victim);
             drawPeople();
-            int strengthBonus = victim.Strength / 4;
-            int agilityBonus = victim.Agility / 4;
-            int visionBonus = victim.Agility / 4;
+            int strengthBonus = victim.Strength / BonusFactor;
+            int agilityBonus = victim.Agility / BonusFactor;
+            int visionBonus = victim.Vision / BonusFactor;
             storyText += "\n";
 
             foreach (Character c in characters)
