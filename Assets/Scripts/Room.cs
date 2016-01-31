@@ -30,6 +30,17 @@ public class Room : MonoBehaviour
     List<Movement> pendingMovementsSouth = new List<Movement>();
     List<Movement> pendingMovementsWest = new List<Movement>();
 
+    struct realMovement
+    {
+        public Vector2 target1;
+        public Vector2 target2;
+        public  Vector2 target3;
+        public  MoveChar toMove;
+        public  bool success;
+    }
+
+    List<realMovement> realMoves = new List<realMovement>();
+
     List<GameObject> fades = new List<GameObject>();
 
     [SerializeField]
@@ -63,6 +74,8 @@ public class Room : MonoBehaviour
 
     [SerializeField]
     GameObject selectBubble;
+
+    Vector2 realMoveDest;
 
     public void Initialize()
     {
@@ -460,7 +473,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
+                    selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar, 0));
 
                     movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -476,7 +489,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
+                    selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar, 1));
 
                     movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -493,7 +506,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
+                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar, 2));
 
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);
@@ -513,7 +526,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
+                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar, 3));
 
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);
@@ -600,10 +613,41 @@ public class Room : MonoBehaviour
         bool success = false;
         foreach (Movement pendingMovement in pendingMovements)
         {
-            Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination);
+            realMovement thisMove = new realMovement();
+
+            thisMove.toMove = pendingMovement.Source.sprites[pendingMovement.Source.characters.IndexOf(pendingMovement.Character)].GetComponent<MoveChar>();
+
+            switch (pendingMovement.Direction)
+            {
+                case 0:
+                    thisMove.target1 = (Vector2) pendingMovement.Source.transform.position + new Vector2(0, 0.75f);
+                    thisMove.target2 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, -1);
+                    thisMove.target3 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 0);
+                    break;
+                case 1:
+                    thisMove.target1 = (Vector2)pendingMovement.Source.transform.position + new Vector2(0.75f, 0);
+                    thisMove.target2 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(-1, 0);
+                    thisMove.target3 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 0);
+                    break;
+                case 2:
+                    thisMove.target1 = (Vector2)pendingMovement.Source.transform.position + new Vector2(0, -0.75f);
+                    thisMove.target2 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 1);
+                    thisMove.target3 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 0);
+                    break;
+
+                case 3:
+                    thisMove.target1 = (Vector2)pendingMovement.Source.transform.position + new Vector2(-0.75f, 0);
+                    thisMove.target2 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(1, 0);
+                    thisMove.target3 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 0);
+                    break;
+            }
+            
+            //Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination);
             if (destinationRequirements.Count == 0)
             {
                 success = true;
+                thisMove.success = true;
+                realMoves.Add(thisMove);
                 break;
             }
             Character character = pendingMovement.Character;
