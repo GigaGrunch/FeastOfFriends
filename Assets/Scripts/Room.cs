@@ -666,8 +666,12 @@ public class Room : MonoBehaviour
                             int bonus = r.requiredValue / (BonusFactor * 2);
                             character.Agility += bonus;
                             if (bonus <= 0) bonus = 1;
-                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Agility. As a result his Agility even increased by " + bonus);
+                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Agility! As a result his Agility even increased by " + bonus);
                             return true;
+                        }
+                        else
+                        {
+                            gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");
                         }
                     }
                     else if (r.getType() == global::Requirement.Type.strength)
@@ -680,6 +684,10 @@ public class Room : MonoBehaviour
                             if (bonus <= 0) bonus = 1;
                             gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Strength. As a result his Strength even increased by " + bonus);
                             return true;
+                        }
+                        else
+                        {
+                            gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Strength! He would have needed " + (r.requiredValue - character.Strength) + " more Agility to master it.");
                         }
                     }
                     r.IsActive = true;

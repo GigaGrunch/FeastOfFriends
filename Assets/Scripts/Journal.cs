@@ -7,9 +7,12 @@ public class Journal : MonoBehaviour {
 
     private List<Story> stories = new List<Story>();
 
+    [SerializeField]
+    GameObject Attention;
+
     // Use this for initialization
     void Start () {
-	
+        Attention.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -46,5 +49,11 @@ public class Journal : MonoBehaviour {
                 child.text = newStory.StoryText;
             }
         }
+        Attention.SetActive(true);
+    }
+
+    public void deactivateAttentionMode()
+    {
+        Attention.SetActive(false);
     }
 }
