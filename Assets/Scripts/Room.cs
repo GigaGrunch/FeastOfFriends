@@ -597,29 +597,39 @@ public class Room : MonoBehaviour
     {
         // test requirements here
         Requirement[] destinationRequirements = pendingMovements[0].Destination.Requirement;
-        bool success = false;
-        foreach (Movement pendingMovement in pendingMovements)
+        
+
+        if (doMovementsFulfillRequirement(pendingMovements, destinationRequirements))
         {
-            Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination + "; "+destinationRequirements.Length);
-            if (destinationRequirements == null || destinationRequirements.Length == 0)
+            foreach (Movement pendingMovement in pendingMovements)
             {
-                success = true;
-                break;
+                gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
             }
-            Character character = pendingMovement.Character;
-            foreach (Requirement r in destinationRequirements)
+            pendingMovements[0].Destination.Requirement = null;
+        }
+        pendingMovements.Clear();
+    }
+
+    public bool doMovementsFulfillRequirement(List<Movement> movements, Requirement[] requirements)
+    {
+        foreach (Movement movement in movements)
+        {
+            Debug.Log(movement.Character + " tries to move from " + movement.Source + " to " + movement.Destination);
+            if (requirements == null || requirements.Length == 0)
+            {
+                Debug.Log("Num of requirements == 0");
+                return true;
+            }
+            Debug.Log("Num of requirements == " + requirements.Length);
+            Character character = movement.Character;
+            foreach (Requirement r in requirements)
             {
                 if (r.getType() == global::Requirement.Type.agility)
                 {
                     Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
                     if (character.Agility >= r.getRequiredValue())
                     {
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        break;
+                        return true;
                     }
                 }
                 else if (r.getType() == global::Requirement.Type.strength)
@@ -627,26 +637,12 @@ public class Room : MonoBehaviour
                     Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
                     if (character.Strength >= r.getRequiredValue())
                     {
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        break;
+                        return true;
                     }
                 }
             }
         }
-
-        if (success)
-        {
-            foreach (Movement pendingMovement in pendingMovements)
-            {
-                gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
-            }
-            destinationRequirements = null;
-        }
-        pendingMovements.Clear();
+        return false;
     }
 
     public void sacrifice(int currentDayNum, Journal journal)
