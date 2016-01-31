@@ -10,6 +10,11 @@ public class Character : MonoBehaviour {
     private bool isMale;
     private string charName;
 
+    public GameObject arrow;
+
+    [SerializeField]
+    GameObject arrowPrefab;
+
     private Sprite portrait;
 
     private GameController gameController;
@@ -19,6 +24,8 @@ public class Character : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        arrow = Instantiate(arrowPrefab);
+
         gameController = FindObjectOfType<GameController>();
 
         agility = Random.Range(3, 12);
