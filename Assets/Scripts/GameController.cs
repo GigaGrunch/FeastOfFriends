@@ -215,6 +215,7 @@ public class GameController : MonoBehaviour
             i.Characters.Remove(victim);
         }
         killCharacter(victim);
+        journal.addStory(new Story(currentDayNum, "Due to your inability to do the necessary your beloved companion " + victim.CharName + " died a pointless death"));
     }
 
     public void killCharacter(Character victim)
