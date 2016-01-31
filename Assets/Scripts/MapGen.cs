@@ -21,7 +21,7 @@ public class MapGen : MonoBehaviour {
         room.Reward[0] = new Reward
         {
             type = Reward.Type.human,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -30,7 +30,7 @@ public class MapGen : MonoBehaviour {
         kitchen.Reward[0] = new Reward
         {
             type = Reward.Type.altar,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(kitchen);
 
@@ -40,7 +40,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.strength,
             requiredValue = 15,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -50,7 +50,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.agility,
             requiredValue = 6,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -62,7 +62,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.strength,
             requiredValue = 17,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -72,7 +72,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.agility,
             requiredValue = 9,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
         
@@ -84,7 +84,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.strength,
             requiredValue = 2,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -94,7 +94,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.strength,
             requiredValue = 8,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
         
@@ -108,7 +108,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.agility,
             requiredValue = 13,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -122,7 +122,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.agility,
             requiredValue = 5,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -131,7 +131,7 @@ public class MapGen : MonoBehaviour {
         kitchen.Reward[0] = new Reward
         {
             type = Reward.Type.altar,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(kitchen);
 
@@ -141,7 +141,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.agility,
             requiredValue = 12,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -150,7 +150,7 @@ public class MapGen : MonoBehaviour {
         kitchen.Reward[0] = new Reward
         {
             type = Reward.Type.altar,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(kitchen);
 
@@ -160,7 +160,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.agility,
             requiredValue = 4,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -170,7 +170,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.strength,
             requiredValue = 12,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -180,7 +180,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.agility,
             requiredValue = 9,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -192,7 +192,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.strength,
             requiredValue = 11,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -204,7 +204,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.strength,
             requiredValue = 8,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -213,7 +213,7 @@ public class MapGen : MonoBehaviour {
         room.Reward[0] = new Reward
         {
             type = Reward.Type.human,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -224,7 +224,7 @@ public class MapGen : MonoBehaviour {
         room.Reward[0] = new Reward
         {
             type = Reward.Type.human,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -234,7 +234,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.strength,
             requiredValue = 6,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -244,7 +244,7 @@ public class MapGen : MonoBehaviour {
         {
             type = Requirement.Type.agility,
             requiredValue = 7,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(room);
 
@@ -255,7 +255,7 @@ public class MapGen : MonoBehaviour {
         kitchen.Reward[0] = new Reward
         {
             type = Reward.Type.altar,
-            visionRequired = 0
+            visionRequired = Random.Range(1, 25)
         };
         rooms.Add(kitchen);
 

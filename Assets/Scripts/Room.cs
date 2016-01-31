@@ -15,6 +15,7 @@ public class Room : MonoBehaviour
 
     public Reward[] reward;
     private Requirement[] requirement;
+    private bool revealed;
 
     //List<GameObject> arrows = new List<GameObject>();
     //GameObject[] arrows = new GameObject[6];
@@ -237,9 +238,9 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.25f, -.75f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
-            
+
         }
-        
+
         if (westRoom != null)
         {
             temp = Instantiate(DoorLeft, transform.position, Quaternion.identity) as GameObject;
@@ -263,7 +264,7 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(-.75f, -.25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
-            
+
         }
     }
 
@@ -453,10 +454,23 @@ public class Room : MonoBehaviour
         }
     }
 
+    public bool Revealed
+    {
+        get
+        {
+            return revealed;
+        }
+
+        set
+        {
+            revealed = value;
+        }
+    }
+
     // left mouse button
     void OnMouseDown()
     {
-        if (GameObject.FindObjectOfType<CameraController>().ClickBlockedByUI())
+        if (FindObjectOfType<CameraController>().ClickBlockedByUI())
         {
             return;
         }
@@ -464,7 +478,6 @@ public class Room : MonoBehaviour
 
         if (gameController.SelectedRoom != this)
         {
-
             gameController.onRoomSelected(this);
         }
     }
@@ -497,7 +510,7 @@ public class Room : MonoBehaviour
                     movingChar.arrow.SetActive(true);
                     deselectedCharacters.Add(movingChar);
 
-                    
+
                     //arrows.Add(temp);
                 }
             }
@@ -604,7 +617,6 @@ public class Room : MonoBehaviour
 
     public void resolvePendingMovements()
     {
-        Debug.Log(this.name + ": " + pendingMovementsEast.Count + ", " + pendingMovementsNorth.Count + ", " + pendingMovementsSouth.Count + ", " + pendingMovementsWest.Count);
         if (pendingMovementsEast.Count > 0)
         {
             tryToExecuteMovement(pendingMovementsEast);
@@ -629,7 +641,6 @@ public class Room : MonoBehaviour
         // test requirements here
         Requirement[] destinationRequirements = pendingMovements[0].Destination.Requirement;
 
-
         if (doMovementsFulfillRequirement(pendingMovements, destinationRequirements))
         {
             foreach (Movement pendingMovement in pendingMovements)
@@ -639,6 +650,10 @@ public class Room : MonoBehaviour
             pendingMovements[0].Destination.Requirement = null;
             gameController.OnMovementToRoomSuccess(pendingMovements[0].Destination);
         }
+        else
+        {
+            pendingMovements[0].Destination.Revealed = true;
+        }
         pendingMovements.Clear();
     }
 
@@ -646,13 +661,10 @@ public class Room : MonoBehaviour
     {
         foreach (Movement movement in movements)
         {
-            Debug.Log(movement.Character + " tries to move from " + movement.Source + " to " + movement.Destination);
             if (requirements == null || requirements.Length == 0)
             {
-                Debug.Log("Num of requirements == 0");
                 return true;
             }
-            Debug.Log("Num of requirements == " + requirements.Length);
             Character character = movement.Character;
             foreach (Requirement r in requirements)
             {
@@ -660,7 +672,6 @@ public class Room : MonoBehaviour
                 {
                     if (r.getType() == global::Requirement.Type.agility)
                     {
-                        Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
                         if (character.Agility >= r.getRequiredValue())
                         {
                             int bonus = r.requiredValue / (BonusFactor * 2);
@@ -678,7 +689,6 @@ public class Room : MonoBehaviour
                     }
                     else if (r.getType() == global::Requirement.Type.strength)
                     {
-                        Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
                         if (character.Strength >= r.getRequiredValue())
                         {
                             int bonus = r.requiredValue / (BonusFactor * 2);
@@ -696,7 +706,7 @@ public class Room : MonoBehaviour
                     }
                     r.IsActive = true;
                 }
-                
+
             }
         }
         return false;

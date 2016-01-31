@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-
     int currentDayNum;
     int nextDeathIn;
 
@@ -50,6 +49,7 @@ public class GameController : MonoBehaviour
         // TODO: replace with Constructor if Journal is no gameobject
         journal = FindObjectOfType<Journal>();
         journal.gameObject.SetActive(false);
+        FindObjectOfType<InterfaceController>().HideRoomStats();
 
         List<string> playerNames = loadPlayerNames();
 
@@ -168,6 +168,7 @@ public class GameController : MonoBehaviour
         {
             SelectedRoom.SelectBubble.SetActive(false);
         }
+
         SelectedRoom.SelectedCharacters.Clear();
         SelectedRoom = clickedRoom;
         SelectedRoom.SelectBubble.SetActive(true);
@@ -180,12 +181,46 @@ public class GameController : MonoBehaviour
             if (r.getType() == Reward.Type.altar && activeRooms.Contains(selectedRoom))
             {
                 altarExists = true;
-                if(!r.IsActive || selectedRoom.Characters.Count <= 1)
+                if (!r.IsActive || selectedRoom.Characters.Count <= 1)
                 {
                     disableSacrifice = true;
                 }
                 break;
             }
+        }
+
+        if (SelectedRoom.BlackSmog.activeSelf)
+        {
+            if (SelectedRoom.Revealed)
+            {
+                FindObjectOfType<InterfaceController>().ShowAllRoomStats(SelectedRoom.Reward, SelectedRoom.Requirement);
+            }
+            else
+            {
+                List<Character> neighbourChars = new List<Character>();
+                if (clickedRoom.NorthRoom != null)
+                {
+                    neighbourChars.AddRange(clickedRoom.NorthRoom.Characters);
+                }
+                if (clickedRoom.EastRoom != null)
+                {
+                    neighbourChars.AddRange(clickedRoom.EastRoom.Characters);
+                }
+                if (clickedRoom.SouthRoom != null)
+                {
+                    neighbourChars.AddRange(clickedRoom.SouthRoom.Characters);
+                }
+                if (clickedRoom.WestRoom != null)
+                {
+                    neighbourChars.AddRange(clickedRoom.WestRoom.Characters);
+                }
+
+                FindObjectOfType<InterfaceController>().ShowSomeRoomStats(SelectedRoom.Reward, SelectedRoom.Requirement, neighbourChars);
+            }
+        }
+        else
+        {
+            FindObjectOfType<InterfaceController>().HideRoomStats();
         }
 
         sacrificeButton.SetActive(altarExists);
@@ -239,6 +274,7 @@ public class GameController : MonoBehaviour
         }
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(SelectedRoom.Characters);
+        onRoomSelected(SelectedRoom);
     }
 
     private void killRandomCharacter()
@@ -260,7 +296,7 @@ public class GameController : MonoBehaviour
     {
         characters.Remove(victim);
         Destroy(victim.gameObject);
-        if(characters.Count == 0)
+        if (characters.Count == 0)
         {
             EndingController.playerWon = false;
             SceneManager.LoadScene("EndScene");
@@ -291,12 +327,12 @@ public class GameController : MonoBehaviour
         {
             capacity = 5;
         }
-        if(destination.Characters.Count < capacity)
+        if (destination.Characters.Count < capacity)
         {
             source.Characters.Remove(character);
             destination.Characters.Add(character);
         }
-        
+
     }
 
     public void sacrifice()
@@ -314,7 +350,8 @@ public class GameController : MonoBehaviour
 
     public void OnMovementToRoomSuccess(Room destination)
     {
-        if (destination.name.Equals("Finish")){
+        if (destination.name.Equals("Finish"))
+        {
             EndingController.playerWon = true;
             SceneManager.LoadScene("EndScene");
         }
