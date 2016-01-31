@@ -181,7 +181,7 @@ public class GameController : MonoBehaviour
             if (r.getType() == Reward.Type.altar && activeRooms.Contains(selectedRoom))
             {
                 altarExists = true;
-                if(!r.IsActive || selectedRoom.Characters.Count <= 1)
+                if (!r.IsActive || selectedRoom.Characters.Count <= 1)
                 {
                     disableSacrifice = true;
                 }
@@ -274,6 +274,7 @@ public class GameController : MonoBehaviour
         }
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(SelectedRoom.Characters);
+        onRoomSelected(SelectedRoom);
     }
 
     private void killRandomCharacter()
