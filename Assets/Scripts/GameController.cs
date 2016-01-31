@@ -36,12 +36,16 @@ public class GameController : MonoBehaviour
     [SerializeField]
     Text AgilityValue, StrengthValue, VisionValue;
 
+    [SerializeField]
+    GameObject turnbar;
+    [SerializeField]
+    Sprite[] turnbarSprites;
+
     public new AudioScript audio;
 
     void Start()
     {
         audio = GetComponent<AudioScript>();
-        audio.playIntro();
 
         // initialize start characters here
         currentDayNum = 1;
@@ -142,6 +146,19 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public GameObject SacrificeButton
+    {
+        get
+        {
+            return sacrificeButton;
+        }
+
+        set
+        {
+            sacrificeButton = value;
+        }
+    }
+
     public void onCharacterClicked(Character clickedCharacter)
     {
         if (clickedCharacter != null)
@@ -161,9 +178,10 @@ public class GameController : MonoBehaviour
         StrengthValue.text = "" + (clickedCharacter != null ? clickedCharacter.Strength : 0);
         VisionValue.text = "" + (clickedCharacter != null ? clickedCharacter.Vision : 0);
 
-        if(selectedRoom.Reward.Length > 0 && selectedRoom.Reward[0].getType().Equals(Reward.Type.altar))
+
+        if (selectedRoom == this && selectedRoom.Reward.Length > 0 && selectedRoom.Reward[0].getType().Equals(Reward.Type.altar))
         {
-            if(selectedRoom.SelectedCharacters.Count < 2)
+            if (selectedRoom.Characters.Count < 2)
             {
                 sacrificeButton.GetComponent<Button>().interactable = false;
             }
@@ -172,7 +190,6 @@ public class GameController : MonoBehaviour
                 sacrificeButton.GetComponent<Button>().interactable = true;
             }
         }
-        
     }
 
     public void onRoomSelected(Room clickedRoom)
@@ -236,8 +253,8 @@ public class GameController : MonoBehaviour
             FindObjectOfType<InterfaceController>().HideRoomStats();
         }
 
-        sacrificeButton.SetActive(altarExists);
-        sacrificeButton.GetComponent<Button>().interactable = !disableSacrifice;
+        SacrificeButton.SetActive(altarExists);
+        SacrificeButton.GetComponent<Button>().interactable = !disableSacrifice;
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
@@ -275,11 +292,17 @@ public class GameController : MonoBehaviour
 
         currentDayNum++;
         nextDeathIn--;
+
         if (nextDeathIn <= 0)
         {
             killRandomCharacter();
             audio.playRandomSac();
             nextDeathIn = 5;
+            turnbar.GetComponent<Image>().sprite = turnbarSprites[4];
+        }
+        else
+        {
+            turnbar.GetComponent<Image>().sprite = turnbarSprites[nextDeathIn-1];
         }
         foreach (Character c in characters)
         {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Room : MonoBehaviour
 {
@@ -312,6 +313,17 @@ public class Room : MonoBehaviour
 
             sprites.Add(temp);
         }
+        //if (gameController.SelectedRoom == this && Reward.Length > 0 && Reward[0].getType().Equals(Reward.Type.altar))
+        //{
+        //    if (this.SelectedCharacters.Count < 2)
+        //    {
+        //        gameController.SacrificeButton.GetComponent<Button>().interactable = false;
+        //    }
+        //    else
+        //    {
+        //        gameController.SacrificeButton.GetComponent<Button>().interactable = true;
+        //    }
+        //}
     }
 
     public List<Requirement> Requirements
