@@ -46,19 +46,19 @@ public class CameraController : MonoBehaviour
                 transform.position = camAnker + new Vector3(difference.x * 24, difference.y * 13.5f, 0) * (Camera.main.orthographicSize / basicOrthoSize);
             }
 
-            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.RightArrow))
             {
                 transform.position += Vector3.right * speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.LeftArrow))
             {
                 transform.position += Vector3.left * speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.UpArrow))
             {
                 transform.position += Vector3.up * speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.DownArrow))
             {
                 transform.position += Vector3.down * speed * Time.deltaTime;
             }

@@ -159,14 +159,12 @@ public class GameController : MonoBehaviour
         bool altarExists = false;
         foreach (Reward r in rewards)
         {
-            Debug.Log(r.getType());
             if (r.getType() == Reward.Type.altar)
             {
                 altarExists = true;
                 break;
             }
         }
-        Debug.Log("selected room, bool = " + altarExists + "; rewards: " + rewards.Length);
 
         sacrificeButton.SetActive(altarExists);
 
@@ -175,7 +173,6 @@ public class GameController : MonoBehaviour
 
     public void endTurn()
     {
-        Debug.Log("END TURN " + currentDayNum);
         // do some stuff on turn end
         foreach (Room r in activeRooms)
         {

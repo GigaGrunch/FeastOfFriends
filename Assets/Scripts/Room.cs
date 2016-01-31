@@ -600,7 +600,6 @@ public class Room : MonoBehaviour
         bool success = false;
         foreach (Movement pendingMovement in pendingMovements)
         {
-            Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination + "; "+destinationRequirements.Length);
             if (destinationRequirements == null || destinationRequirements.Length == 0)
             {
                 success = true;
@@ -842,6 +841,89 @@ public class Room : MonoBehaviour
             }
 
             EastRoom.gameObject.SetActive(true);
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            if (EastRoom == null || SelectedCharacters.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Character movingChar in SelectedCharacters)
+            {
+                clearMovement(movingChar, this);
+                pendingMovementsEast.Add(new Movement(this, EastRoom, movingChar));
+                movingChar.arrow.transform.position = sprites[characters.IndexOf(movingChar)].transform.position;
+                movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                movingChar.arrow.transform.Translate(0.25f, 0, 0);
+                movingChar.arrow.transform.Rotate(0, 0, 270);
+                movingChar.arrow.SetActive(true);
+            }
+            selectedCharacters.Clear();
+            FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (WestRoom == null || SelectedCharacters.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Character movingChar in SelectedCharacters)
+            {
+                clearMovement(movingChar, this);
+                pendingMovementsWest.Add(new Movement(this, WestRoom, movingChar));
+                movingChar.arrow.transform.position = sprites[characters.IndexOf(movingChar)].transform.position;
+                movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                movingChar.arrow.transform.Translate(-.25f, 0, 0);
+                movingChar.arrow.transform.Rotate(0, 0, 90);
+                movingChar.arrow.SetActive(true);
+            }
+            selectedCharacters.Clear();
+            FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            if (NorthRoom == null || SelectedCharacters.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Character movingChar in SelectedCharacters)
+            {
+                clearMovement(movingChar, this);
+                pendingMovementsNorth.Add(new Movement(this, NorthRoom, movingChar));
+                movingChar.arrow.transform.position = sprites[characters.IndexOf(movingChar)].transform.position;
+                movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                movingChar.arrow.transform.Translate(0, 0.25f, 0);
+                movingChar.arrow.SetActive(true);
+            }
+            selectedCharacters.Clear();
+            FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            if (SouthRoom == null || SelectedCharacters.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Character movingChar in SelectedCharacters)
+            {
+                clearMovement(movingChar, this);
+                pendingMovementsSouth.Add(new Movement(this, SouthRoom, movingChar));
+                movingChar.arrow.transform.position = sprites[characters.IndexOf(movingChar)].transform.position;
+                movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                movingChar.arrow.transform.Translate(0, -0.25f, 0);
+                movingChar.arrow.transform.Rotate(0, 0, 180);
+                movingChar.arrow.SetActive(true);
+            }
+            selectedCharacters.Clear();
+            FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
         }
     }
 
