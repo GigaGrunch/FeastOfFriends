@@ -7,6 +7,13 @@ public class CharacterUIHolder : MonoBehaviour
 {
     bool selected;
     bool clickable;
+    GameObject arrow;
+
+    void Start()
+    {
+        arrow = transform.GetChild(0).gameObject;
+        arrow.SetActive(false);
+    }
 
     public void OnSelected()
     {
@@ -20,12 +27,38 @@ public class CharacterUIHolder : MonoBehaviour
         selected = false;
     }
 
-    public void setSprite(Sprite sprite)
+    public void SetArrow(int direction)
+    {
+        arrow.SetActive(true);
+        switch (direction)
+        {
+            case 0:
+                arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case 1:
+                arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                arrow.transform.Rotate(0, 0, 90);
+                break;
+            case 2:
+                arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                arrow.transform.Rotate(0, 0, 180);
+                break;
+            case 3:
+                arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                arrow.transform.Rotate(0, 0, 270);
+                break;
+            default:
+                arrow.SetActive(false);
+                break;
+        }
+    }
+
+    public void SetSprite(Sprite sprite)
     {
         GetComponent<Image>().sprite = sprite;
     }
 
-    public void setClickable(bool clickable)
+    public void SetClickable(bool clickable)
     {
         if (clickable)
         {
