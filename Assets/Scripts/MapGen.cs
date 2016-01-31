@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class MapGen : MonoBehaviour {
 
     [SerializeField]
-    GameObject normalRoom, Kitchen;
+    GameObject normalRoom, Kitchen, goal;
 
     List<Room> rooms = new List<Room>();
 
@@ -13,7 +13,7 @@ public class MapGen : MonoBehaviour {
         Room start;
         Room room;
 
-        rooms.Add(addRoom(normalRoom, 0, 0, false, true, false, false));
+        rooms.Add(addRoom(goal, 0, 0, false, true, false, false));
 
         room = addRoom(normalRoom, 0, 1, false, true, false, false);
         room.Reward = new Reward[1];

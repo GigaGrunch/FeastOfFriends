@@ -48,6 +48,12 @@ public class Room : MonoBehaviour
     GameObject TunnelRand1, TunnelRand2;
 
     [SerializeField]
+    GameObject Furniture, Furniture_used;
+
+    [SerializeField]
+    bool isKitchen;
+
+    [SerializeField]
     Room northRoom;
     [SerializeField]
     Room eastRoom;
@@ -139,12 +145,20 @@ public class Room : MonoBehaviour
         temp.transform.Translate(.75f, -.25f, 0);
         temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
+        int turned = 0;
+
         if (northRoom != null)
         {
             temp = Instantiate(DoorTop, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-.25f, .75f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            if (isKitchen)
+            {
+                Furniture.transform.Rotate(0, 0, 270);
+                ++turned;
+            }
 
             //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
             //temp.transform.parent = transform;
@@ -164,30 +178,6 @@ public class Room : MonoBehaviour
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
 
-        if (southRoom != null)
-        {
-            temp = Instantiate(DoorBottom, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(.25f, -.75f, 0);
-            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
-
-            //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
-            //temp.transform.parent = transform;
-            //temp.transform.Translate(.25f, -1.25f, 0);
-            //tunnels.Add(temp);
-
-            //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
-            //temp.transform.parent = transform;
-            //temp.transform.Translate(.25f, -1.75f, 0);
-            //tunnels.Add(temp);
-        }
-        else
-        {
-            temp = Instantiate(WallBottom, transform.position, Quaternion.identity) as GameObject;
-            temp.transform.parent = transform;
-            temp.transform.Translate(.25f, -.75f, 0);
-            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
-        }
         if (eastRoom != null)
         {
             temp = Instantiate(DoorRight, transform.position, Quaternion.identity) as GameObject;
@@ -204,6 +194,11 @@ public class Room : MonoBehaviour
             //temp.transform.parent = transform;
             //temp.transform.Translate(1.75f, .25f, 0);
             //tunnels.Add(temp);
+            if (isKitchen && turned == 1)
+            {
+                Furniture.transform.Rotate(0, 0, 270);
+                ++turned;
+            }
         }
         else
         {
@@ -212,6 +207,39 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.75f, .25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         }
+
+        if (southRoom != null)
+        {
+            temp = Instantiate(DoorBottom, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -.75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(.25f, -1.25f, 0);
+            //tunnels.Add(temp);
+
+            //temp = Instantiate(TunnelVer, transform.position, Quaternion.identity) as GameObject;
+            //temp.transform.parent = transform;
+            //temp.transform.Translate(.25f, -1.75f, 0);
+            //tunnels.Add(temp);
+            if (isKitchen && turned == 2)
+            {
+                Furniture.transform.Rotate(0, 0, 270);
+                ++turned;
+            }
+        }
+        else
+        {
+            temp = Instantiate(WallBottom, transform.position, Quaternion.identity) as GameObject;
+            temp.transform.parent = transform;
+            temp.transform.Translate(.25f, -.75f, 0);
+            temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+
+            
+        }
+        
         if (westRoom != null)
         {
             temp = Instantiate(DoorLeft, transform.position, Quaternion.identity) as GameObject;
@@ -235,6 +263,7 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(-.75f, -.25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+            
         }
     }
 
@@ -467,6 +496,8 @@ public class Room : MonoBehaviour
                     movingChar.arrow.transform.Translate(0, 0.25f, 0);
                     movingChar.arrow.SetActive(true);
                     deselectedCharacters.Add(movingChar);
+
+                    
                     //arrows.Add(temp);
                 }
             }
@@ -625,22 +656,29 @@ public class Room : MonoBehaviour
             Character character = movement.Character;
             foreach (Requirement r in requirements)
             {
-                if (r.getType() == global::Requirement.Type.agility)
+                if (r.IsActive)
                 {
-                    Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
-                    if (character.Agility >= r.getRequiredValue())
+                    if (r.getType() == global::Requirement.Type.agility)
                     {
-                        return true;
+                        Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
+                        if (character.Agility >= r.getRequiredValue())
+                        {
+                            character.Agility += r.requiredValue / (BonusFactor * 2);
+                            return true;
+                        }
                     }
-                }
-                else if (r.getType() == global::Requirement.Type.strength)
-                {
-                    Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
-                    if (character.Strength >= r.getRequiredValue())
+                    else if (r.getType() == global::Requirement.Type.strength)
                     {
-                        return true;
+                        Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
+                        if (character.Strength >= r.getRequiredValue())
+                        {
+                            character.Strength += r.requiredValue / (BonusFactor * 2);
+                            return true;
+                        }
                     }
+                    r.IsActive = true;
                 }
+                
             }
         }
         return false;
@@ -648,8 +686,13 @@ public class Room : MonoBehaviour
 
     public void sacrifice(int currentDayNum, Journal journal)
     {
-        if (selectedCharacters.Count > 0 && characters.Count >= 2)
+        if (Reward[0].IsActive && selectedCharacters.Count > 0 && characters.Count >= 2)
         {
+            Furniture_used.transform.rotation = Furniture.transform.rotation;
+
+            Furniture_used.SetActive(true);
+            Furniture.SetActive(false);
+
             Character victim = selectedCharacters[selectedCharacters.Count - 1];
             string storyText = victim.CharName + " gave his live for the greater Good!";
             selectedCharacters.Remove(victim);
@@ -674,6 +717,7 @@ public class Room : MonoBehaviour
             journal.addStory(new Story(currentDayNum, storyText));
 
             FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
+            Reward[0].IsActive = false;
         }
 
     }

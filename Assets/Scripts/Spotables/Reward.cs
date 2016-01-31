@@ -11,6 +11,20 @@ public class Reward
 
     public Type type;
     public int visionRequired;
+    private bool isActive = true;
+
+    public bool IsActive
+    {
+        get
+        {
+            return isActive;
+        }
+
+        set
+        {
+            isActive = value;
+        }
+    }
 
     public Type getType()
     {

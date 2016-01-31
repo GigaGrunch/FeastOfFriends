@@ -257,8 +257,17 @@ public class GameController : MonoBehaviour
 
     public void OnPlayerMovementSuccess(Room source, Room destination, Character character)
     {
-        source.Characters.Remove(character);
-        destination.Characters.Add(character);
+        int capacity = 6;
+        if (destination.Reward != null && destination.Reward.Length > 0 && destination.Reward[0].getType() == Reward.Type.human)
+        {
+            capacity = 5;
+        }
+        if(destination.Characters.Count < capacity)
+        {
+            source.Characters.Remove(character);
+            destination.Characters.Add(character);
+        }
+        
     }
 
     public void sacrifice()
@@ -283,7 +292,7 @@ public class GameController : MonoBehaviour
         {
             // TODO: remove [0] with proper selection mechanism if multiple rewards are possible
             Reward reward = destination.Reward[0];
-            if (reward.getType() == Reward.Type.human)
+            if (reward.IsActive && reward.getType() == Reward.Type.human)
             {
                 List<string> playerNames = loadPlayerNames();
                 string playerName;
@@ -299,9 +308,12 @@ public class GameController : MonoBehaviour
 
                 } while (!playerWithHeadDoesNotExist(playerHead));
                 Character newCharacter = Instantiate(character_prefab);
+                newCharacter.CharName = playerName;
+                newCharacter.Portrait = playerHead;
                 characters.Add(newCharacter);
                 destination.Characters.Add(newCharacter);
                 destination.drawPeople();
+                reward.IsActive = false;
             }
         }
     }

@@ -13,6 +13,7 @@ public class Requirement
     public Type type;
     public int requiredValue;
     public int visionRequired;
+    private bool isActive = true;
 
     public Type getType()
     {
@@ -34,6 +35,19 @@ public class Requirement
         set
         {
             visionRequired = value;
+        }
+    }
+
+    public bool IsActive
+    {
+        get
+        {
+            return isActive;
+        }
+
+        set
+        {
+            isActive = value;
         }
     }
 }
