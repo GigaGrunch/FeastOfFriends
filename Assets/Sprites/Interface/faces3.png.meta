@@ -1,9 +1,16 @@
 fileFormatVersion: 2
 guid: 532144d37e17f4640a5607d8db823715
-timeCreated: 1454199422
+timeCreated: 1454202658
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: faces3_0
+    21300002: faces3_1
+    21300004: faces3_2
+    21300006: faces3_3
+    21300008: faces3_4
+    21300010: faces3_5
+    21300012: faces3_6
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,26 +37,160 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
-    wrapMode: -1
-  nPOTScale: 1
+    wrapMode: 1
+  nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaIsTransparency: 0
-  textureType: -1
+  alphaIsTransparency: 1
+  textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: faces3_0
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 56
+        width: 175
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -49.5, y: 86}
+        - {x: -60.5, y: 66}
+        - {x: -65.5, y: 43}
+        - {x: -69.5, y: -11}
+        - {x: -66.5, y: -26}
+        - {x: -84.5, y: -55}
+        - {x: -87.5, y: -63}
+        - {x: -87.5, y: -85}
+        - {x: -84.5, y: -86}
+        - {x: 87.5, y: -86}
+        - {x: 87.5, y: 80}
+        - {x: 54.5, y: 86}
+      - - {x: 28.5, y: 86}
+        - {x: 28.5, y: 83}
+        - {x: 31.5, y: 81}
+        - {x: 37.5, y: 81}
+        - {x: 39.5, y: 83}
+        - {x: 39.5, y: 86}
+    - name: faces3_2
+      rect:
+        serializedVersion: 2
+        x: 621
+        y: 56
+        width: 175
+        height: 189
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 53.5, y: 72.5}
+        - {x: 50.5, y: 71.5}
+        - {x: 42.5, y: 88.5}
+        - {x: 38.5, y: 94.5}
+        - {x: -87.5, y: 94.5}
+        - {x: -87.5, y: -94.5}
+        - {x: 87.5, y: -94.5}
+        - {x: 87.5, y: 44.5}
+        - {x: 83.5, y: 67.5}
+        - {x: 65.5, y: 71.5}
+        - {x: 59.5, y: 69.5}
+    - name: faces3_3
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 56
+        width: 175
+        height: 190
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -18.5, y: 95}
+        - {x: -35.5, y: 79}
+        - {x: -69.5, y: 9}
+        - {x: -69.5, y: -20}
+        - {x: -57.5, y: -49}
+        - {x: -85.5, y: -64}
+        - {x: -87.5, y: -72}
+        - {x: -87.5, y: -95}
+        - {x: 87.5, y: -95}
+        - {x: 87.5, y: -45}
+        - {x: 64.5, y: 43}
+        - {x: 29.5, y: 81}
+        - {x: 14.5, y: 95}
+    - name: faces3_4
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 56
+        width: 175
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -64.5, y: 90}
+        - {x: -77.5, y: 48}
+        - {x: -69.5, y: -15}
+        - {x: -58.5, y: -45}
+        - {x: -85.5, y: -59}
+        - {x: -87.5, y: -67}
+        - {x: -87.5, y: -90}
+        - {x: 87.5, y: -90}
+        - {x: 87.5, y: 51}
+        - {x: 68.5, y: 90}
+    - name: faces3_5
+      rect:
+        serializedVersion: 2
+        x: 1453
+        y: 56
+        width: 175
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 42.5, y: 100}
+        - {x: -66.5, y: 100}
+        - {x: -87.5, y: 91}
+        - {x: -87.5, y: -100}
+        - {x: 87.5, y: -100}
+        - {x: 87.5, y: -74}
+        - {x: 84.5, y: -69}
+        - {x: 84.5, y: 40}
+        - {x: 76.5, y: 97}
+    - name: faces3_6
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 56
+        width: 175
+        height: 151
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -67.5, y: 75.5}
+        - {x: -87.5, y: 3.5}
+        - {x: -87.5, y: -75.5}
+        - {x: 87.5, y: -75.5}
+        - {x: 87.5, y: -1.5}
+        - {x: 75.5, y: 42.5}
+        - {x: 31.5, y: 75.5}
     outline: []
   spritePackingTag: 
   userData: 
