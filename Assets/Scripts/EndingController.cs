@@ -26,9 +26,12 @@ public class EndingController : MonoBehaviour
             audio.playGameOver();
         }
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+    // Update is called once per frame
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(0))
+        {
+            Application.LoadLevel("Mainmenu");
+        }
 	}
 }
