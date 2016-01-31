@@ -606,6 +606,7 @@ public class Room : MonoBehaviour
                 gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
             }
             pendingMovements[0].Destination.Requirement = null;
+            gameController.OnMovementToRoomSuccess(pendingMovements[0].Destination);
         }
         pendingMovements.Clear();
     }

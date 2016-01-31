@@ -262,35 +262,6 @@ public class GameController : MonoBehaviour
     {
         source.Characters.Remove(character);
         destination.Characters.Add(character);
-        roomsToActivate.Add(destination);
-        
-        destination.discoverNeighbors();
-
-        if(destination.Reward != null && destination.Reward.Length > 0)
-        {
-            // TODO: remove [0] with proper selection mechanism if multiple rewards are possible
-            Reward reward = destination.Reward[0];
-            if(reward.getType() == Reward.Type.human)
-            {
-                List<string> playerNames = loadPlayerNames();
-                string playerName;
-                Sprite playerHead;
-                do
-                {
-                    playerName = playerNames[UnityEngine.Random.Range(0, playerNames.Count)];
-                    
-                } while (playerWithNameDoesNotExist(playerName));
-                do
-                {
-                    playerHead = playerHeads[UnityEngine.Random.Range(0, playerHeads.Length)];
-
-                } while (playerWithHeadDoesNotExist(playerHead));
-                Character newCharacter = Instantiate(character_prefab);
-                characters.Add(newCharacter);
-                destination.Characters.Add(newCharacter);
-                destination.drawPeople();
-            }
-        }
     }
 
     private bool playerWithHeadDoesNotExist(Sprite playerHead)
@@ -326,5 +297,39 @@ public class GameController : MonoBehaviour
     public void print(string name)
     {
         Debug.Log(name);
+    }
+
+    public void OnMovementToRoomSuccess(Room destination)
+    {
+
+        roomsToActivate.Add(destination);
+
+        destination.discoverNeighbors();
+
+        if (destination.Reward != null && destination.Reward.Length > 0)
+        {
+            // TODO: remove [0] with proper selection mechanism if multiple rewards are possible
+            Reward reward = destination.Reward[0];
+            if (reward.getType() == Reward.Type.human)
+            {
+                List<string> playerNames = loadPlayerNames();
+                string playerName;
+                Sprite playerHead;
+                do
+                {
+                    playerName = playerNames[UnityEngine.Random.Range(0, playerNames.Count)];
+
+                } while (playerWithNameDoesNotExist(playerName));
+                do
+                {
+                    playerHead = playerHeads[UnityEngine.Random.Range(0, playerHeads.Length)];
+
+                } while (playerWithHeadDoesNotExist(playerHead));
+                Character newCharacter = Instantiate(character_prefab);
+                characters.Add(newCharacter);
+                destination.Characters.Add(newCharacter);
+                destination.drawPeople();
+            }
+        }
     }
 }
