@@ -36,6 +36,11 @@ public class GameController : MonoBehaviour
     [SerializeField]
     Text AgilityValue, StrengthValue, VisionValue;
 
+    [SerializeField]
+    GameObject turnbar;
+    [SerializeField]
+    Sprite[] turnbarSprites;
+
     public new AudioScript audio;
 
     void Start()
@@ -275,11 +280,17 @@ public class GameController : MonoBehaviour
 
         currentDayNum++;
         nextDeathIn--;
+
         if (nextDeathIn <= 0)
         {
             killRandomCharacter();
             audio.playRandomSac();
             nextDeathIn = 5;
+            turnbar.GetComponent<Image>().sprite = turnbarSprites[4];
+        }
+        else
+        {
+            turnbar.GetComponent<Image>().sprite = turnbarSprites[nextDeathIn-1];
         }
         foreach (Character c in characters)
         {
