@@ -4,9 +4,11 @@ using System.Text;
 using System.IO;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+
     int currentDayNum;
     int nextDeathIn;
 
@@ -236,6 +238,11 @@ public class GameController : MonoBehaviour
     {
         characters.Remove(victim);
         Destroy(victim.gameObject);
+        if(characters.Count == 0)
+        {
+            EndingController.playerWon = false;
+            SceneManager.LoadScene("EndScene");
+        }
     }
 
     void removeEmptyRooms()
@@ -283,6 +290,10 @@ public class GameController : MonoBehaviour
 
     public void OnMovementToRoomSuccess(Room destination)
     {
+        if (destination.name.Equals("Finish")){
+            EndingController.playerWon = true;
+            SceneManager.LoadScene("EndScene");
+        }
 
         roomsToActivate.Add(destination);
 

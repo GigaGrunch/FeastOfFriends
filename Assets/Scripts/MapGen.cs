@@ -11,9 +11,10 @@ public class MapGen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Room start;
+        Room finish;
         Room room;
 
-        rooms.Add(addRoom(normalRoom, 0, 0, false, true, false, false));
+        rooms.Add(finish = addRoom(normalRoom, 0, 0, false, true, false, false));
 
         room = addRoom(normalRoom, 0, 1, false, true, false, false);
         room.Reward = new Reward[1];
@@ -111,7 +112,7 @@ public class MapGen : MonoBehaviour {
         };
         rooms.Add(room);
 
-        rooms.Add(addRoom(normalRoom, 2, 2, true, false, true, true));
+        rooms.Add(finish = addRoom(normalRoom, 2, 2, true, false, true, true));
 
         rooms.Add(start = addRoom(normalRoom, 2, 3, true, true, true, true));
 
@@ -267,6 +268,7 @@ public class MapGen : MonoBehaviour {
 
         start.name = "Start (2,3)";
         start.gameObject.SetActive(true);
+        finish.name = "Finish";
     }
 	
 	Room addRoom(GameObject type, int x, int y, bool north, bool east, bool south, bool west)
