@@ -451,6 +451,7 @@ public class Room : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             Room selectedRoom = gameController.SelectedRoom;
+            List<Character> deselectedCharacters = new List<Character>();
 
             // can only move to neighbouring rooms
             if (selectedRoom.NorthRoom == this)
@@ -465,6 +466,7 @@ public class Room : MonoBehaviour
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
                     movingChar.arrow.transform.Translate(0, 0.25f, 0);
                     movingChar.arrow.SetActive(true);
+                    deselectedCharacters.Add(movingChar);
                     //arrows.Add(temp);
                 }
             }
@@ -481,8 +483,7 @@ public class Room : MonoBehaviour
                     movingChar.arrow.transform.Translate(0.25f, 0, 0);
                     movingChar.arrow.transform.Rotate(0, 0, 270);
                     movingChar.arrow.SetActive(true);
-
-
+                    deselectedCharacters.Add(movingChar);
                     //arrows.Add(temp);
                 }
             }
@@ -493,7 +494,7 @@ public class Room : MonoBehaviour
                     clearMovement(movingChar, selectedRoom);
 
                     selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
-                    
+
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);
 
@@ -503,6 +504,7 @@ public class Room : MonoBehaviour
                     movingChar.arrow.transform.Rotate(0, 0, 90);
                     //arrows.Add(temp);
                     movingChar.arrow.SetActive(true);
+                    deselectedCharacters.Add(movingChar);
                 }
             }
             else if (selectedRoom.SouthRoom == this)
@@ -521,9 +523,16 @@ public class Room : MonoBehaviour
                     movingChar.arrow.transform.Translate(0, -0.25f, 0);
                     movingChar.arrow.transform.Rotate(0, 0, 180);
                     movingChar.arrow.SetActive(true);
+                    deselectedCharacters.Add(movingChar);
                     //arrows.Add(temp);
                 }
             }
+
+            foreach (Character c in deselectedCharacters)
+            {
+                selectedRoom.selectedCharacters.Remove(c);
+            }
+            FindObjectOfType<InterfaceController>().SetRoomMembers(selectedRoom.characters);
         }
     }
 
@@ -629,10 +638,8 @@ public class Room : MonoBehaviour
 
     public void sacrifice(int currentDayNum, Journal journal)
     {
-        Debug.Log("Count is: " + characters.Count);
         if (selectedCharacters.Count > 0 && characters.Count >= 2)
         {
-            Debug.Log("sacrifice!");
             Character victim = selectedCharacters[selectedCharacters.Count - 1];
             string storyText = victim.CharName + " gave his live for the greater Good!";
             selectedCharacters.Remove(victim);
@@ -655,6 +662,8 @@ public class Room : MonoBehaviour
             }
             storyText += " gained " + visionBonus + " Vision, " + strengthBonus + " Strength and " + agilityBonus + " Agility from feasting on his flesh";
             journal.addStory(new Story(currentDayNum, storyText));
+
+            FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
         }
 
     }
@@ -711,7 +720,7 @@ public class Room : MonoBehaviour
         }
         if (SouthRoom != null)
         {
-            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelRand2, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -2, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
@@ -749,7 +758,7 @@ public class Room : MonoBehaviour
         }
         if (WestRoom != null)
         {
-            temp = Instantiate(TunnelRand2, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-2, -.25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = 5;

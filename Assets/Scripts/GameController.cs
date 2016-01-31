@@ -42,15 +42,22 @@ public class GameController : MonoBehaviour
         List<string> playerNames = loadPlayerNames();
 
         selectedRoom = GameObject.Find("Start (2,3)").GetComponent<Room>();
+        List<int> usedIndizes = new List<int>();
 
         for (int i = 0; i < 6; i++)
         {
             int randomInt = UnityEngine.Random.Range(0, playerNames.Count);
             Character testCharacter = Instantiate(character_prefab);
-            testCharacter.Portrait = playerHeads[i];
             testCharacter.CharName = playerNames[randomInt];
             playerNames.RemoveAt(randomInt);
             selectedRoom.Characters.Add(testCharacter);
+            do
+            {
+                randomInt = UnityEngine.Random.Range(0, playerHeads.Length);
+            } while (usedIndizes.Contains(randomInt));
+            
+            usedIndizes.Add(randomInt);
+            testCharacter.Portrait = playerHeads[randomInt];
             characters.Add(testCharacter);
         }
 
@@ -213,6 +220,7 @@ public class GameController : MonoBehaviour
         {
             i.SelectedCharacters.Remove(victim);
             i.Characters.Remove(victim);
+            i.drawPeople();
         }
         killCharacter(victim);
         journal.addStory(new Story(currentDayNum, "Due to your inability to do the necessary your beloved companion " + victim.CharName + " died a pointless death"));
