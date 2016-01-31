@@ -76,7 +76,14 @@ public class MapGen : MonoBehaviour {
         };
         rooms.Add(room);
         
-        rooms.Add(addRoom(normalRoom, 1, 2, true, true, true, false));
+        kitchen = addRoom(Kitchen, 1, 2, true, true, true, false);
+        kitchen.Reward = new Reward[1];
+        kitchen.Reward[0] = new Reward
+        {
+            type = Reward.Type.altar,
+            visionRequired = Random.Range(1, 25)
+        };
+        rooms.Add(kitchen);
 
         room = addRoom(normalRoom, 1, 3, false, true, true, true);
         room.Requirement = new Requirement[1];
@@ -100,7 +107,14 @@ public class MapGen : MonoBehaviour {
         
         rooms.Add(addRoom(normalRoom, 1, 5, false, false, true, true));
 
-        rooms.Add(addRoom(normalRoom, 2, 0, true, true, false, true));
+        kitchen = addRoom(Kitchen, 2, 0, true, true, false, true);
+        kitchen.Reward = new Reward[1];
+        kitchen.Reward[0] = new Reward
+        {
+            type = Reward.Type.altar,
+            visionRequired = Random.Range(1, 25)
+        };
+        rooms.Add(kitchen);
 
         room = addRoom(normalRoom, 2, 1, true, true, true, false);
         room.Requirement = new Requirement[1];

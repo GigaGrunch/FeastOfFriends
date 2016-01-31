@@ -103,7 +103,7 @@ public class GameController : MonoBehaviour
         List<string> result = new List<string>();
         try
         {
-            StreamReader reader = new StreamReader("Assets/names.txt", Encoding.Default);
+            StreamReader reader = new StreamReader("names.txt", Encoding.Default);
             string line;
             using (reader)
             {
@@ -160,6 +160,19 @@ public class GameController : MonoBehaviour
         AgilityValue.text = "" + (clickedCharacter != null ? clickedCharacter.Agility : 0);
         StrengthValue.text = "" + (clickedCharacter != null ? clickedCharacter.Strength : 0);
         VisionValue.text = "" + (clickedCharacter != null ? clickedCharacter.Vision : 0);
+
+        if(selectedRoom.Reward.Length > 0 && selectedRoom.Reward[0].getType().Equals(Reward.Type.altar))
+        {
+            if(selectedRoom.SelectedCharacters.Count < 2)
+            {
+                sacrificeButton.GetComponent<Button>().interactable = false;
+            }
+            else
+            {
+                sacrificeButton.GetComponent<Button>().interactable = true;
+            }
+        }
+        
     }
 
     public void onRoomSelected(Room clickedRoom)
@@ -181,7 +194,7 @@ public class GameController : MonoBehaviour
             if (r.getType() == Reward.Type.altar && activeRooms.Contains(selectedRoom))
             {
                 altarExists = true;
-                if(!r.IsActive || selectedRoom.Characters.Count <= 1)
+                if (!r.IsActive || selectedRoom.Characters.Count <= 1)
                 {
                     disableSacrifice = true;
                 }
@@ -274,6 +287,7 @@ public class GameController : MonoBehaviour
         }
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(SelectedRoom.Characters);
+        onRoomSelected(SelectedRoom);
     }
 
     private void killRandomCharacter()
@@ -336,10 +350,12 @@ public class GameController : MonoBehaviour
 
     public void sacrifice()
     {
-        audio.playFeast();
-        selectedRoom.sacrifice(currentDayNum, journal);
-        nextDeathIn = 5;
-        onRoomSelected(selectedRoom);
+        if(selectedRoom.sacrifice(currentDayNum, journal))
+        {
+            audio.playFeast(); ;
+            nextDeathIn = 5;
+            onRoomSelected(selectedRoom);
+        }
     }
 
     public void print(string name)
