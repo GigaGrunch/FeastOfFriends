@@ -596,12 +596,12 @@ public class Room : MonoBehaviour
     private void tryToExecuteMovement(List<Movement> pendingMovements)
     {
         // test requirements here
-        List<Requirement> destinationRequirements = pendingMovements[0].Destination.Requirements;
+        Requirement[] destinationRequirements = pendingMovements[0].Destination.Requirement;
         bool success = false;
         foreach (Movement pendingMovement in pendingMovements)
         {
-            Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination);
-            if (destinationRequirements.Count == 0)
+            Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination + "; "+destinationRequirements.Length);
+            if (destinationRequirements == null || destinationRequirements.Length == 0)
             {
                 success = true;
                 break;
@@ -611,16 +611,28 @@ public class Room : MonoBehaviour
             {
                 if (r.getType() == global::Requirement.Type.agility)
                 {
+                    Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
                     if (character.Agility >= r.getRequiredValue())
                     {
-                        destinationRequirements.Remove(r);
+                        success = true;
+                    }
+                    else
+                    {
+                        success = false;
+                        break;
                     }
                 }
                 else if (r.getType() == global::Requirement.Type.strength)
                 {
+                    Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
                     if (character.Strength >= r.getRequiredValue())
                     {
-                        destinationRequirements.Remove(r);
+                        success = true;
+                    }
+                    else
+                    {
+                        success = false;
+                        break;
                     }
                 }
             }
@@ -632,6 +644,7 @@ public class Room : MonoBehaviour
             {
                 gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
             }
+            destinationRequirements = null;
         }
         pendingMovements.Clear();
     }
