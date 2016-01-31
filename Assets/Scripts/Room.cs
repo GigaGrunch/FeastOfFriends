@@ -659,6 +659,12 @@ public class Room : MonoBehaviour
 
     public bool doMovementsFulfillRequirement(List<Movement> movements, Requirement[] requirements)
     {
+        int type = 0;
+        int required = 0;
+        int bonus = 0;
+        bool success = false;
+        List<Character> movingChars = new List<Character>();
+
         foreach (Movement movement in movements)
         {
             if (requirements == null || requirements.Length == 0)
@@ -670,46 +676,89 @@ public class Room : MonoBehaviour
             {
                 if (r.IsActive)
                 {
+                    required = r.getRequiredValue();
+
                     if (r.getType() == global::Requirement.Type.agility)
                     {
                         if (character.Agility >= r.getRequiredValue())
                         {
-                            int bonus = r.requiredValue / (BonusFactor * 2);
+                            bonus = r.requiredValue / (BonusFactor * 2);
                             character.Agility += bonus;
                             if (bonus <= 0) bonus = 1;
-                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Agility! As a result his Agility even increased by " + bonus);
-                            gameController.audio.playObstAgi();
-                            return true;
+                            type = 1;
+                            success = true;
+                            movingChars.Add(character);
                         }
                         else
                         {
-                            gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");
-                            gameController.audio.playObstFail();
+                            type = 1;
+                            success = false;
+                            movingChars.Add(character);
                         }
                     }
                     else if (r.getType() == global::Requirement.Type.strength)
                     {
                         if (character.Strength >= r.getRequiredValue())
                         {
-                            int bonus = r.requiredValue / (BonusFactor * 2);
+                            bonus = r.requiredValue / (BonusFactor * 2);
                             character.Strength += bonus;
                             if (bonus <= 0) bonus = 1;
-                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Strength. As a result his Strength even increased by " + bonus);
-                            gameController.audio.playObstStr();
-                            return true;
+                            type = 2;
+                            success = true;
+                            movingChars.Add(character);
                         }
                         else
                         {
-                            gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Strength! He would have needed " + (r.requiredValue - character.Strength) + " more Agility to master it.");
-                            gameController.audio.playObstFail();
+                            type = 2;
+                            success = false;
+                            movingChars.Add(character);
                         }
                     }
                     r.IsActive = true;
                 }
-
             }
         }
-        return false;
+
+        string names = "";
+
+        if (movingChars.Count > 0)
+        {
+            foreach (Character c in movingChars)
+            {
+                names += c.CharName + ", ";
+            }
+
+            names = names.Remove(names.Length - 2);
+        }
+
+        if (type == 1)
+        {
+            if (success)
+            {
+                gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Agility! As a result their Agility has even increased by " + bonus + ".");
+                gameController.audio.playObstAgi();
+            }
+            else
+            {
+                gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Agility! One of them would have needed " + required + " Agility to master it.");
+                gameController.audio.playObstFail();
+            }
+        }
+        if (type == 2)
+        {
+            if (success)
+            {
+                gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Strength. As a result their Strength has even increased by " + bonus + ".");
+                gameController.audio.playObstStr();
+            }
+            else
+            {
+                gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength! One of them would have needed " + (required) + " more Agility to master it.");
+                gameController.audio.playObstFail();
+            }
+        }
+
+        return success;
     }
 
     public bool sacrifice(int currentDayNum, Journal journal)
