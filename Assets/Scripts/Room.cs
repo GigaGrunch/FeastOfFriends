@@ -48,7 +48,7 @@ public class Room : MonoBehaviour
     GameObject TunnelRand1, TunnelRand2;
 
     [SerializeField]
-    GameObject Furniture;
+    GameObject Furniture, Furniture_used;
 
     [SerializeField]
     bool isKitchen;
@@ -688,6 +688,11 @@ public class Room : MonoBehaviour
     {
         if (Reward[0].IsActive && selectedCharacters.Count > 0 && characters.Count >= 2)
         {
+            Furniture_used.transform.rotation = Furniture.transform.rotation;
+
+            Furniture_used.SetActive(true);
+            Furniture.SetActive(false);
+
             Character victim = selectedCharacters[selectedCharacters.Count - 1];
             string storyText = victim.CharName + " gave his live for the greater Good!";
             selectedCharacters.Remove(victim);
