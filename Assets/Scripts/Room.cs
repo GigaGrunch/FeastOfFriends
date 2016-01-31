@@ -632,6 +632,7 @@ public class Room : MonoBehaviour
                         Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
                         if (character.Agility >= r.getRequiredValue())
                         {
+                            character.Agility += r.requiredValue / (BonusFactor * 2);
                             return true;
                         }
                     }
@@ -640,6 +641,7 @@ public class Room : MonoBehaviour
                         Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
                         if (character.Strength >= r.getRequiredValue())
                         {
+                            character.Strength += r.requiredValue / (BonusFactor * 2);
                             return true;
                         }
                     }
