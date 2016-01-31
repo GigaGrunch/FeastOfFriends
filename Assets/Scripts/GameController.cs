@@ -35,8 +35,13 @@ public class GameController : MonoBehaviour
     [SerializeField]
     Text AgilityValue, StrengthValue, VisionValue;
 
+    public new AudioScript audio;
+
     void Start()
     {
+        audio = GetComponent<AudioScript>();
+        audio.playIntro();
+
         // initialize start characters here
         currentDayNum = 1;
         nextDeathIn = 5;
@@ -216,6 +221,7 @@ public class GameController : MonoBehaviour
         if (nextDeathIn <= 0)
         {
             killRandomCharacter();
+            audio.playRandomSac();
             nextDeathIn = 5;
         }
         foreach (Character c in characters)
@@ -286,6 +292,7 @@ public class GameController : MonoBehaviour
 
     public void sacrifice()
     {
+        audio.playFeast();
         selectedRoom.sacrifice(currentDayNum, journal);
         nextDeathIn = 5;
     }
@@ -326,6 +333,7 @@ public class GameController : MonoBehaviour
 
                 } while (!playerWithHeadDoesNotExist(playerHead));
                 Character newCharacter = Instantiate(character_prefab);
+                audio.playNewGuy();
                 newCharacter.CharName = playerName;
                 newCharacter.Portrait = playerHead;
                 characters.Add(newCharacter);

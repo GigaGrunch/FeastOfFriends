@@ -667,11 +667,13 @@ public class Room : MonoBehaviour
                             character.Agility += bonus;
                             if (bonus <= 0) bonus = 1;
                             gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Agility! As a result his Agility even increased by " + bonus);
+                            gameController.audio.playObstAgi();
                             return true;
                         }
                         else
                         {
                             gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");
+                            gameController.audio.playObstFail();
                         }
                     }
                     else if (r.getType() == global::Requirement.Type.strength)
@@ -683,11 +685,13 @@ public class Room : MonoBehaviour
                             character.Strength += bonus;
                             if (bonus <= 0) bonus = 1;
                             gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Strength. As a result his Strength even increased by " + bonus);
+                            gameController.audio.playObstStr();
                             return true;
                         }
                         else
                         {
                             gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Strength! He would have needed " + (r.requiredValue - character.Strength) + " more Agility to master it.");
+                            gameController.audio.playObstFail();
                         }
                     }
                     r.IsActive = true;
