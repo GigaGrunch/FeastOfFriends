@@ -17,10 +17,11 @@ public class InterfaceController : MonoBehaviour
     GameObject characterName;
 
     [SerializeField]
-    GameObject statsBars;
+    GameObject statsBars, roomStats;
 
     Image cPreview;
     Text cName;
+    Text altarRew, humanRew, strengthReq, agilityReq;
 
     Character[] characterIcons;
 
@@ -28,6 +29,11 @@ public class InterfaceController : MonoBehaviour
     {
         cPreview = preview.GetComponent<Image>();
         cName = characterName.GetComponent<Text>();
+
+        strengthReq = GameObject.Find("StrengthReq").GetComponent<Text>();
+        agilityReq = GameObject.Find("AgilityReq").GetComponent<Text>();
+        altarRew = GameObject.Find("KitchenRew").GetComponent<Text>();
+        humanRew = GameObject.Find("HumanRew").GetComponent<Text>();
 
         for (int i = 0; i < 6; i++)
         {
@@ -127,8 +133,111 @@ public class InterfaceController : MonoBehaviour
         }
     }
 
-    internal void ShowStatsBar(bool shouldShow)
+    public void ShowStatsBar(bool shouldShow)
     {
         statsBars.SetActive(shouldShow);
+    }
+
+    public void HideRoomStats()
+    {
+        roomStats.SetActive(false);
+    }
+
+    public void ShowAllRoomStats(Reward[] rewards, Requirement[] requirements)
+    {
+        roomStats.SetActive(true);
+        SetAllRoomStatsUnrequired();
+
+        if (rewards != null)
+        {
+            foreach (Reward r in rewards)
+            {
+                if (r.type == Reward.Type.altar)
+                {
+                    altarRew.text = "Yes";
+                }
+                if (r.type == Reward.Type.human)
+                {
+                    humanRew.text = "Yes";
+                }
+            }
+        }
+
+        if (requirements != null)
+        {
+            foreach (Requirement r in requirements)
+            {
+                if (r.type == Requirement.Type.strength)
+                {
+                    strengthReq.text = r.requiredValue.ToString();
+                }
+                if (r.type == Requirement.Type.agility)
+                {
+                    agilityReq.text = r.requiredValue.ToString();
+                }
+            }
+        }
+    }
+
+    public void ShowSomeRoomStats(Reward[] rewards, Requirement[] requirements, List<Character> characters)
+    {
+        int highestVision = 0;
+
+        foreach (Character c in characters)
+        {
+            if (c.Vision > highestVision)
+            {
+                highestVision = c.Vision;
+            }
+        }
+
+        roomStats.SetActive(true);
+        SetAllRoomStatsUnknown();
+
+        if (rewards != null)
+        {
+            foreach (Reward r in rewards)
+            {
+                if (r.type == Reward.Type.altar && highestVision > r.visionRequired)
+                {
+                    altarRew.text = "Yes";
+                }
+                if (r.type == Reward.Type.human && highestVision > r.visionRequired)
+                {
+                    humanRew.text = "Yes";
+                }
+            }
+        }
+
+        if (requirements != null)
+        {
+            foreach (Requirement r in requirements)
+            {
+                if (r.type == Requirement.Type.strength && highestVision > r.visionRequired)
+                {
+                    strengthReq.text = r.requiredValue.ToString();
+                }
+                if (r.type == Requirement.Type.agility && highestVision > r.visionRequired)
+                {
+                    agilityReq.text = r.requiredValue.ToString();
+                }
+            }
+        }
+    }
+
+    private void SetAllRoomStatsUnknown()
+    {
+        altarRew.text = "?";
+        humanRew.text = "?";
+        agilityReq.text = "?";
+        strengthReq.text = "?";
+    }
+
+    private void SetAllRoomStatsUnrequired()
+    {
+        altarRew.text = "-";
+        humanRew.text = "-";
+        agilityReq.text = "-";
+        strengthReq.text = "-";
     }
 }
