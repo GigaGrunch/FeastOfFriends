@@ -103,7 +103,7 @@ public class GameController : MonoBehaviour
         List<string> result = new List<string>();
         try
         {
-            StreamReader reader = new StreamReader("Assets/names.txt", Encoding.Default);
+            StreamReader reader = new StreamReader("names.txt", Encoding.Default);
             string line;
             using (reader)
             {
