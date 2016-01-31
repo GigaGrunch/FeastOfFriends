@@ -166,16 +166,22 @@ public class GameController : MonoBehaviour
 
         Reward[] rewards = SelectedRoom.Reward;
         bool altarExists = false;
+        bool disableSacrifice = false;
         foreach (Reward r in rewards)
         {
-            if (r.getType() == Reward.Type.altar)
+            if (r.getType() == Reward.Type.altar && activeRooms.Contains(selectedRoom))
             {
                 altarExists = true;
+                if(!r.IsActive || selectedRoom.Characters.Count <= 1)
+                {
+                    disableSacrifice = true;
+                }
                 break;
             }
         }
 
         sacrificeButton.SetActive(altarExists);
+        sacrificeButton.GetComponent<Button>().interactable = !disableSacrifice;
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
@@ -288,6 +294,7 @@ public class GameController : MonoBehaviour
     {
         selectedRoom.sacrifice(currentDayNum, journal);
         nextDeathIn = 5;
+        onRoomSelected(selectedRoom);
     }
 
     public void print(string name)
