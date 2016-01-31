@@ -487,7 +487,7 @@ public class Room : MonoBehaviour
                     //arrows.Add(temp);
                 }
             }
-            else if (selectedRoom.SouthRoom == this)
+            else if (selectedRoom.WestRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
@@ -507,7 +507,7 @@ public class Room : MonoBehaviour
                     deselectedCharacters.Add(movingChar);
                 }
             }
-            else if (selectedRoom.WestRoom == this)
+            else if (selectedRoom.SouthRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
