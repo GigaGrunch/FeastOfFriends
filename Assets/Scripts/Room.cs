@@ -656,22 +656,29 @@ public class Room : MonoBehaviour
             Character character = movement.Character;
             foreach (Requirement r in requirements)
             {
-                if (r.getType() == global::Requirement.Type.agility)
+                if (r.IsActive)
                 {
-                    Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
-                    if (character.Agility >= r.getRequiredValue())
+                    if (r.getType() == global::Requirement.Type.agility)
                     {
-                        return true;
+                        Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
+                        if (character.Agility >= r.getRequiredValue())
+                        {
+                            character.Agility += r.requiredValue / (BonusFactor * 2);
+                            return true;
+                        }
                     }
-                }
-                else if (r.getType() == global::Requirement.Type.strength)
-                {
-                    Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
-                    if (character.Strength >= r.getRequiredValue())
+                    else if (r.getType() == global::Requirement.Type.strength)
                     {
-                        return true;
+                        Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
+                        if (character.Strength >= r.getRequiredValue())
+                        {
+                            character.Strength += r.requiredValue / (BonusFactor * 2);
+                            return true;
+                        }
                     }
+                    r.IsActive = true;
                 }
+                
             }
         }
         return false;
@@ -679,7 +686,7 @@ public class Room : MonoBehaviour
 
     public void sacrifice(int currentDayNum, Journal journal)
     {
-        if (selectedCharacters.Count > 0 && characters.Count >= 2)
+        if (Reward[0].IsActive && selectedCharacters.Count > 0 && characters.Count >= 2)
         {
             Character victim = selectedCharacters[selectedCharacters.Count - 1];
             string storyText = victim.CharName + " gave his live for the greater Good!";
@@ -705,6 +712,7 @@ public class Room : MonoBehaviour
             journal.addStory(new Story(currentDayNum, storyText));
 
             FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
+            Reward[0].IsActive = false;
         }
 
     }
