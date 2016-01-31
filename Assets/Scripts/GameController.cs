@@ -46,7 +46,6 @@ public class GameController : MonoBehaviour
     void Start()
     {
         audio = GetComponent<AudioScript>();
-        audio.playIntro();
 
         // initialize start characters here
         currentDayNum = 1;
