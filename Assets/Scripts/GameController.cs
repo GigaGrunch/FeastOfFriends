@@ -339,6 +339,7 @@ public class GameController : MonoBehaviour
                 destination.Characters.Add(newCharacter);
                 destination.drawPeople();
                 reward.IsActive = false;
+                journal.addStory(new Story(currentDayNum, "In the corner of the room you find a lost soul. " + playerName + " joins your party of gourmets. He looks quite tasty."));
             }
         }
     }
