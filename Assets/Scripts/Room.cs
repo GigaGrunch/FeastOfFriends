@@ -13,8 +13,12 @@ public class Room : MonoBehaviour
     [SerializeField]
     float spawnRangeFactor = 0.1f;
 
+    [SerializeField]
+    public GameObject AgiObst, StrObst;
+
     public Reward[] reward;
     private Requirement[] requirement;
+    private bool revealed;
 
     //List<GameObject> arrows = new List<GameObject>();
     //GameObject[] arrows = new GameObject[6];
@@ -237,9 +241,9 @@ public class Room : MonoBehaviour
             temp.transform.Translate(.25f, -.75f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
-            
+
         }
-        
+
         if (westRoom != null)
         {
             temp = Instantiate(DoorLeft, transform.position, Quaternion.identity) as GameObject;
@@ -263,7 +267,7 @@ public class Room : MonoBehaviour
             temp.transform.parent = transform;
             temp.transform.Translate(-.75f, -.25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
-            
+
         }
     }
 
@@ -453,10 +457,23 @@ public class Room : MonoBehaviour
         }
     }
 
+    public bool Revealed
+    {
+        get
+        {
+            return revealed;
+        }
+
+        set
+        {
+            revealed = value;
+        }
+    }
+
     // left mouse button
     void OnMouseDown()
     {
-        if (GameObject.FindObjectOfType<CameraController>().ClickBlockedByUI())
+        if (FindObjectOfType<CameraController>().ClickBlockedByUI())
         {
             return;
         }
@@ -464,7 +481,6 @@ public class Room : MonoBehaviour
 
         if (gameController.SelectedRoom != this)
         {
-
             gameController.onRoomSelected(this);
         }
     }
@@ -497,7 +513,7 @@ public class Room : MonoBehaviour
                     movingChar.arrow.SetActive(true);
                     deselectedCharacters.Add(movingChar);
 
-                    
+
                     //arrows.Add(temp);
                 }
             }
@@ -604,7 +620,6 @@ public class Room : MonoBehaviour
 
     public void resolvePendingMovements()
     {
-        Debug.Log(this.name + ": " + pendingMovementsEast.Count + ", " + pendingMovementsNorth.Count + ", " + pendingMovementsSouth.Count + ", " + pendingMovementsWest.Count);
         if (pendingMovementsEast.Count > 0)
         {
             tryToExecuteMovement(pendingMovementsEast);
@@ -629,7 +644,6 @@ public class Room : MonoBehaviour
         // test requirements here
         Requirement[] destinationRequirements = pendingMovements[0].Destination.Requirement;
 
-
         if (doMovementsFulfillRequirement(pendingMovements, destinationRequirements))
         {
             foreach (Movement pendingMovement in pendingMovements)
@@ -639,70 +653,154 @@ public class Room : MonoBehaviour
             pendingMovements[0].Destination.Requirement = null;
             gameController.OnMovementToRoomSuccess(pendingMovements[0].Destination);
         }
+        else
+        {
+            pendingMovements[0].Destination.Revealed = true;
+        }
         pendingMovements.Clear();
     }
 
     public bool doMovementsFulfillRequirement(List<Movement> movements, Requirement[] requirements)
     {
+        int type = 0;
+        int required = 0;
+        int bonus = 0;
+        bool success = false;
+        List<Character> movingChars = new List<Character>();
+
         foreach (Movement movement in movements)
         {
-            Debug.Log(movement.Character + " tries to move from " + movement.Source + " to " + movement.Destination);
             if (requirements == null || requirements.Length == 0)
             {
-                Debug.Log("Num of requirements == 0");
                 return true;
             }
-            Debug.Log("Num of requirements == " + requirements.Length);
             Character character = movement.Character;
             foreach (Requirement r in requirements)
             {
                 if (r.IsActive)
                 {
+                    required = r.getRequiredValue();
+
                     if (r.getType() == global::Requirement.Type.agility)
                     {
-                        Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
                         if (character.Agility >= r.getRequiredValue())
                         {
-                            int bonus = r.requiredValue / (BonusFactor * 2);
+                            bonus = r.requiredValue / (BonusFactor * 2);
                             character.Agility += bonus;
                             if (bonus <= 0) bonus = 1;
-                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Agility! As a result his Agility even increased by " + bonus);
-                            gameController.audio.playObstAgi();
-                            return true;
+
+                            switch (movement.Direction)
+                            {
+                                case 0:
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 180);
+                                    break;
+                                case 1:
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                    break;
+                                case 2:
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                    break;
+                                case 3:
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 270);
+                                    break;
+                            }
+
+                            movement.Destination.AgiObst.SetActive(true);
+                            
+                            type = 1;
+                            success = true;
+                            movingChars.Add(character);
                         }
                         else
                         {
-                            gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Agility! He would have needed " + (r.requiredValue - character.Agility) + " more Agility to master it.");
-                            gameController.audio.playObstFail();
+                            type = 1;
+                            movingChars.Add(character);
                         }
                     }
                     else if (r.getType() == global::Requirement.Type.strength)
                     {
-                        Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
                         if (character.Strength >= r.getRequiredValue())
                         {
-                            int bonus = r.requiredValue / (BonusFactor * 2);
+                            bonus = r.requiredValue / (BonusFactor * 2);
                             character.Strength += bonus;
                             if (bonus <= 0) bonus = 1;
-                            gameController.writeRequirementStory(character.CharName + " managed to overcome an exciting obstacle because of his dominating Strength. As a result his Strength even increased by " + bonus);
-                            gameController.audio.playObstStr();
-                            return true;
+
+                            switch (movement.Direction)
+                            {
+                                case 0:
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 180);
+                                    break;
+                                case 1:
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                    break;
+                                case 2:
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                    break;
+                                case 3:
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 270);
+                                    break;
+                            }
+
+                            movement.Destination.StrObst.SetActive(true);
+                            
+                            type = 2;
+                            success = true;
+                            movingChars.Add(character);
                         }
                         else
                         {
-                            gameController.writeRequirementStory(character.CharName + " failed to overcome an exciting obstacle because of his meagre Strength! He would have needed " + (r.requiredValue - character.Strength) + " more Agility to master it.");
-                            gameController.audio.playObstFail();
+                            type = 2;
+                            movingChars.Add(character);
                         }
                     }
                     r.IsActive = true;
                 }
-                
             }
         }
-        return false;
+
+        string names = "";
+
+        if (movingChars.Count > 0)
+        {
+            foreach (Character c in movingChars)
+            {
+                names += c.CharName + ", ";
+            }
+
+            names = names.Remove(names.Length - 2);
+        }
+
+        if (type == 1)
+        {
+            if (success)
+            {
+                gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Agility! As a result their Agility has even increased by " + bonus + ".");
+                gameController.audio.playObstAgi();
+            }
+            else
+            {
+                gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Agility! One of them would have needed " + required + " Agility to master it.");
+                gameController.audio.playObstFail();
+            }
+        }
+        if (type == 2)
+        {
+            if (success)
+            {
+                gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Strength. As a result their Strength has even increased by " + bonus + ".");
+                gameController.audio.playObstStr();
+            }
+            else
+            {
+                gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength! One of them would have needed " + (required) + " more Agility to master it.");
+                gameController.audio.playObstFail();
+            }
+        }
+
+        return success;
     }
 
-    public void sacrifice(int currentDayNum, Journal journal)
+    public bool sacrifice(int currentDayNum, Journal journal)
     {
         if (Reward[0].IsActive && selectedCharacters.Count > 0 && characters.Count >= 2)
         {
@@ -731,12 +829,26 @@ public class Room : MonoBehaviour
                     storyText += ", ";
                 }
             }
+            if(strengthBonus == 0)
+            {
+                strengthBonus = 1;
+            }
+            if (agilityBonus == 0)
+            {
+                agilityBonus = 1;
+            }
+            if (visionBonus == 0)
+            {
+                visionBonus = 1;
+            }
             storyText += " gained " + visionBonus + " Vision, " + strengthBonus + " Strength and " + agilityBonus + " Agility from feasting on his flesh";
             journal.addStory(new Story(currentDayNum, storyText));
 
             FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
             Reward[0].IsActive = false;
+            return true;
         }
+        return false;
 
     }
 
