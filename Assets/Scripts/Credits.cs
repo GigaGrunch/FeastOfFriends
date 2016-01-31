@@ -3,9 +3,8 @@ using System.Collections;
 
 public class Credits : MonoBehaviour {
 
-    GameObject one;
-    GameObject two;
-    GameObject three;
+    [SerializeField]
+    GameObject one, two, three;
 
     public bool showingCredits = false;
 
@@ -18,28 +17,30 @@ public class Credits : MonoBehaviour {
 	void Update () {
 	    if (showingCredits)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
-                if (one.activeSelf)
+                if (three.activeSelf)
                 {
-                    one.SetActive(false);
-                    two.SetActive(true);
+                    three.SetActive(false);
+                    showingCredits = false;
                 }
                 if (two.activeSelf)
                 {
                     two.SetActive(false);
                     three.SetActive(true);
                 }
-                if (three.activeSelf)
+                if (one.activeSelf)
                 {
-                    three.SetActive(false);
-                    showingCredits = false;
+                    one.SetActive(false);
+                    two.SetActive(true);
                 }
+                
+                
             }
         }
 	}
 
-    void showCredits()
+    public void showCredits()
     {
         showingCredits = true;
         one.SetActive(true);
