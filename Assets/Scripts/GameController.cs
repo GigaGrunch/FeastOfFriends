@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
             {
                 randomInt = UnityEngine.Random.Range(0, playerHeads.Length);
             } while (usedIndizes.Contains(randomInt));
-            
+
             usedIndizes.Add(randomInt);
             testCharacter.Portrait = playerHeads[randomInt];
             characters.Add(testCharacter);
@@ -131,6 +131,15 @@ public class GameController : MonoBehaviour
 
     public void onCharacterClicked(Character clickedCharacter)
     {
+        if (clickedCharacter != null)
+        {
+            FindObjectOfType<InterfaceController>().ShowStatsBar(true);
+        }
+        else
+        {
+            FindObjectOfType<InterfaceController>().ShowStatsBar(false);
+        }
+
         AgilityBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 0, 10);
         StrenghtBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 0, 10);
         VisionBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 0, 10);
@@ -158,7 +167,7 @@ public class GameController : MonoBehaviour
             }
         }
         Debug.Log("selected room, bool = " + altarExists + "; rewards: " + rewards.Length);
-        
+
         sacrificeButton.SetActive(altarExists);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
@@ -254,14 +263,62 @@ public class GameController : MonoBehaviour
         source.Characters.Remove(character);
         destination.Characters.Add(character);
         roomsToActivate.Add(destination);
-
-        // journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
+        
         destination.discoverNeighbors();
+
+        if(destination.Reward != null && destination.Reward.Length > 0)
+        {
+            // TODO: remove [0] with proper selection mechanism if multiple rewards are possible
+            Reward reward = destination.Reward[0];
+            if(reward.getType() == Reward.Type.human)
+            {
+                List<string> playerNames = loadPlayerNames();
+                string playerName;
+                Sprite playerHead;
+                do
+                {
+                    playerName = playerNames[UnityEngine.Random.Range(0, playerNames.Count)];
+                    
+                } while (playerWithNameDoesNotExist(playerName));
+                do
+                {
+                    playerHead = playerHeads[UnityEngine.Random.Range(0, playerHeads.Length)];
+
+                } while (playerWithHeadDoesNotExist(playerHead));
+                Character newCharacter = Instantiate(character_prefab);
+                characters.Add(newCharacter);
+                destination.Characters.Add(newCharacter);
+                destination.drawPeople();
+            }
+        }
+    }
+
+    private bool playerWithHeadDoesNotExist(Sprite playerHead)
+    {
+        foreach (Character c in characters)
+        {
+            if (c.Portrait.Equals(playerHead))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool playerWithNameDoesNotExist(string playerName)
+    {
+        foreach(Character c in characters)
+        {
+            if (c.CharName.Equals(playerName))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void sacrifice()
     {
-        Debug.Log("sacrifice?");
         selectedRoom.sacrifice(currentDayNum, journal);
         nextDeathIn = 5;
     }

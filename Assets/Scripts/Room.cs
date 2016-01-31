@@ -30,17 +30,6 @@ public class Room : MonoBehaviour
     List<Movement> pendingMovementsSouth = new List<Movement>();
     List<Movement> pendingMovementsWest = new List<Movement>();
 
-    struct realMovement
-    {
-        public Vector2 target1;
-        public Vector2 target2;
-        public  Vector2 target3;
-        public  MoveChar toMove;
-        public  bool success;
-    }
-
-    List<realMovement> realMoves = new List<realMovement>();
-
     List<GameObject> fades = new List<GameObject>();
 
     [SerializeField]
@@ -74,8 +63,6 @@ public class Room : MonoBehaviour
 
     [SerializeField]
     GameObject selectBubble;
-
-    Vector2 realMoveDest;
 
     public void Initialize()
     {
@@ -473,7 +460,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar, 0));
+                    selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
 
                     movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -489,7 +476,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar, 1));
+                    selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
 
                     movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -506,7 +493,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar, 2));
+                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
 
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);
@@ -526,7 +513,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar, 3));
+                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
 
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);
@@ -609,83 +596,59 @@ public class Room : MonoBehaviour
     private void tryToExecuteMovement(List<Movement> pendingMovements)
     {
         // test requirements here
-        List<Requirement> destinationRequirements = pendingMovements[0].Destination.Requirements;
-        bool success = false;
-        foreach (Movement pendingMovement in pendingMovements)
-        {
-            realMovement thisMove = new realMovement();
+        Requirement[] destinationRequirements = pendingMovements[0].Destination.Requirement;
+        
 
-            thisMove.toMove = pendingMovement.Source.sprites[pendingMovement.Source.characters.IndexOf(pendingMovement.Character)].GetComponent<MoveChar>();
-
-            switch (pendingMovement.Direction)
-            {
-                case 0:
-                    thisMove.target1 = (Vector2) pendingMovement.Source.transform.position + new Vector2(0, 0.75f);
-                    thisMove.target2 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, -1);
-                    thisMove.target3 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 0);
-                    break;
-                case 1:
-                    thisMove.target1 = (Vector2)pendingMovement.Source.transform.position + new Vector2(0.75f, 0);
-                    thisMove.target2 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(-1, 0);
-                    thisMove.target3 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 0);
-                    break;
-                case 2:
-                    thisMove.target1 = (Vector2)pendingMovement.Source.transform.position + new Vector2(0, -0.75f);
-                    thisMove.target2 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 1);
-                    thisMove.target3 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 0);
-                    break;
-
-                case 3:
-                    thisMove.target1 = (Vector2)pendingMovement.Source.transform.position + new Vector2(-0.75f, 0);
-                    thisMove.target2 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(1, 0);
-                    thisMove.target3 = (Vector2)pendingMovement.Destination.transform.position + new Vector2(0, 0);
-                    break;
-            }
-            
-            //Debug.Log(pendingMovement.Character + " tries to move from " + pendingMovement.Source + " to " + pendingMovement.Destination);
-            if (destinationRequirements.Count == 0)
-            {
-                success = true;
-                thisMove.success = true;
-                realMoves.Add(thisMove);
-                break;
-            }
-            Character character = pendingMovement.Character;
-            foreach (Requirement r in destinationRequirements)
-            {
-                if (r.getType() == global::Requirement.Type.agility)
-                {
-                    if (character.Agility >= r.getRequiredValue())
-                    {
-                        destinationRequirements.Remove(r);
-                    }
-                }
-                else if (r.getType() == global::Requirement.Type.strength)
-                {
-                    if (character.Strength >= r.getRequiredValue())
-                    {
-                        destinationRequirements.Remove(r);
-                    }
-                }
-            }
-        }
-
-        if (success)
+        if (doMovementsFulfillRequirement(pendingMovements, destinationRequirements))
         {
             foreach (Movement pendingMovement in pendingMovements)
             {
                 gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
             }
+            pendingMovements[0].Destination.Requirement = null;
         }
         pendingMovements.Clear();
     }
 
+    public bool doMovementsFulfillRequirement(List<Movement> movements, Requirement[] requirements)
+    {
+        foreach (Movement movement in movements)
+        {
+            Debug.Log(movement.Character + " tries to move from " + movement.Source + " to " + movement.Destination);
+            if (requirements == null || requirements.Length == 0)
+            {
+                Debug.Log("Num of requirements == 0");
+                return true;
+            }
+            Debug.Log("Num of requirements == " + requirements.Length);
+            Character character = movement.Character;
+            foreach (Requirement r in requirements)
+            {
+                if (r.getType() == global::Requirement.Type.agility)
+                {
+                    Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
+                    if (character.Agility >= r.getRequiredValue())
+                    {
+                        return true;
+                    }
+                }
+                else if (r.getType() == global::Requirement.Type.strength)
+                {
+                    Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
+                    if (character.Strength >= r.getRequiredValue())
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void sacrifice(int currentDayNum, Journal journal)
     {
-        Debug.Log("Count is: " + characters.Count);
         if (selectedCharacters.Count > 0 && characters.Count >= 2)
         {
-            Debug.Log("sacrifice!");
             Character victim = selectedCharacters[selectedCharacters.Count - 1];
             string storyText = victim.CharName + " gave his live for the greater Good!";
             selectedCharacters.Remove(victim);
@@ -708,6 +671,8 @@ public class Room : MonoBehaviour
             }
             storyText += " gained " + visionBonus + " Vision, " + strengthBonus + " Strength and " + agilityBonus + " Agility from feasting on his flesh";
             journal.addStory(new Story(currentDayNum, storyText));
+
+            FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
         }
 
     }

@@ -16,6 +16,9 @@ public class InterfaceController : MonoBehaviour
     [SerializeField]
     GameObject characterName;
 
+    [SerializeField]
+    GameObject statsBars;
+
     Image cPreview;
     Text cName;
 
@@ -39,6 +42,8 @@ public class InterfaceController : MonoBehaviour
             c.GetComponent<CharacterUIHolder>().setClickable(false);
             c.GetComponent<CharacterUIHolder>().setSprite(null);
         }
+
+        FindObjectOfType<GameController>().onCharacterClicked(null);
 
         cPreview.enabled = false;
         cName.text = "";
@@ -99,5 +104,10 @@ public class InterfaceController : MonoBehaviour
                 FindObjectOfType<GameController>().onCharacterClicked(null);
             }
         }
+    }
+
+    internal void ShowStatsBar(bool shouldShow)
+    {
+        statsBars.SetActive(shouldShow);
     }
 }
