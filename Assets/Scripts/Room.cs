@@ -493,7 +493,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar, 2));
+                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar, 3));
 
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);
@@ -513,7 +513,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar, 3));
+                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar, 2));
 
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);
