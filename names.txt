@@ -46,7 +46,7 @@ Gloria
 Renate
 Capt. Kuhl
 Menschenfresser Joe
-einworG
+einworB
 Swaggissel Master
 Ultra Paddy
 Giga Crunch
@@ -59,4 +59,3 @@ Babe
 Schatz
 Freibier Fritz
 Sam
-
