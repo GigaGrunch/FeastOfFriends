@@ -16,7 +16,10 @@ public class Room : MonoBehaviour
     public Reward[] reward;
     public Requirement[] requirement;
 
-    List<GameObject> arrows = new List<GameObject>();
+    //List<GameObject> arrows = new List<GameObject>();
+    //GameObject[] arrows = new GameObject[6];
+    GameObject arrow0, arrow1, arrow2, arrow3, arrow4, arrow5;
+
     List<GameObject> sprites = new List<GameObject>();
     List<Character> characters = new List<Character>();
     List<Requirement> requirements = new List<Requirement>();
@@ -255,12 +258,13 @@ public class Room : MonoBehaviour
             Destroy(i);
         }
 
-        foreach (GameObject i in arrows)
+        foreach (Character i in characters)
         {
-            Destroy(i);
+            if (i.arrow != null)
+                i.arrow.SetActive(false);
         }
 
-        arrows.Clear();
+        //arrows.Clear();
         sprites.Clear();
 
         GameObject temp;
@@ -443,14 +447,12 @@ public class Room : MonoBehaviour
                     clearMovement(movingChar, selectedRoom);
 
                     selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
-                    GameObject temp = Instantiate(arrow);
 
-                    temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
-                    //temp.transform.position = selectedRoom.transform.position;
-                    //transform.Translate(spawnField[selectedRoom.characters.IndexOf(movingChar)]);
-                    temp.transform.Translate(0, 0.25f, 0);
-
-                    arrows.Add(temp);
+                    movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    movingChar.arrow.transform.Translate(0, 0.25f, 0);
+                    movingChar.arrow.SetActive(true);
+                    //arrows.Add(temp);
                 }
             }
             else if (selectedRoom.EastRoom == this)
@@ -461,12 +463,14 @@ public class Room : MonoBehaviour
 
                     selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
 
-                    GameObject temp = Instantiate(arrow);
-                    temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
-                    temp.transform.Translate(0.25f, 0, 0);
-                    temp.transform.Rotate(0, 0, 270);
+                    movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    movingChar.arrow.transform.Translate(0.25f, 0, 0);
+                    movingChar.arrow.transform.Rotate(0, 0, 270);
 
-                    arrows.Add(temp);
+                    
+
+                    //arrows.Add(temp);
                 }
             }
             else if (selectedRoom.WestRoom == this)
@@ -476,13 +480,15 @@ public class Room : MonoBehaviour
                     clearMovement(movingChar, selectedRoom);
 
                     selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
+                    
+                    //Destroy(arrows[index]);
+                    //arrows[index] = Instantiate(arrow);
 
-                    GameObject temp = Instantiate(arrow);
-                    temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
-                    temp.transform.Translate(-.25f, 0, 0);
-                    temp.transform.Rotate(0, 0, 90);
-
-                    arrows.Add(temp);
+                    movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    movingChar.arrow.transform.Translate(-.25f, 0, 0);
+                    movingChar.arrow.transform.Rotate(0, 0, 90);
+                    //arrows.Add(temp);
                 }
             }
             else if (selectedRoom.SouthRoom == this)
@@ -493,12 +499,15 @@ public class Room : MonoBehaviour
 
                     selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
 
-                    GameObject temp = Instantiate(arrow);
-                    temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
-                    temp.transform.Translate(0, -0.25f, 0);
-                    temp.transform.Rotate(0, 0, 180);
+                    //Destroy(arrows[index]);
+                    //arrows[index] = Instantiate(arrow);
 
-                    arrows.Add(temp);
+                    movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    movingChar.arrow.transform.Translate(0, -0.25f, 0);
+                    movingChar.arrow.transform.Rotate(0, 0, 180);
+
+                    //arrows.Add(temp);
                 }
             }
         }
