@@ -404,7 +404,7 @@ public class Room : MonoBehaviour
     // left mouse button
     void OnMouseDown()
     {
-        if (CameraController.ClickBlockedByUI())
+        if (GameObject.FindObjectOfType<CameraController>().ClickBlockedByUI())
         {
             return;
         }
@@ -419,7 +419,7 @@ public class Room : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (CameraController.ClickBlockedByUI())
+        if (GameObject.FindObjectOfType<CameraController>().ClickBlockedByUI())
         {
             return;
         }
@@ -584,6 +584,7 @@ public class Room : MonoBehaviour
             selectedCharacters.Remove(victim);
             characters.Remove(victim);
             gameController.killCharacter(victim);
+            drawPeople();
             int strengthBonus = victim.Strength / 4;
             int agilityBonus = victim.Agility / 4;
             int visionBonus = victim.Agility / 4;

@@ -247,4 +247,9 @@ public class GameController : MonoBehaviour
         Debug.Log("sacrifice?");
         selectedRoom.sacrifice(currentDayNum, journal);
     }
+
+    public void print(string name)
+    {
+        Debug.Log(name);
+    }
 }
