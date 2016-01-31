@@ -146,6 +146,19 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public GameObject SacrificeButton
+    {
+        get
+        {
+            return sacrificeButton;
+        }
+
+        set
+        {
+            sacrificeButton = value;
+        }
+    }
+
     public void onCharacterClicked(Character clickedCharacter)
     {
         if (clickedCharacter != null)
@@ -165,9 +178,10 @@ public class GameController : MonoBehaviour
         StrengthValue.text = "" + (clickedCharacter != null ? clickedCharacter.Strength : 0);
         VisionValue.text = "" + (clickedCharacter != null ? clickedCharacter.Vision : 0);
 
-        if(selectedRoom.Reward.Length > 0 && selectedRoom.Reward[0].getType().Equals(Reward.Type.altar))
+
+        if (selectedRoom == this && selectedRoom.Reward.Length > 0 && selectedRoom.Reward[0].getType().Equals(Reward.Type.altar))
         {
-            if(selectedRoom.SelectedCharacters.Count < 2)
+            if (selectedRoom.Characters.Count < 2)
             {
                 sacrificeButton.GetComponent<Button>().interactable = false;
             }
@@ -176,7 +190,6 @@ public class GameController : MonoBehaviour
                 sacrificeButton.GetComponent<Button>().interactable = true;
             }
         }
-        
     }
 
     public void onRoomSelected(Room clickedRoom)
@@ -240,8 +253,8 @@ public class GameController : MonoBehaviour
             FindObjectOfType<InterfaceController>().HideRoomStats();
         }
 
-        sacrificeButton.SetActive(altarExists);
-        sacrificeButton.GetComponent<Button>().interactable = !disableSacrifice;
+        SacrificeButton.SetActive(altarExists);
+        SacrificeButton.GetComponent<Button>().interactable = !disableSacrifice;
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
     }
