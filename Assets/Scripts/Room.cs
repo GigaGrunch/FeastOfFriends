@@ -692,13 +692,13 @@ public class Room : MonoBehaviour
                             switch (movement.Direction)
                             {
                                 case 0:
-                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 180);
                                     break;
                                 case 1:
                                     movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 90);
                                     break;
                                 case 2:
-                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 180);
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 0);
                                     break;
                                 case 3:
                                     movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 270);
@@ -728,13 +728,13 @@ public class Room : MonoBehaviour
                             switch (movement.Direction)
                             {
                                 case 0:
-                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 180);
                                     break;
                                 case 1:
                                     movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 90);
                                     break;
                                 case 2:
-                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 180);
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 0);
                                     break;
                                 case 3:
                                     movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 270);
