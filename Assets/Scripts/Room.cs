@@ -692,7 +692,6 @@ public class Room : MonoBehaviour
                         else
                         {
                             type = 1;
-                            success = false;
                             movingChars.Add(character);
                         }
                     }
@@ -710,7 +709,6 @@ public class Room : MonoBehaviour
                         else
                         {
                             type = 2;
-                            success = false;
                             movingChars.Add(character);
                         }
                     }
