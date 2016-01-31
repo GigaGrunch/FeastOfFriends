@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
             {
                 randomInt = UnityEngine.Random.Range(0, playerHeads.Length);
             } while (usedIndizes.Contains(randomInt));
-            
+
             usedIndizes.Add(randomInt);
             testCharacter.Portrait = playerHeads[randomInt];
             characters.Add(testCharacter);
@@ -131,6 +131,15 @@ public class GameController : MonoBehaviour
 
     public void onCharacterClicked(Character clickedCharacter)
     {
+        if (clickedCharacter != null)
+        {
+            FindObjectOfType<InterfaceController>().ShowStatsBar(true);
+        }
+        else
+        {
+            FindObjectOfType<InterfaceController>().ShowStatsBar(false);
+        }
+
         AgilityBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 0, 10);
         StrenghtBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 0, 10);
         VisionBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 0, 10);
@@ -158,7 +167,7 @@ public class GameController : MonoBehaviour
             }
         }
         Debug.Log("selected room, bool = " + altarExists + "; rewards: " + rewards.Length);
-        
+
         sacrificeButton.SetActive(altarExists);
 
         FindObjectOfType<InterfaceController>().SetRoomMembers(clickedRoom.Characters);
@@ -310,7 +319,6 @@ public class GameController : MonoBehaviour
 
     public void sacrifice()
     {
-        Debug.Log("sacrifice?");
         selectedRoom.sacrifice(currentDayNum, journal);
         nextDeathIn = 5;
     }
