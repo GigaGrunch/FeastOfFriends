@@ -260,9 +260,58 @@ public class GameController : MonoBehaviour
         source.Characters.Remove(character);
         destination.Characters.Add(character);
         roomsToActivate.Add(destination);
-
-        // journal.addStory(new Story(currentDayNum, character.CharName + " managed to enter an exciting new Room"));
+        
         destination.discoverNeighbors();
+
+        if(destination.Reward != null && destination.Reward.Length > 0)
+        {
+            // TODO: remove [0] with proper selection mechanism if multiple rewards are possible
+            Reward reward = destination.Reward[0];
+            if(reward.getType() == Reward.Type.human)
+            {
+                List<string> playerNames = loadPlayerNames();
+                string playerName;
+                Sprite playerHead;
+                do
+                {
+                    playerName = playerNames[UnityEngine.Random.Range(0, playerNames.Count)];
+                    
+                } while (playerWithNameDoesNotExist(playerName));
+                do
+                {
+                    playerHead = playerHeads[UnityEngine.Random.Range(0, playerHeads.Length)];
+
+                } while (playerWithHeadDoesNotExist(playerHead));
+                Character newCharacter = Instantiate(character_prefab);
+                characters.Add(newCharacter);
+                destination.Characters.Add(newCharacter);
+                destination.drawPeople();
+            }
+        }
+    }
+
+    private bool playerWithHeadDoesNotExist(Sprite playerHead)
+    {
+        foreach (Character c in characters)
+        {
+            if (c.Portrait.Equals(playerHead))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool playerWithNameDoesNotExist(string playerName)
+    {
+        foreach(Character c in characters)
+        {
+            if (c.CharName.Equals(playerName))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void sacrifice()

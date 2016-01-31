@@ -597,28 +597,39 @@ public class Room : MonoBehaviour
     {
         // test requirements here
         Requirement[] destinationRequirements = pendingMovements[0].Destination.Requirement;
-        bool success = false;
-        foreach (Movement pendingMovement in pendingMovements)
+
+
+        if (doMovementsFulfillRequirement(pendingMovements, destinationRequirements))
         {
-            if (destinationRequirements == null || destinationRequirements.Length == 0)
+            foreach (Movement pendingMovement in pendingMovements)
             {
-                success = true;
-                break;
+                gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
             }
-            Character character = pendingMovement.Character;
-            foreach (Requirement r in destinationRequirements)
+            pendingMovements[0].Destination.Requirement = null;
+        }
+        pendingMovements.Clear();
+    }
+
+    public bool doMovementsFulfillRequirement(List<Movement> movements, Requirement[] requirements)
+    {
+        foreach (Movement movement in movements)
+        {
+            Debug.Log(movement.Character + " tries to move from " + movement.Source + " to " + movement.Destination);
+            if (requirements == null || requirements.Length == 0)
+            {
+                Debug.Log("Num of requirements == 0");
+                return true;
+            }
+            Debug.Log("Num of requirements == " + requirements.Length);
+            Character character = movement.Character;
+            foreach (Requirement r in requirements)
             {
                 if (r.getType() == global::Requirement.Type.agility)
                 {
                     Debug.Log("character has " + character.Agility + " and needs " + r.requiredValue);
                     if (character.Agility >= r.getRequiredValue())
                     {
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        break;
+                        return true;
                     }
                 }
                 else if (r.getType() == global::Requirement.Type.strength)
@@ -626,26 +637,12 @@ public class Room : MonoBehaviour
                     Debug.Log("character has " + character.Strength + " and needs " + r.requiredValue);
                     if (character.Strength >= r.getRequiredValue())
                     {
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        break;
+                        return true;
                     }
                 }
             }
         }
-
-        if (success)
-        {
-            foreach (Movement pendingMovement in pendingMovements)
-            {
-                gameController.OnPlayerMovementSuccess(pendingMovement.Source, pendingMovement.Destination, pendingMovement.Character);
-            }
-            destinationRequirements = null;
-        }
-        pendingMovements.Clear();
+        return false;
     }
 
     public void sacrifice(int currentDayNum, Journal journal)
@@ -856,7 +853,7 @@ public class Room : MonoBehaviour
             foreach (Character movingChar in SelectedCharacters)
             {
                 clearMovement(movingChar, this);
-                pendingMovementsEast.Add(new Movement(this, EastRoom, movingChar));
+                pendingMovementsEast.Add(new Movement(this, EastRoom, movingChar, 1));
                 movingChar.arrow.transform.position = sprites[characters.IndexOf(movingChar)].transform.position;
                 movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
                 movingChar.arrow.transform.Translate(0.25f, 0, 0);
@@ -876,7 +873,7 @@ public class Room : MonoBehaviour
             foreach (Character movingChar in SelectedCharacters)
             {
                 clearMovement(movingChar, this);
-                pendingMovementsWest.Add(new Movement(this, WestRoom, movingChar));
+                pendingMovementsWest.Add(new Movement(this, WestRoom, movingChar, 3));
                 movingChar.arrow.transform.position = sprites[characters.IndexOf(movingChar)].transform.position;
                 movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
                 movingChar.arrow.transform.Translate(-.25f, 0, 0);
@@ -896,7 +893,7 @@ public class Room : MonoBehaviour
             foreach (Character movingChar in SelectedCharacters)
             {
                 clearMovement(movingChar, this);
-                pendingMovementsNorth.Add(new Movement(this, NorthRoom, movingChar));
+                pendingMovementsNorth.Add(new Movement(this, NorthRoom, movingChar, 0));
                 movingChar.arrow.transform.position = sprites[characters.IndexOf(movingChar)].transform.position;
                 movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
                 movingChar.arrow.transform.Translate(0, 0.25f, 0);
@@ -915,7 +912,7 @@ public class Room : MonoBehaviour
             foreach (Character movingChar in SelectedCharacters)
             {
                 clearMovement(movingChar, this);
-                pendingMovementsSouth.Add(new Movement(this, SouthRoom, movingChar));
+                pendingMovementsSouth.Add(new Movement(this, SouthRoom, movingChar, 2));
                 movingChar.arrow.transform.position = sprites[characters.IndexOf(movingChar)].transform.position;
                 movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
                 movingChar.arrow.transform.Translate(0, -0.25f, 0);
@@ -926,5 +923,4 @@ public class Room : MonoBehaviour
             FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
         }
     }
-
 }
