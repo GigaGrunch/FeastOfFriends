@@ -46,9 +46,14 @@ public class CameraController : MonoBehaviour
                 transform.position = camAnker + new Vector3(difference.x * 24, difference.y * 13.5f, 0) * (Camera.main.orthographicSize / basicOrthoSize);
             }
 
-            if (Input.GetKey(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.LoadLevel("Mainmenu");
+            }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                Application.CaptureScreenshot("screenshot.png");
             }
 
             if (Input.GetKey(KeyCode.RightArrow))
