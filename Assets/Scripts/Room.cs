@@ -460,7 +460,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
+                    selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar, 0));
 
                     movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -476,7 +476,7 @@ public class Room : MonoBehaviour
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
+                    selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar, 1));
 
                     movingChar.arrow.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
                     movingChar.arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -487,13 +487,13 @@ public class Room : MonoBehaviour
                     //arrows.Add(temp);
                 }
             }
-            else if (selectedRoom.WestRoom == this)
+            else if (selectedRoom.SouthRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
+                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar, 2));
 
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);
@@ -507,13 +507,13 @@ public class Room : MonoBehaviour
                     deselectedCharacters.Add(movingChar);
                 }
             }
-            else if (selectedRoom.SouthRoom == this)
+            else if (selectedRoom.WestRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
                     clearMovement(movingChar, selectedRoom);
 
-                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
+                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar, 3));
 
                     //Destroy(arrows[index]);
                     //arrows[index] = Instantiate(arrow);

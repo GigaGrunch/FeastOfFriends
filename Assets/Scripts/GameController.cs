@@ -264,30 +264,6 @@ public class GameController : MonoBehaviour
         destination.Characters.Add(character);
     }
 
-    private bool playerWithHeadDoesNotExist(Sprite playerHead)
-    {
-        foreach (Character c in characters)
-        {
-            if (c.Portrait.Equals(playerHead))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private bool playerWithNameDoesNotExist(string playerName)
-    {
-        foreach(Character c in characters)
-        {
-            if (c.CharName.Equals(playerName))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public void sacrifice()
     {
         selectedRoom.sacrifice(currentDayNum, journal);
@@ -319,17 +295,41 @@ public class GameController : MonoBehaviour
                 {
                     playerName = playerNames[UnityEngine.Random.Range(0, playerNames.Count)];
 
-                } while (playerWithNameDoesNotExist(playerName));
+                } while (!playerWithNameDoesNotExist(playerName));
                 do
                 {
                     playerHead = playerHeads[UnityEngine.Random.Range(0, playerHeads.Length)];
 
-                } while (playerWithHeadDoesNotExist(playerHead));
+                } while (!playerWithHeadDoesNotExist(playerHead));
                 Character newCharacter = Instantiate(character_prefab);
                 characters.Add(newCharacter);
                 destination.Characters.Add(newCharacter);
                 destination.drawPeople();
             }
         }
+    }
+
+    private bool playerWithHeadDoesNotExist(Sprite playerHead)
+    {
+        foreach (Character c in characters)
+        {
+            if (c.Portrait.Equals(playerHead))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool playerWithNameDoesNotExist(string playerName)
+    {
+        foreach (Character c in characters)
+        {
+            if (c.CharName.Equals(playerName))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
