@@ -6,12 +6,14 @@ public class Movement {
     private Room source;
     private Room destination;
     private Character character;
+    private int direction; // 0 == north; 1 == east; 2 == south; 3 == west;
 
-    public Movement(Room source, Room destination, Character character)
+    public Movement(Room source, Room destination, Character character, int direction)
     {
         this.Source = source;
         this.Destination = destination;
         this.Character = character;
+        this.Direction = direction;
     }
 
     public Room Source
@@ -50,6 +52,19 @@ public class Movement {
         set
         {
             character = value;
+        }
+    }
+
+    public int Direction
+    {
+        get
+        {
+            return direction;
+        }
+
+        set
+        {
+            direction = value;
         }
     }
 
