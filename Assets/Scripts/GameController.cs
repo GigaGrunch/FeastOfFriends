@@ -255,6 +255,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("sacrifice?");
         selectedRoom.sacrifice(currentDayNum, journal);
+        nextDeathIn = 5;
     }
 
     public void print(string name)
