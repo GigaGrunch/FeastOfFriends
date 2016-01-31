@@ -46,6 +46,11 @@ public class CameraController : MonoBehaviour
                 transform.position = camAnker + new Vector3(difference.x * 24, difference.y * 13.5f, 0) * (Camera.main.orthographicSize / basicOrthoSize);
             }
 
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.LoadLevel("Mainmenu");
+            }
+
             if (Input.GetKey(KeyCode.RightArrow))
             {
                 transform.position += Vector3.right * speed * Time.deltaTime;
@@ -83,6 +88,23 @@ public class CameraController : MonoBehaviour
             else if (Camera.main.orthographicSize <= 1)
             {
                 Camera.main.orthographicSize = 1;
+            }
+
+            if (transform.position.x >= 100)
+            {
+                transform.position = new Vector2(100, transform.position.y);
+            }
+            if (transform.position.x <= -100)
+            {
+                transform.position = new Vector2(-100, transform.position.y);
+            }
+            if (transform.position.y >= 100)
+            {
+                transform.position = new Vector2(transform.position.x, 100);
+            }
+            if (transform.position.y <= -100)
+            {
+                transform.position = new Vector2(transform.position.x, -100);
             }
         }
     }

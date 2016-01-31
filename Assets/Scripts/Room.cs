@@ -13,6 +13,9 @@ public class Room : MonoBehaviour
     [SerializeField]
     float spawnRangeFactor = 0.1f;
 
+    [SerializeField]
+    public GameObject AgiObst, StrObst;
+
     public Reward[] reward;
     private Requirement[] requirement;
     private bool revealed;
@@ -685,6 +688,25 @@ public class Room : MonoBehaviour
                             bonus = r.requiredValue / (BonusFactor * 2);
                             character.Agility += bonus;
                             if (bonus <= 0) bonus = 1;
+
+                            switch (movement.Direction)
+                            {
+                                case 0:
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 180);
+                                    break;
+                                case 1:
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                    break;
+                                case 2:
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                    break;
+                                case 3:
+                                    movement.Destination.AgiObst.transform.rotation = Quaternion.Euler(0, 0, 270);
+                                    break;
+                            }
+
+                            movement.Destination.AgiObst.SetActive(true);
+                            
                             type = 1;
                             success = true;
                             movingChars.Add(character);
@@ -692,7 +714,6 @@ public class Room : MonoBehaviour
                         else
                         {
                             type = 1;
-                            success = false;
                             movingChars.Add(character);
                         }
                     }
@@ -703,6 +724,25 @@ public class Room : MonoBehaviour
                             bonus = r.requiredValue / (BonusFactor * 2);
                             character.Strength += bonus;
                             if (bonus <= 0) bonus = 1;
+
+                            switch (movement.Direction)
+                            {
+                                case 0:
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 180);
+                                    break;
+                                case 1:
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                    break;
+                                case 2:
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                    break;
+                                case 3:
+                                    movement.Destination.StrObst.transform.rotation = Quaternion.Euler(0, 0, 270);
+                                    break;
+                            }
+
+                            movement.Destination.StrObst.SetActive(true);
+                            
                             type = 2;
                             success = true;
                             movingChars.Add(character);
@@ -710,7 +750,6 @@ public class Room : MonoBehaviour
                         else
                         {
                             type = 2;
-                            success = false;
                             movingChars.Add(character);
                         }
                     }
