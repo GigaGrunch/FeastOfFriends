@@ -774,26 +774,133 @@ public class Room : MonoBehaviour
         {
             if (success)
             {
-                gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Agility! As a result their Agility has even increased by " + bonus + ".");
+                //gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Agility! As a result their Agility has even increased by " + bonus + ".");
                 gameController.audio.playObstAgi();
+                int caseSwitchAgilityPos = Random.Range(0, 5);     // creates a number between 0 and 5;
+                switch (caseSwitchAgilityPos)
+                {
+                    case 0:
+                        gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of his Agility! As a result their Agility even increased by " + bonus + ".");
+                        break;
+
+                    case 1:
+                        gameController.writeRequirementStory(names + " made it! This Time! As a result their Agility even increased by " + bonus + ".");
+                        break;
+
+                    case 2:
+                        gameController.writeRequirementStory(names + " On fire! As a result their Agility even increased by " + bonus + ".");
+                        break;
+
+                    case 3:
+                        gameController.writeRequirementStory(names + " did their homework! As a result their Agility even increased by " + bonus + ".");
+                        break;
+
+                    case 4:
+                        gameController.writeRequirementStory(names + " still got it! As a result their Agility even increased by " + bonus + ".");
+                        break;
+
+                    case 5:
+                        gameController.writeRequirementStory(names + " , not as fat as their looks! As a result their Agility even increased by " + bonus + ".");
+                        break;
+                }
             }
             else
             {
-                gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Agility! One of them would have needed " + required + " Agility to master it.");
+                //gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Agility! One of them would have needed " + required + " Agility to master it.");
                 gameController.audio.playObstFail();
+                int caseSwitchAgilityNegative = Random.Range(0, 5);
+                switch (caseSwitchAgilityNegative)
+                {
+                    case 0:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Agility! One of them would have needed " + required + " Agility to master it.");
+                       
+                        break;
+                    case 1:
+                        gameController.writeRequirementStory(names + " , to chubby to get through adv.! Their would have needed " + required + " Agility to master it.");
+                       
+                        break;
+                    case 2:
+                        gameController.writeRequirementStory(names + " , to slow, maybe next time! " + required + "Agility to master it.");
+                        
+                        break;
+                    case 3:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Agility! One of them would have needed " + required + "Agility to master it.");
+                        
+                        break;
+                    case 4:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Agility! One of them would have needed " + required + "Agility to master it.");
+
+                        break;
+                    case 5:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Agility! One of them would have needed " + required + "Agility to master it.");
+                        break;
+                }
             }
         }
         if (type == 2)
         {
             if (success)
             {
-                gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Strength. As a result their Strength has even increased by " + bonus + ".");
+                //gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Strength. As a result their Strength has even increased by " + bonus + ".");
                 gameController.audio.playObstStr();
+                int caseSwitchStrengthPos = Random.Range(0, 5);     // creates a number between 0 and 5;
+                switch (caseSwitchStrengthPos)
+                {
+                    case 0:
+                        gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of his Agility! As a result their Agility even increased by " + bonus + ".");
+                        break;
+
+                    case 1:
+                        gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Strength. As a result their Strength has even increased by " + bonus + ".");
+                        break;
+
+                    case 2:
+                        gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Strength. As a result their Strength has even increased by " + bonus + ".");
+                        break;
+
+                    case 3:
+                        gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Strength. As a result their Strength has even increased by " + bonus + ".");
+                        break;
+
+                    case 4:
+                        gameController.writeRequirementStory(names + " managed to overcome an exciting obstacle because of their dominating Strength. As a result their Strength has even increased by " + bonus + ".");
+                        break;
+
+                    case 5:
+                        gameController.writeRequirementStory(names + " , not as fat as their looks! As a result their Agility even increased by " + bonus + ".");
+                        break;
+                }
             }
             else
             {
-                gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength! One of them would have needed " + (required) + " more Agility to master it.");
+                //gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength! One of them would have needed " + (required) + " more Agility to master it.");
                 gameController.audio.playObstFail();
+                int caseSwitchStrengthNegative = Random.Range(0, 5);
+                switch (caseSwitchStrengthNegative)
+                {
+                    case 0:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength!One of them would have needed " + required + " more Strength to master it.");
+                        break;
+                    case 1:
+                        gameController.writeRequirementStory(names + " , to chubby to get thru! Their would have needed " + required + " more Strength to master it.");
+
+                        break;
+                    case 2:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength!One of them would have needed " + required + " more Strength to master it.");
+
+                        break;
+                    case 3:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength!One of them would have needed " + required + " more Strength to master it.");
+
+                        break;
+                    case 4:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength!One of them would have needed " + required + " more Strength to master it.");
+
+                        break;
+                    case 5:
+                        gameController.writeRequirementStory(names + " failed to overcome an exciting obstacle because of their meagre Strength!One of them would have needed " + required + " more Strength to master it.");
+                        break;
+                }
             }
         }
 
