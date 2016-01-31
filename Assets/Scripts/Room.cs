@@ -759,7 +759,7 @@ public class Room : MonoBehaviour
         return success;
     }
 
-    public void sacrifice(int currentDayNum, Journal journal)
+    public bool sacrifice(int currentDayNum, Journal journal)
     {
         if (Reward[0].IsActive && selectedCharacters.Count > 0 && characters.Count >= 2)
         {
@@ -788,12 +788,26 @@ public class Room : MonoBehaviour
                     storyText += ", ";
                 }
             }
+            if(strengthBonus == 0)
+            {
+                strengthBonus = 1;
+            }
+            if (agilityBonus == 0)
+            {
+                agilityBonus = 1;
+            }
+            if (visionBonus == 0)
+            {
+                visionBonus = 1;
+            }
             storyText += " gained " + visionBonus + " Vision, " + strengthBonus + " Strength and " + agilityBonus + " Agility from feasting on his flesh";
             journal.addStory(new Story(currentDayNum, storyText));
 
             FindObjectOfType<InterfaceController>().SetRoomMembers(characters);
             Reward[0].IsActive = false;
+            return true;
         }
+        return false;
 
     }
 
