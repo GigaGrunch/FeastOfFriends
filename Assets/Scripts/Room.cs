@@ -711,7 +711,7 @@ public class Room : MonoBehaviour
         }
         if (SouthRoom != null)
         {
-            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelRand2, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(.25f, -2, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
@@ -749,7 +749,7 @@ public class Room : MonoBehaviour
         }
         if (WestRoom != null)
         {
-            temp = Instantiate(TunnelRand2, transform.position, Quaternion.identity) as GameObject;
+            temp = Instantiate(TunnelRand1, transform.position, Quaternion.identity) as GameObject;
             temp.transform.parent = transform;
             temp.transform.Translate(-2, -.25f, 0);
             temp.GetComponent<SpriteRenderer>().sortingOrder = 5;
