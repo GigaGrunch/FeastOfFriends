@@ -124,8 +124,6 @@ public class GameController : MonoBehaviour
 
     public void onCharacterClicked(Character clickedCharacter)
     {
-        Debug.Log("Setting bars...");
-
         AgilityBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Agility * 3.667f : 0, 10);
         StrenghtBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Strength * 3.667f : 0, 10);
         VisionBar.sizeDelta = new Vector2(clickedCharacter != null ? clickedCharacter.Vision * 3.667f : 0, 10);
@@ -167,6 +165,14 @@ public class GameController : MonoBehaviour
         {
             r.resolvePendingMovements();
         }
+
+        foreach (Room i in activeRooms)
+        {
+            i.drawPeople();
+
+            i.SelectedCharacters.Clear();
+        }
+
         removeEmptyRooms();
         foreach (Room r in roomsToActivate)
         {
@@ -179,6 +185,8 @@ public class GameController : MonoBehaviour
         foreach (Room i in activeRooms)
         {
             i.drawPeople();
+
+            i.SelectedCharacters.Clear();
         }
 
         currentDayNum++;

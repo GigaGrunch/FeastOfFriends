@@ -11,10 +11,10 @@ public class Room : MonoBehaviour
     GameObject charSprite, arrow;
 
     [SerializeField]
-    float spawnRangeFactor = 1;
+    float spawnRangeFactor = 0.1f;
 
     public Reward[] reward;
-    public Requirement[] requirement;
+    private Requirement[] requirement;
 
     List<GameObject> arrows = new List<GameObject>();
     List<GameObject> sprites = new List<GameObject>();
@@ -255,6 +255,12 @@ public class Room : MonoBehaviour
             Destroy(i);
         }
 
+        foreach (GameObject i in arrows)
+        {
+            Destroy(i);
+        }
+
+        arrows.Clear();
         sprites.Clear();
 
         GameObject temp;
@@ -401,6 +407,19 @@ public class Room : MonoBehaviour
         }
     }
 
+    public Requirement[] Requirement
+    {
+        get
+        {
+            return requirement;
+        }
+
+        set
+        {
+            requirement = value;
+        }
+    }
+
     // left mouse button
     void OnMouseDown()
     {
@@ -434,83 +453,108 @@ public class Room : MonoBehaviour
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: "+selectedRoom);
-                    if (!movingChar.IsCurrentlyMoving)
-                    {
-                        selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
-                        movingChar.IsCurrentlyMoving = true;
+                    clearMovement(movingChar, selectedRoom);
 
-                        GameObject temp = Instantiate(arrow);
-                        temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
-                        temp.transform.Translate(0, 0.25f, 0);
+                    selectedRoom.pendingMovementsNorth.Add(new Movement(selectedRoom, this, movingChar));
+                    GameObject temp = Instantiate(arrow);
 
-                        arrows.Add(temp);
-                    }
+                    temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    //temp.transform.position = selectedRoom.transform.position;
+                    //transform.Translate(spawnField[selectedRoom.characters.IndexOf(movingChar)]);
+                    temp.transform.Translate(0, 0.25f, 0);
+
+                    arrows.Add(temp);
                 }
             }
             else if (selectedRoom.EastRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
-                    if (!movingChar.IsCurrentlyMoving)
-                    {
-                        selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
-                        movingChar.IsCurrentlyMoving = true;
+                    clearMovement(movingChar, selectedRoom);
 
-                        GameObject temp = Instantiate(arrow);
-                        temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
-                        temp.transform.Translate(0.25f, 0, 0);
-                        temp.transform.Rotate(0, 0, 270);
+                    selectedRoom.pendingMovementsEast.Add(new Movement(selectedRoom, this, movingChar));
 
-                        arrows.Add(temp);
-                    }
+                    GameObject temp = Instantiate(arrow);
+                    temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    temp.transform.Translate(0.25f, 0, 0);
+                    temp.transform.Rotate(0, 0, 270);
+
+                    arrows.Add(temp);
                 }
             }
             else if (selectedRoom.WestRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
-                    if (!movingChar.IsCurrentlyMoving)
-                    {
-                        selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
-                        movingChar.IsCurrentlyMoving = true;
+                    clearMovement(movingChar, selectedRoom);
 
-                        GameObject temp = Instantiate(arrow);
-                        temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
-                        temp.transform.Translate(-.25f, 0, 0);
-                        temp.transform.Rotate(0, 0, 90);
+                    selectedRoom.pendingMovementsSouth.Add(new Movement(selectedRoom, this, movingChar));
 
-                        arrows.Add(temp);
-                    }
+                    GameObject temp = Instantiate(arrow);
+                    temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    temp.transform.Translate(-.25f, 0, 0);
+                    temp.transform.Rotate(0, 0, 90);
+
+                    arrows.Add(temp);
                 }
             }
             else if (selectedRoom.SouthRoom == this)
             {
                 foreach (Character movingChar in selectedRoom.SelectedCharacters)
                 {
-                    Debug.Log("char is already moving: " + movingChar.IsCurrentlyMoving + "; this is: " + this.name + " selected is: " + selectedRoom);
-                    if (!movingChar.IsCurrentlyMoving)
-                    {
-                        selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
-                        movingChar.IsCurrentlyMoving = true;
+                    clearMovement(movingChar, selectedRoom);
 
-                        GameObject temp = Instantiate(arrow);
-                        temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
-                        temp.transform.Translate(0, -0.25f, 0);
-                        temp.transform.Rotate(0, 0, 180);
+                    selectedRoom.pendingMovementsWest.Add(new Movement(selectedRoom, this, movingChar));
 
-                        arrows.Add(temp);
-                    }
+                    GameObject temp = Instantiate(arrow);
+                    temp.transform.position = selectedRoom.sprites[selectedRoom.characters.IndexOf(movingChar)].transform.position;
+                    temp.transform.Translate(0, -0.25f, 0);
+                    temp.transform.Rotate(0, 0, 180);
+
+                    arrows.Add(temp);
                 }
+            }
+        }
+    }
+
+    private void clearMovement(Character movingChar, Room currentRoom)
+    {
+        for (int i = 0; i < currentRoom.pendingMovementsEast.Count; i++)
+        {
+            if (currentRoom.pendingMovementsEast[i].Character == movingChar)
+            {
+                currentRoom.pendingMovementsEast.Remove(currentRoom.pendingMovementsEast[i]);
+            }
+        }
+
+        for (int i = 0; i < currentRoom.pendingMovementsWest.Count; i++)
+        {
+            if (currentRoom.pendingMovementsWest[i].Character == movingChar)
+            {
+                currentRoom.pendingMovementsWest.Remove(currentRoom.pendingMovementsWest[i]);
+            }
+        }
+
+        for (int i = 0; i < currentRoom.pendingMovementsNorth.Count; i++)
+        {
+            if (currentRoom.pendingMovementsNorth[i].Character == movingChar)
+            {
+                currentRoom.pendingMovementsNorth.Remove(currentRoom.pendingMovementsNorth[i]);
+            }
+        }
+
+        for (int i = 0; i < currentRoom.pendingMovementsSouth.Count; i++)
+        {
+            if (currentRoom.pendingMovementsSouth[i].Character == movingChar)
+            {
+                currentRoom.pendingMovementsSouth.Remove(currentRoom.pendingMovementsSouth[i]);
             }
         }
     }
 
     public void resolvePendingMovements()
     {
-        Debug.Log(this.name+": " + pendingMovementsEast.Count + ", " + pendingMovementsNorth.Count + ", " + pendingMovementsSouth.Count + ", " + pendingMovementsWest.Count);
+        Debug.Log(this.name + ": " + pendingMovementsEast.Count + ", " + pendingMovementsNorth.Count + ", " + pendingMovementsSouth.Count + ", " + pendingMovementsWest.Count);
         if (pendingMovementsEast.Count > 0)
         {
             tryToExecuteMovement(pendingMovementsEast);
@@ -546,14 +590,14 @@ public class Room : MonoBehaviour
             Character character = pendingMovement.Character;
             foreach (Requirement r in destinationRequirements)
             {
-                if (r.getType() == Requirement.Type.agility)
+                if (r.getType() == global::Requirement.Type.agility)
                 {
                     if (character.Agility >= r.getRequiredValue())
                     {
                         destinationRequirements.Remove(r);
                     }
                 }
-                else if (r.getType() == Requirement.Type.strength)
+                else if (r.getType() == global::Requirement.Type.strength)
                 {
                     if (character.Strength >= r.getRequiredValue())
                     {
@@ -594,7 +638,7 @@ public class Room : MonoBehaviour
             {
                 c.feast(strengthBonus, agilityBonus, visionBonus);
                 storyText += c.CharName;
-                if(characters.IndexOf(c) != characters.Count - 1)
+                if (characters.IndexOf(c) != characters.Count - 1)
                 {
                     storyText += ", ";
                 }
