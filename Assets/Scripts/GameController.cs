@@ -377,6 +377,7 @@ public class GameController : MonoBehaviour
         {
             audio.playFeast(); ;
             nextDeathIn = 5;
+            turnbar.GetComponent<Image>().sprite = turnbarSprites[4];
             onRoomSelected(selectedRoom);
         }
     }
